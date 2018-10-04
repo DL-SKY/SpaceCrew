@@ -1,0 +1,147 @@
+{
+  "settings": [
+    {
+      "id": "name",
+      "value": "SPACE SCROLLER"
+    },
+    {
+      "id": "version",
+      "value": "0.0.1"
+    },
+    {
+      "id": "console",
+      "value": "true"
+    },
+    {
+      "id": "debug",
+      "value": "true"
+    },
+    {
+      "id": "language",
+      "value": "rus"
+    },
+    {
+      "id": "volume_sound",
+      "value": "100"
+    },
+    {
+      "id": "volume_music",
+      "value": "100"
+    },
+    {
+      "id": "mute_sound",
+      "value": "false"
+    },
+    {
+      "id": "mute_music",
+      "value": "false"
+    },
+    {
+      "id": "vibration",
+      "value": "true"
+    }
+  ],
+  "localization": [
+    {
+      "id": "na",
+      "rus": "N/A",
+      "eng": "N/A"
+    },
+    {
+      "id": "loading",
+      "rus": "Загрузка...",
+      "eng": "Loading..."
+    },
+    {
+      "id": "rarity",
+      "rus": "УНИКАЛЬНОСТЬ",
+      "eng": "RARITY"
+    },
+    {
+      "id": "common",
+      "rus": "ОБЫЧНАЯ",
+      "eng": "COMMON"
+    },
+    {
+      "id": "uncommon",
+      "rus": "НЕОБЫЧНАЯ",
+      "eng": "UNCOMMON"
+    },
+    {
+      "id": "rare",
+      "rus": "РЕДКАЯ",
+      "eng": "RARE"
+    },
+    {
+      "id": "elite",
+      "rus": "ЭЛИТНАЯ",
+      "eng": "ELITE"
+    },
+    {
+      "id": "legendary",
+      "rus": "ЛЕГЕНДАРНАЯ",
+      "eng": "LEGENDARY"
+    }
+  ],
+  "colors": [
+    {
+      "id": "dark_amber",
+      "color": "F97304"
+    },
+    {
+      "id": "tiziano",
+      "color": "D44206"
+    },
+    {
+      "id": "dead_indigo",
+      "color": "023D67"
+    },
+    {
+      "id": "azure_gray",
+      "color": "03749C"
+    },
+    {
+      "id": "azure_kraola",
+      "color": "15B1D7"
+    },
+    {
+      "id": "light_kraola",
+      "color": "5CD4EF"
+    }
+  ],
+  "spaceships": [
+    {
+      "id": "TestShip",
+      "description": "testshipDesc",
+      "hitPoints": 2,
+      "shieldPoints": 1,
+      "equipments": [
+        ""
+      ],
+      "slots": 2
+    }
+  ],
+  "equipments": [
+    {
+      "id": "testMissileLauncher",
+      "description": "testMissileLauncherDesc",
+      "ammoPrefab": "TestMissile",
+      "slotImage": "Objects/_testMissile",
+      "level": 1,
+      "uses": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "cooldown": [
+        3,
+        3,
+        2,
+        2,
+        1
+      ]
+    }
+  ]
+}
