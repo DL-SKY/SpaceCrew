@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a5b9bde34f8364283db5eeb7125304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
+  parent: {fileID: 317568334}
 --- !u!1 &461809435
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,8 +417,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3a8db116d50034699b3ae732c628e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentScreens: {fileID: 0}
-  parentDialogs: {fileID: 0}
+  parentScreens: {fileID: 461809439}
+  parentDialogs: {fileID: 236689035}
   screens: []
   dialogs: []
 --- !u!1001 &493486410
