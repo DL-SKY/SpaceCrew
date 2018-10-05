@@ -6,7 +6,8 @@ using UnityEngine;
 
 //ЦВЕТА
 //<color=#FFD800> </color> - желтый, информация
-//<color=#FF0000> </color> - красный, ошибка, замечание
+//<color=#FF0000> </color> - красный, ошибка, замечание, урон
+//<color=#FF8800> </color> - оранжевый, изменения в инвентаре
 
 [System.Serializable]
 public class LogManager : Singleton<LogManager>

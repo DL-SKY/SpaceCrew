@@ -21,10 +21,10 @@ public class Global : Singleton<Global>
     #region Public methods
     public void Initialize()
     {
-        Debug.Log("[GLOBAL] Start GLOBAL initialize");
+        Debug.Log("<color=#FFD800>[GLOBAL] Start GLOBAL initialize</color>");
         InitConfigs();
         isComplete = true;
-        Debug.Log("[GLOBAL] Complete GLOBAL initialize");
+        Debug.Log("<color=#FFD800>[GLOBAL] Complete GLOBAL initialize</color>");
     }
     #endregion
 
@@ -58,7 +58,7 @@ public class Global : Singleton<Global>
 
     #region Context menu
     [ContextMenu("Check CONFIG")]
-    private void CheckConfigNST()
+    public void CheckConfig()
     {
         var startTime = DateTime.UtcNow;        
 
@@ -82,15 +82,27 @@ public class Global : Singleton<Global>
     }
 
     [ContextMenu("Save SETTINGS")]
-    private void SaveSettings()
+    public void SaveSettings()
     {
         SETTINGS.SaveSettings();
     }
 
+    [ContextMenu("Delete SETTINGS")]
+    public void DeleteSettings()
+    {
+        SETTINGS.DeleteSettings();
+    }
+
     [ContextMenu("Save PROFILE")]
-    private void SaveProfile()
+    public void SaveProfile()
     {
         PROFILE.SaveProfile();
+    }
+
+    [ContextMenu("Delete PROFILE")]
+    public void DeleteProfile()
+    {
+        PROFILE.DeleteProfile();
     }
     #endregion
 }

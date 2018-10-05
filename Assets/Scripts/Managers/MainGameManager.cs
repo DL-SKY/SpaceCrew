@@ -31,7 +31,7 @@ public class MainGameManager : Singleton<MainGameManager>
         Application.targetFrameRate = 60;
         QualitySettings.antiAliasing = 4;
 
-        Debug.Log("[MyGameManager] Application.targetFrameRate: " + Application.targetFrameRate);
+        Debug.Log("<color=#FFD800>[MyGameManager] Application.targetFrameRate: " + Application.targetFrameRate + "</color>");
     }
     #endregion
 
@@ -41,7 +41,7 @@ public class MainGameManager : Singleton<MainGameManager>
         //Стартовый прелоадер
         yield return SplashScreenManager.Instance.ShowStartingGame();
         //Версия
-        Debug.Log("[VERSION] " + Application.version);
+        Debug.Log("<color=#FFD800>[VERSION] " + Application.version + "</color>");
         //Инициализация конфига
         Global.Instance.Initialize();
         //Ожидание окончания загрузки конфига и настроек

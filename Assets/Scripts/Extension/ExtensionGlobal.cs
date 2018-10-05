@@ -27,7 +27,7 @@ public static class ExtensionGlobal
             GameSettings settings = new GameSettings();
             settings.ApplyDefaultSettings();
 
-            Debug.Log("[GLOBAL.SETTINGS] File not found. Apply default settings");
+            Debug.LogWarning("<color=#FF0000>[GLOBAL.SETTINGS] File not found. Apply default settings</color>");
             Debug.Log("[GLOBAL.SETTINGS] TOTAL TIME (ms): " + (DateTime.UtcNow - startTime).TotalMilliseconds);
 
             return settings;
@@ -39,7 +39,11 @@ public static class ExtensionGlobal
         var startTime = DateTime.UtcNow;
         string settingsPath = Path.Combine(Application.persistentDataPath, ConstantsResourcesPath.FILE_SETTINGS);
         Debug.Log("[GLOBAL.SETTINGS] Starting save settings: " + settingsPath);
-        
+
+        //Обновляем версию
+        _gs.version = Application.version;
+
+        //Создаем текст в формате JSON
         string json = JsonUtility.ToJson((GameSettings)_gs, true);
 
         if (!File.Exists(settingsPath + ".json"))
@@ -47,16 +51,28 @@ public static class ExtensionGlobal
 
         File.WriteAllText(settingsPath + ".json", json);
 
-        Debug.Log("[GLOBAL.SETTINGS] Save settings complete");
+        Debug.Log("<color=#FFD800>[GLOBAL.SETTINGS] Save settings complete</color>");
         Debug.Log("[GLOBAL.SETTINGS] TOTAL TIME (ms): " + (DateTime.UtcNow - startTime).TotalMilliseconds);
+    }
+
+    public static void DeleteSettings(this GameSettings _gs)
+    {
+        string settingsPath = Path.Combine(Application.persistentDataPath, ConstantsResourcesPath.FILE_SETTINGS);
+
+        if (File.Exists(settingsPath + ".json"))
+        {
+            File.Delete(settingsPath + ".json");
+
+            Debug.LogWarning("<color=#FF0000>[GLOBAL.SETTINGS] Settings is delete!</color>");
+        }
     }
 
     public static void ApplyDefaultSettings(this GameSettings _gs)
     {
         var settingsConfig = Global.Instance.CONFIGS.settings;
 
-        _gs.version = settingsConfig.Find(x => x.id == "version").value;
-        _gs.language = _gs.GetCurrentSystemLanguage();//settingsConfig.Find(x => x.id == "language").value;
+        _gs.version = Application.version;  //settingsConfig.Find(x => x.id == "version").value;
+        _gs.language = _gs.GetCurrentSystemLanguage();  //settingsConfig.Find(x => x.id == "language").value;
         _gs.volumeSound = float.Parse(settingsConfig.Find(x => x.id == "volume_sound").value);
         _gs.volumeMusic = float.Parse(settingsConfig.Find(x => x.id == "volume_music").value);
         _gs.muteSound = bool.Parse(settingsConfig.Find(x => x.id == "mute_sound").value);
@@ -107,7 +123,7 @@ public static class ExtensionGlobal
             Profile profile = new Profile();
             //profile.ApplyDefaultSettings();
 
-            Debug.Log("[GLOBAL.PROFILE] File not found. Apply default profile");
+            Debug.LogWarning("<color=#FF0000>[GLOBAL.PROFILE] File not found. Apply default profile</color>");
             Debug.Log("[GLOBAL.PROFILE] TOTAL TIME (ms): " + (DateTime.UtcNow - startTime).TotalMilliseconds);
 
             return profile;
@@ -127,8 +143,20 @@ public static class ExtensionGlobal
 
         File.WriteAllText(profilePath + ".json", json);
 
-        Debug.Log("[GLOBAL.PROFILE] Save profile complete");
+        Debug.Log("<color=#FFD800>[GLOBAL.PROFILE] Save profile complete</color>");
         Debug.Log("[GLOBAL.PROFILE] TOTAL TIME (ms): " + (DateTime.UtcNow - startTime).TotalMilliseconds);
+    }
+
+    public static void DeleteProfile(this Profile _pr)
+    {
+        string profilePath = Path.Combine(Application.persistentDataPath, ConstantsResourcesPath.FILE_PROFILE);
+
+        if (File.Exists(profilePath + ".json"))
+        {
+            File.Delete(profilePath + ".json");
+
+            Debug.LogWarning("<color=#FF0000>[GLOBAL.PROFILE] Profile is delete!</color>");
+        }
     }
 
     public static int GetItem(this Profile _pr, string _id)
@@ -144,7 +172,7 @@ public static class ExtensionGlobal
 
     public static void AddItem(this Profile _pr, string _id, int _amount)
     {
-        Debug.Log("[GLOBAL.PROFILE] <color=#FFD800>Add Item:</color> " + _id + " (" + _amount + ")");
+        Debug.Log("[GLOBAL.PROFILE] <color=#FF8800>Add Item:</color> " + _id + " (" + _amount + ")");
 
         var item = _pr.items.Find(x => x.id == _id);
         if (item != null)

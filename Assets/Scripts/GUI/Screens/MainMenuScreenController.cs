@@ -21,6 +21,11 @@ public class MainMenuScreenController : ScreenController
         StartCoroutine(Dialog());
     }
 
+    public void OnClickLogs()
+    {
+        ScreenManager.Instance.ShowDialog(ConstantsDialog.LOGS);
+    }
+
     public void OnClickPlay()
     {
         StartCoroutine(StartPlay());

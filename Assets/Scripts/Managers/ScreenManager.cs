@@ -38,7 +38,7 @@ public class ScreenManager : Singleton<ScreenManager>
         //Кнопка "Назад"
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            Debug.Log("[ScreenManager] " + KeyCode.Escape);
+            Debug.Log("<color=#FFD800>[ScreenManager] " + KeyCode.Escape + "</color>");
 
             EventManager.CallOnClickEsc();
 
@@ -85,7 +85,7 @@ public class ScreenManager : Singleton<ScreenManager>
         }
 
         screens.Add(screen);
-        Debug.Log("[ScreenManager] Screen loaded: " + _name);
+        Debug.Log("<color=#FFD800>[ScreenManager] Screen loaded: " + _name + "</color>");
 
         /*
         var screen = ResourcesManager.Instance.InstantiatePrefab<ScreenController>(transform, ResourcesManagerPaths.UI_SCREENS, _type.ToString());
@@ -113,6 +113,7 @@ public class ScreenManager : Singleton<ScreenManager>
         dialog.transform.SetAsLastSibling();
 
         dialogs.Add(dialog);
+        Debug.Log("<color=#FFD800>[ScreenManager] Dialog loaded: " + _name + "</color>");
 
         return dialog;
     }

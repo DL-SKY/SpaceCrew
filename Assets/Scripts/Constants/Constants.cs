@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public static class ConstantsGameSettings
+﻿public static class ConstantsGameSettings
 {
     //public static float CELL_SIZE = 1.0f;           //Сторона вокселя игрового пространства (одна игровая клетка)
     //public static float BEYOND_BORDERS = 10.0f;     //Воксели за пределами Игрового поля, по которым можно перемещаться
@@ -79,6 +77,7 @@ public static class ConstantsScreen
 public static class ConstantsDialog
 {
     public const string SETTINGS = "SettingsDialog";
+    public const string LOGS = "LogsDialog";
 }
 
 public static class ConstantsColor
