@@ -13,6 +13,7 @@ builds/
 Assets/AssetStoreTools*
 
 ProjectSettings/ProjectVersion.txt
+/ProjectSettings/ProjectVersion.txt
 
 # Visual Studio cache directory
 .vs/
@@ -43,3 +44,4 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
