@@ -56,10 +56,14 @@ public class LogItem
 {
     public LogType type;
     public string logString;
+    public string timeString;
 
     public LogItem(LogType _type, string _logString)
     {
         type = _type;
         logString = _logString;
+
+        var now = System.DateTime.UtcNow;
+        timeString = string.Format("[{0}]", now.ToString("dd.MM.yyy HH:mm:ss"));
     }
 }

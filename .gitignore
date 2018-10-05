@@ -12,6 +12,8 @@ builds/
 
 Assets/AssetStoreTools*
 
+ProjectSettings/ProjectVersion.txt
+
 # Visual Studio cache directory
 .vs/
 
