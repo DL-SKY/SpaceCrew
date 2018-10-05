@@ -1,36 +1,33 @@
 ﻿using DllSky.Patterns;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraGame : Singleton<CameraGame>
 {
     #region Variables
-
-    private new Camera camera;
+    private Camera thisCamera;
     #endregion
 
     #region Unity methods
     private void OnEnable()
     {
-        camera = GetComponent<Camera>();
+        thisCamera = GetComponent<Camera>();
     }
     #endregion
 
     #region Public methods
     public Camera GetCamera()
     {
-        return camera;
+        return thisCamera;
     }
 
     public void Resize(float _width, float _count)
     {
-        camera.orthographicSize = (0.5f * _width * _count) / camera.aspect;
+        thisCamera.orthographicSize = (0.5f * _width * _count) / thisCamera.aspect;
     }
 
     public void Reposition()
     {
-        var offset = camera.orthographicSize * 0.4f;
+        var offset = thisCamera.orthographicSize * 0.4f;
         transform.position += new Vector3(0.0f, offset, 0.0f);
     }
     #endregion

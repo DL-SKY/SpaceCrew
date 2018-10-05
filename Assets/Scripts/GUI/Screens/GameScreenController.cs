@@ -11,7 +11,6 @@ public class GameScreenController : ScreenController
     [Header("Slots")]
     public Transform slotsParent;
 
-    private string spaceshipID;
     private GameSceneController sceneController;
     #endregion
 
@@ -63,7 +62,7 @@ public class GameScreenController : ScreenController
     public override void Initialize(object _data)
     {
         //var CONFIGS = Global.Instance.CONFIGS;
-        spaceshipID = _data as string;
+        //spaceshipID = _data as string;
 
         StartCoroutine(Initializing());
     }

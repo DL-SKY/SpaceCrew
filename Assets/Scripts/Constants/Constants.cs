@@ -72,7 +72,6 @@ public static class ConstantsScene
 public static class ConstantsScreen
 {
     public const string MAIN_MENU = "MainMenuScreen";
-    public const string GAME_MODE_00 = "GameMode00Screen";
 
     public const string GAME_SCREEN = "GameScreen";
 }
@@ -115,7 +114,7 @@ public static class ConstantsLanguage
 
 #region ENUM
 //Тип объекта
-public enum EnumSpaceObject
+/*public enum EnumSpaceObject
 {
     Void,
     SpaceObject,
@@ -136,7 +135,7 @@ public enum EnumSpaceObject
 public enum EnumEquipmentType
 {
     TestMissileLauncher,
-}
+}*/
 #endregion
 
 
