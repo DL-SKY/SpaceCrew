@@ -132,6 +132,27 @@ namespace DllSky.Utility
             return result;
         }
         //------------------------------------------------
+        /// <summary>
+        /// Предлагает отправить письмо
+        /// </summary>
+        /// <param name="_address"></param>
+        /// <param name="_subject"></param>
+        /// <param name="_body"></param>
+        /// <param name="_escapeURL"></param>
+        public static void SendToEmail(string _address, string _subject, string _body, bool _escapeURL = true)
+        {
+            Debug.Log("<color=#FFD800>[SEND EMAIL] </color>" + _address + " / \"" + _subject + "\"");
+
+            if (_escapeURL)
+            {
+                _subject = WWW.EscapeURL(_subject);
+                _body = WWW.EscapeURL(_body);
+            }
+
+            string url = string.Format("mailto:{0}?subject={1}&body={2}", _address, _subject, _body);
+
+            Application.OpenURL(url);            
+        }
     }
 
     public static class ResourcesManager

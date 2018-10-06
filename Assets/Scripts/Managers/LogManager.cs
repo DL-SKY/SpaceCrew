@@ -1,5 +1,6 @@
 ﻿using DllSky.Patterns;
 using DllSky.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine;
 //<color=#FF0000> </color> - красный, ошибка, замечание, урон
 //<color=#FF8800> </color> - оранжевый, изменения в инвентаре
 
-[System.Serializable]
+[Serializable]
 public class LogManager : Singleton<LogManager>
 {
     #region Variables
@@ -21,6 +22,7 @@ public class LogManager : Singleton<LogManager>
     {
         logs.Clear();
     }
+
     private void OnEnable()
     {
         Application.logMessageReceived += HandleLog;
@@ -33,6 +35,12 @@ public class LogManager : Singleton<LogManager>
     #endregion
 
     #region Public methods
+    public void SendLogs()
+    {
+        string body = JsonUtility.ToJson((LogManager)this, true);
+
+        UtilityBase.SendToEmail(ConstantsEmail.ADDRESS, ConstantsEmail.SUBJECT_LOGS, body);
+    }
     #endregion
 
     #region Private methods
@@ -51,7 +59,7 @@ public class LogManager : Singleton<LogManager>
     #endregion
 }
 
-[System.Serializable]
+[Serializable]
 public class LogItem
 {
     public LogType type;

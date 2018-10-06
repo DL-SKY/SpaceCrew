@@ -111,6 +111,12 @@ public static class ConstantsLanguage
     public const string ENGLISH = "eng";
 }
 
+public static class ConstantsEmail
+{
+    public const string ADDRESS = "alex.dllsky@gmail.com";
+    public const string SUBJECT_LOGS = "Game Logs";
+}
+
 #region ENUM
 //Тип объекта
 /*public enum EnumSpaceObject

@@ -1,4 +1,5 @@
 ﻿using DllSky.Utility;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class LogsDialogController : DialogController
@@ -16,9 +17,23 @@ public class LogsDialogController : DialogController
         
         Show();
     }
+
+    private void OnEnable()
+    {
+        Application.logMessageReceived += HandleLog;
+    }
+
+    private void OnDisable()
+    {
+        Application.logMessageReceived -= HandleLog;
+    }
     #endregion
 
     #region Public methods
+    public void SendLogs()
+    {
+        LogManager.Instance.SendLogs();
+    }
     #endregion
 
     #region Private methods
@@ -29,6 +44,16 @@ public class LogsDialogController : DialogController
             var newLog = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, "LogItem"), scroller.content.transform);
             newLog.GetComponent<LogItemController>().Initialize(log, false);
         }
+
+        //scroller.
+    }
+
+    private void HandleLog(string _logString, string _stackTrace, LogType _type)
+    {
+        var newItem = new LogItem(_type, _logString);
+        
+        var newLog = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, "LogItem"), scroller.content.transform);
+        newLog.GetComponent<LogItemController>().Initialize(newItem, false);
     }
     #endregion
 

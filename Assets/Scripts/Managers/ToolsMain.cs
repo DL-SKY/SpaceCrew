@@ -28,7 +28,7 @@ public class ToolsMain : Singleton<ToolsMain>
 #if UNITY_EDITOR
     #region Menu
     [MenuItem("Tools/Open profile folder")]
-    private static void OpenProfileFolder()
+    private static void ToolsOpenProfileFolder()
     {
         //System.Diagnostics.Process.Start("explorer.exe", " " + Application.persistentDataPath);
         System.Diagnostics.Process.Start(Application.persistentDataPath);
@@ -36,11 +36,9 @@ public class ToolsMain : Singleton<ToolsMain>
     }
 
     [MenuItem("Tools/Email")]
-    private static void Email()
+    private static void ToolsEmail()
     {
-        string body = JsonUtility.ToJson((LogManager)LogManager.Instance, true);
-        string url = string.Format("mailto:{0}?subject={1}&body={2}", "alex.dllsky@gmail.com", WWW.EscapeURL("subject"), WWW.EscapeURL(body));
-        Application.OpenURL(url);
+        LogManager.Instance.SendLogs();
     }
     #endregion
 #endif

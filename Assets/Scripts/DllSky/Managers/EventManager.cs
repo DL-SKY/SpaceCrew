@@ -10,32 +10,12 @@ namespace DllSky.Managers
 {
     public static class EventManager
     {
-        #region Delegates
-        public delegate void OnDefault();
-        public delegate void OnClickEsc();
-
-        public delegate void OnChangeLanguage();
-        public delegate void OnApplyLanguage();
-
-        public delegate void OnStartPlayerTurn();
-        public delegate void OnEndPlayerTurn();
-
-        public delegate void OnChangeHitPoints();
-        public delegate void OnChangePlayerSlots();
-        #endregion
-
         #region Actions
-        public static event OnDefault eventOnDefault;
-        public static event OnClickEsc eventOnClickEsc;
+        public static Action eventOnDefault;
+        public static Action eventOnClickEsc;
 
-        public static event OnChangeLanguage eventOnChangeLanguage;
-        public static event OnApplyLanguage eventOnApplyLanguage;
-
-        public static event OnStartPlayerTurn eventOnStartPlayerTurn;
-        public static event OnEndPlayerTurn eventOnEndPlayerTurn;
-
-        public static event OnChangeHitPoints eventOnChangeHitPoints;
-        public static event OnChangePlayerSlots eventOnChangePlayerSlots;
+        public static Action eventOnChangeLanguage;
+        public static Action eventOnApplyLanguage;
         #endregion
 
         #region Public methods
@@ -61,31 +41,7 @@ namespace DllSky.Managers
         {
             if (eventOnApplyLanguage != null)
                 eventOnApplyLanguage.Invoke();
-        }
-
-        public static void CallOnStartPlayerTurn()
-        {
-            if (eventOnStartPlayerTurn != null)
-                eventOnStartPlayerTurn.Invoke();
-        }
-
-        public static void CallOnEndPlayerTurn()
-        {
-            if (eventOnEndPlayerTurn != null)
-                eventOnEndPlayerTurn.Invoke();
-        }
-
-        public static void CallOnChangeHitPoints()
-        {
-            if (eventOnChangeHitPoints != null)
-                eventOnChangeHitPoints.Invoke();
-        }
-
-        public static void CallOnChangePlayerSlots()
-        {
-            if (eventOnChangePlayerSlots != null)
-                eventOnChangePlayerSlots.Invoke();
-        }
+        }        
         #endregion
     }
 }

@@ -5,7 +5,9 @@ using UnityEngine;
 public class DialogController : MonoBehaviour
 {
     #region Variables
+    public string dialogName = "";
     public bool result = true;
+
     private bool isOpened = true;
     private bool isInit = false;
     #endregion
