@@ -7,6 +7,7 @@ TagManager:
   - UICamera
   - ScreensCanvas
   - DialogsCanvas
+  - Spaceship
   layers:
   - Default
   - TransparentFX

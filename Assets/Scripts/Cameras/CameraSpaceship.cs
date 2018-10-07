@@ -38,7 +38,6 @@ public class CameraSpaceship : LeanCameraZoom
         if (Camera.transform.parent != transform)
         {
             Camera.transform.SetParent(transform);
-            //Camera.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             Camera.transform.localPosition = Vector3.zero;
             Camera.transform.localRotation = Quaternion.identity;
         }

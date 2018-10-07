@@ -21,6 +21,8 @@ public static class ConstantsTag
     public const string TAG_SCREENS_CANVAS = "ScreensCanvas";
     public const string TAG_DIALOGS_CANVAS = "DialogsCanvas";
 
+    public const string TAG_SPACESHIP = "Spaceship";
+
 
     //public const string TAG_VOID = "Void";
 
@@ -43,15 +45,23 @@ public static class ConstantsResourcesPath
     public const string CONFIGS = "Configs/";
     public const string PREFABS = "Prefabs/";
     
-    //public const string PREF_SPACEOBJECTS = "Prefabs/Objects/";
-    //public const string PREF_SPACESHIPS = "Prefabs/Spaceships/";
-
+    //Prefabs
     public const string SPLASHSCREEN = "Prefabs/UI/SplashScreens/";
     public const string SCREENS = "Prefabs/UI/Screens/";
     public const string DIALOGS = "Prefabs/UI/Dialogs/";
     public const string ELEMENTS_UI = "Prefabs/UI/Elements/";
+    public const string PREF_OBJECTS = "Prefabs/Objects/";
 
+    //Sprites
     public const string SPRITES = "Sprites/";
+
+    //3D meshes
+    public const string MODELS = "Models/";
+    public const string MODELS_SPACESHIPS = "Models/Spaceships/";
+
+    //Materials
+    public const string MATERIALS = "Materials/";
+    public const string MATERIALS_SPACESHIPS = "Materials/Spaceships/";
 
     //File name
     public const string FILE_CONFIG = "Config";

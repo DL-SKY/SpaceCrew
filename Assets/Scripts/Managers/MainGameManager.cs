@@ -31,7 +31,7 @@ public class MainGameManager : Singleton<MainGameManager>
         Application.targetFrameRate = 60;
         QualitySettings.antiAliasing = 4;
 
-        Debug.Log("<color=#FFD800>[MyGameManager] Application.targetFrameRate: " + Application.targetFrameRate + "</color>");
+        Debug.Log("<color=#FFD800>[MainGameManager] Application.targetFrameRate: " + Application.targetFrameRate + "</color>");
     }
     #endregion
 
@@ -95,13 +95,16 @@ public class MainGameManager : Singleton<MainGameManager>
         if (SceneManager.sceneCount > 1)
         {
             var oldScene = SceneManager.GetSceneAt(SceneManager.sceneCount-1);
+            var oldName = oldScene.name;
             yield return SceneManager.UnloadSceneAsync(oldScene);
+            Debug.Log("<color=#FFD800>[MainGameManager] Scene unloaded: " + oldName + "</color>");
         }
 
         //Загружаем новую сцену
         currentScene = _scene;
         yield return SceneManager.LoadSceneAsync(currentScene, _mode);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentScene));
+        Debug.Log("<color=#FFD800>[MainGameManager] Scene loaded: " + currentScene + "</color>");
     }
     #endregion
 }

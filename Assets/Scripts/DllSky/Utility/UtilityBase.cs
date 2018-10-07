@@ -9,6 +9,7 @@
  * public static string GetStringFormatAmount3(int _amount)
  * public static string GetStringFormatAmount5(int _amount)
  * public static string GetStringFormatAmount6(int _amount)
+ * ...
 */
 
 using DllSky.Extensions;
@@ -155,6 +156,7 @@ namespace DllSky.Utility
         }
     }
 
+    //https://stackoverrun.com/ru/q/11374570
     public static class ResourcesManager
     {
         //------------------------------------------------
