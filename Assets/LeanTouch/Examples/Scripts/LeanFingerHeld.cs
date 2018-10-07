@@ -14,18 +14,19 @@ namespace Lean.Touch
 		[System.Serializable]
 		public class Link
 		{
-			// The finger associated with this link
-			public LeanFinger Finger;
-
-			// Was this finger held?
-			public bool LastSet;
-
-			// The total movement so we can ignore it if it gets too high
-			public Vector2 TotalScaledDelta;
+			public LeanFinger Finger; // The finger associated with this link
+			public bool       LastSet; // Was this finger held?
+			public Vector2    TotalScaledDelta; // The total movement so we can ignore it if it gets too high
 		}
 
-		[Tooltip("If the finger started over the GUI, ignore it?")]
-		public bool IgnoreIfStartedOverGui;
+		[Tooltip("Ignore fingers with StartedOverGui?")]
+		public bool IgnoreStartedOverGui = true;
+
+		[Tooltip("Ignore fingers with IsOverGui?")]
+		public bool IgnoreIsOverGui;
+
+		[Tooltip("Do nothing if this LeanSelectable isn't selected?")]
+		public LeanSelectable RequiredSelectable;
 
 		[Tooltip("The finger must be held for this many seconds")]
 		public float MinimumAge = 1.0f;
@@ -34,33 +35,34 @@ namespace Lean.Touch
 		public float MaximumMovement = 5.0f;
 
 		// Called on the first frame the conditions are met
-		public FingerEvent onFingerHeldDown;
+		public FingerEvent OnHeldDown;
 
 		// Called on every frame the conditions are met
-		public FingerEvent onFingerHeldSet;
+		public FingerEvent OnHeldSet;
 
 		// Called on the last frame the conditions are met
-		public FingerEvent onFingerHeldUp;
-
-		// This contains all the active and enabled LeanFingerHeld instances
-		public static List<LeanFingerHeld> Instances = new List<LeanFingerHeld>();
-
-		// This gets fired when a finger begins being held on the screen (LeanFinger = The current finger)
-		public static System.Action<LeanFinger> OnFingerHeldDown;
-
-		// This gets fired when a finger is held on the screen (LeanFinger = The current finger)
-		public static System.Action<LeanFinger> OnFingerHeldSet;
-
-		// This gets fired when a finger stops being held on the screen (LeanFinger = The current finger)
-		public static System.Action<LeanFinger> OnFingerHeldUp;
+		public FingerEvent OnHeldUp;
 
 		// This stores all finger links
 		private List<Link> links = new List<Link>();
 
+#if UNITY_EDITOR
+		protected virtual void Reset()
+		{
+			Start();
+		}
+#endif
+
+		protected virtual void Start()
+		{
+			if (RequiredSelectable == null)
+			{
+				RequiredSelectable = GetComponent<LeanSelectable>();
+			}
+		}
+
 		protected virtual void OnEnable()
 		{
-			Instances.Add(this);
-
 			// Hook events
 			LeanTouch.OnFingerDown += OnFingerDown;
 			LeanTouch.OnFingerSet  += OnFingerSet;
@@ -69,8 +71,6 @@ namespace Lean.Touch
 
 		protected virtual void OnDisable()
 		{
-			Instances.Remove(this);
-
 			// Unhook events
 			LeanTouch.OnFingerDown -= OnFingerDown;
 			LeanTouch.OnFingerSet  -= OnFingerSet;
@@ -80,24 +80,23 @@ namespace Lean.Touch
 		private void OnFingerDown(LeanFinger finger)
 		{
 			// Ignore?
-			if (IgnoreIfStartedOverGui == true && finger.StartedOverGui == true)
+			if (IgnoreStartedOverGui == true && finger.StartedOverGui == true)
+			{
+				return;
+			}
+			if (IgnoreIsOverGui == true && finger.IsOverGui == true)
 			{
 				return;
 			}
 
-			// Try and find the link for this finger
-			var link = FindLink(finger);
-
-			if (link == null)
+			if (RequiredSelectable != null && RequiredSelectable.IsSelected == false)
 			{
-				link = new Link();
-
-				link.Finger = finger;
-
-				links.Add(link);
+				return;
 			}
 
-			// Reset its data
+			// Get link for this finger and reset
+			var link = FindLink(finger, true);
+
 			link.LastSet          = false;
 			link.TotalScaledDelta = Vector2.zero;
 		}
@@ -105,7 +104,7 @@ namespace Lean.Touch
 		private void OnFingerSet(LeanFinger finger)
 		{
 			// Try and find the link for this finger
-			var link = FindLink(finger);
+			var link = FindLink(finger, false);
 
 			if (link != null)
 			{
@@ -116,31 +115,25 @@ namespace Lean.Touch
 
 				if (set == true && link.LastSet == false)
 				{
-					onFingerHeldDown.Invoke(finger);
-
-					if (Instances[0] == this)
+					if (OnHeldDown != null)
 					{
-						if (OnFingerHeldDown != null) OnFingerHeldDown(finger);
+						OnHeldDown.Invoke(finger);
 					}
 				}
 
 				if (set == true)
 				{
-					onFingerHeldSet.Invoke(finger);
-
-					if (Instances[0] == this)
+					if (OnHeldSet != null)
 					{
-						if (OnFingerHeldSet != null) OnFingerHeldSet(finger);
+						OnHeldSet.Invoke(finger);
 					}
 				}
 
 				if (set == false && link.LastSet == true)
 				{
-					onFingerHeldUp.Invoke(finger);
-
-					if (Instances[0] == this)
+					if (OnHeldUp != null)
 					{
-						if (OnFingerHeldUp != null) OnFingerHeldUp(finger);
+						OnHeldUp.Invoke(finger);
 					}
 				}
 
@@ -151,29 +144,26 @@ namespace Lean.Touch
 
 		private void OnFingerUp(LeanFinger finger)
 		{
-			// Try and find the link for this finger
-			var link = FindLink(finger);
+			// Find link for this finger, and clear it
+			var link = FindLink(finger, false);
 
-			// Link exists?
 			if (link != null)
 			{
+				links.Remove(link);
+
 				if (link.LastSet == true)
 				{
-					onFingerHeldUp.Invoke(finger);
-
-					if (Instances[0] == this)
+					if (OnHeldUp != null)
 					{
-						if (OnFingerHeldUp != null) OnFingerHeldUp(finger);
+						OnHeldUp.Invoke(finger);
 					}
 				}
-
-				// Remove link from list
-				links.Remove(link);
 			}
 		}
 
-		private Link FindLink(LeanFinger finger)
+		private Link FindLink(LeanFinger finger, bool createIfNull)
 		{
+			// Find existing link?
 			for (var i = 0; i < links.Count; i++)
 			{
 				var link = links[i];
@@ -182,6 +172,18 @@ namespace Lean.Touch
 				{
 					return link;
 				}
+			}
+
+			// Make new link?
+			if (createIfNull == true)
+			{
+				var link = new Link();
+
+				link.Finger = finger;
+
+				links.Add(link);
+
+				return link;
 			}
 
 			return null;

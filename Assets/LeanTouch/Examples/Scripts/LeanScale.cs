@@ -6,7 +6,10 @@ namespace Lean.Touch
 	public class LeanScale : MonoBehaviour
 	{
 		[Tooltip("Ignore fingers with StartedOverGui?")]
-		public bool IgnoreGuiFingers;
+		public bool IgnoreStartedOverGui = true;
+
+		[Tooltip("Ignore fingers with IsOverGui?")]
+		public bool IgnoreIsOverGui;
 
 		[Tooltip("Allows you to force rotation with a specific amount of fingers (0 = any)")]
 		public int RequiredFingerCount;
@@ -14,12 +17,12 @@ namespace Lean.Touch
 		[Tooltip("Does scaling require an object to be selected?")]
 		public LeanSelectable RequiredSelectable;
 
+		[Tooltip("The camera that will be used to calculate the zoom (None = MainCamera)")]
+		public Camera Camera;
+
 		[Tooltip("If you want the mouse wheel to simulate pinching then set the strength of it here")]
 		[Range(-1.0f, 1.0f)]
 		public float WheelSensitivity;
-
-		[Tooltip("The camera that will be used to calculate the zoom (None = MainCamera)")]
-		public Camera Camera;
 
 		[Tooltip("Should the scaling be performanced relative to the finger center?")]
 		public bool Relative;
@@ -50,66 +53,85 @@ namespace Lean.Touch
 
 		protected virtual void Update()
 		{
-			// If we require a selectable and it isn't selected, cancel scaling
-			if (RequiredSelectable != null && RequiredSelectable.IsSelected == false)
-			{
-				return;
-			}
-
 			// Get the fingers we want to use
-			var fingers = LeanTouch.GetFingers(IgnoreGuiFingers, RequiredFingerCount);
+			var fingers = LeanSelectable.GetFingersOrClear(IgnoreStartedOverGui, IgnoreIsOverGui, RequiredFingerCount, RequiredSelectable);
 
-			// Calculate the scaling values based on these fingers
-			var pinchScale   = LeanGesture.GetPinchScale(fingers, WheelSensitivity);
-			var screenCenter = LeanGesture.GetScreenCenter(fingers);
+			// Calculate pinch scale, and make sure it's valid
+			var pinchScale = LeanGesture.GetPinchScale(fingers, WheelSensitivity);
 
-			// Perform the scaling
-			Scale(pinchScale, screenCenter);
-		}
-
-		private void Scale(float pinchScale, Vector2 screenCenter)
-		{
-			// Make sure the scale is valid
 			if (pinchScale > 0.0f)
 			{
-				var scale = transform.localScale;
-
+				// Perform the translation if this is a relative scale
 				if (Relative == true)
 				{
-					// Make sure the camera exists
-					var camera = LeanTouch.GetCamera(Camera, gameObject);
+					var pinchScreenCenter = LeanGesture.GetScreenCenter(fingers);
 
-					if (camera != null)
+					if (transform is RectTransform)
 					{
-						// Screen position of the transform
-						var screenPosition = camera.WorldToScreenPoint(transform.position);
-
-						// Push the screen position away from the reference point based on the scale
-						screenPosition.x = screenCenter.x + (screenPosition.x - screenCenter.x) * pinchScale;
-						screenPosition.y = screenCenter.y + (screenPosition.y - screenCenter.y) * pinchScale;
-
-						// Convert back to world space
-						transform.position = camera.ScreenToWorldPoint(screenPosition);
-
-						// Grow the local scale by scale
-						scale *= pinchScale;
+						TranslateUI(pinchScale, pinchScreenCenter);
+					}
+					else
+					{
+						Translate(pinchScale, pinchScreenCenter);
 					}
 				}
-				else
-				{
-					// Grow the local scale by scale
-					scale *= pinchScale;
-				}
 
-				if (ScaleClamp == true)
-				{
-					scale.x = Mathf.Clamp(scale.x, ScaleMin.x, ScaleMax.x);
-					scale.y = Mathf.Clamp(scale.y, ScaleMin.y, ScaleMax.y);
-					scale.z = Mathf.Clamp(scale.z, ScaleMin.z, ScaleMax.z);
-				}
-
-				transform.localScale = scale;
+				// Perform the scaling
+				Scale(transform.localScale * pinchScale);
 			}
+		}
+
+		protected virtual void TranslateUI(float pinchScale, Vector2 pinchScreenCenter)
+		{
+			// Screen position of the transform
+			var screenPoint = RectTransformUtility.WorldToScreenPoint(Camera, transform.position);
+
+			// Push the screen position away from the reference point based on the scale
+			screenPoint.x = pinchScreenCenter.x + (screenPoint.x - pinchScreenCenter.x) * pinchScale;
+			screenPoint.y = pinchScreenCenter.y + (screenPoint.y - pinchScreenCenter.y) * pinchScale;
+
+			// Convert back to world space
+			var worldPoint = default(Vector3);
+
+			if (RectTransformUtility.ScreenPointToWorldPointInRectangle(transform.parent as RectTransform, screenPoint, Camera, out worldPoint) == true)
+			{
+				transform.position = worldPoint;
+			}
+		}
+
+		protected virtual void Translate(float pinchScale, Vector2 screenCenter)
+		{
+			// Make sure the camera exists
+			var camera = LeanTouch.GetCamera(Camera, gameObject);
+
+			if (camera != null)
+			{
+				// Screen position of the transform
+				var screenPosition = camera.WorldToScreenPoint(transform.position);
+
+				// Push the screen position away from the reference point based on the scale
+				screenPosition.x = screenCenter.x + (screenPosition.x - screenCenter.x) * pinchScale;
+				screenPosition.y = screenCenter.y + (screenPosition.y - screenCenter.y) * pinchScale;
+
+				// Convert back to world space
+				transform.position = camera.ScreenToWorldPoint(screenPosition);
+			}
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", this);
+			}
+		}
+
+		protected virtual void Scale(Vector3 scale)
+		{
+			if (ScaleClamp == true)
+			{
+				scale.x = Mathf.Clamp(scale.x, ScaleMin.x, ScaleMax.x);
+				scale.y = Mathf.Clamp(scale.y, ScaleMin.y, ScaleMax.y);
+				scale.z = Mathf.Clamp(scale.z, ScaleMin.z, ScaleMax.z);
+			}
+
+			transform.localScale = scale;
 		}
 	}
 }

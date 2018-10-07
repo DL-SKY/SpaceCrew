@@ -16,7 +16,7 @@ namespace Lean.Touch
 			LeanTouch.OnFingerSwipe += OnFingerSwipe;
 			LeanTouch.OnGesture     += OnGesture;
 		}
-		
+
 		protected virtual void OnDisable()
 		{
 			// Unhook the events
@@ -27,32 +27,32 @@ namespace Lean.Touch
 			LeanTouch.OnFingerSwipe -= OnFingerSwipe;
 			LeanTouch.OnGesture     -= OnGesture;
 		}
-		
+
 		public void OnFingerDown(LeanFinger finger)
 		{
 			Debug.Log("Finger " + finger.Index + " began touching the screen");
 		}
-		
+
 		public void OnFingerSet(LeanFinger finger)
 		{
 			Debug.Log("Finger " + finger.Index + " is still touching the screen");
 		}
-		
+
 		public void OnFingerUp(LeanFinger finger)
 		{
 			Debug.Log("Finger " + finger.Index + " finished touching the screen");
 		}
-		
+
 		public void OnFingerTap(LeanFinger finger)
 		{
 			Debug.Log("Finger " + finger.Index + " tapped the screen");
 		}
-		
+
 		public void OnFingerSwipe(LeanFinger finger)
 		{
 			Debug.Log("Finger " + finger.Index + " swiped the screen");
 		}
-		
+
 		public void OnGesture(List<LeanFinger> fingers)
 		{
 			Debug.Log("Gesture with " + fingers.Count + " finger(s)");

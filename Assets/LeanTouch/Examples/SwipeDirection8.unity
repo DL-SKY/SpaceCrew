@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 8
+  serializedVersion: 9
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -39,6 +39,7 @@ RenderSettings:
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
   m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -54,11 +55,10 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 9
+    serializedVersion: 10
     m_Resolution: 1
     m_BakeResolution: 50
-    m_TextureWidth: 1024
-    m_TextureHeight: 1024
+    m_AtlasSize: 1024
     m_AO: 0
     m_AOMaxDistance: 1
     m_CompAOExponent: 0
@@ -88,6 +88,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 0
 --- !u!196 &5
@@ -112,191 +113,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &141991821
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 109382, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 141991822}
-  - component: {fileID: 141991826}
-  - component: {fileID: 141991825}
-  - component: {fileID: 141991824}
-  - component: {fileID: 141991823}
-  m_Layer: 5
-  m_Name: Logo+
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &141991822
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 22498348, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 141991821}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 512, y: -384, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
-  m_Children: []
-  m_Father: {fileID: 995560803}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 98}
-  m_Pivot: {x: 1, y: 0}
---- !u!114 &141991823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11455062, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 141991821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2cf6a4604a9b1c488ead15354d556b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &141991824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11457258, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 141991821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.19607843}
-    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0.78431374}
-    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 141991825}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 141991823}
-        m_MethodName: Open
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: https://www.assetstore.unity3d.com/#!/content/72356
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
---- !u!114 &141991825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11417542, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 141991821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 9674de981b92a37429713c21f4b149ff, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
---- !u!222 &141991826
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 22230118, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 141991821}
---- !u!1 &150801358
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 150801360}
-  - component: {fileID: 150801359}
-  m_Layer: 0
-  m_Name: LeanSwipeDirection8
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &150801359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 150801358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 635837ba87bcedb4ea0db4559373a50f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InfoText: {fileID: 164554007}
---- !u!4 &150801360
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 150801358}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &164554005
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 164554006}
   - component: {fileID: 164554009}
@@ -312,7 +134,7 @@ GameObject:
 --- !u!224 &164554006
 RectTransform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 164554005}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -330,7 +152,7 @@ RectTransform:
 --- !u!114 &164554007
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 164554005}
   m_Enabled: 1
@@ -359,11 +181,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Swipe a finger!
 --- !u!114 &164554008
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 164554005}
   m_Enabled: 1
@@ -377,15 +199,16 @@ MonoBehaviour:
 --- !u!222 &164554009
 CanvasRenderer:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 164554005}
+  m_CullTransparentMesh: 0
 --- !u!1 &329014421
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 329014422}
   - component: {fileID: 329014423}
@@ -399,7 +222,7 @@ GameObject:
 --- !u!4 &329014422
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 329014421}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -412,7 +235,7 @@ Transform:
 --- !u!114 &329014423
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 329014421}
   m_Enabled: 1
@@ -420,11 +243,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IgnoreGuiFingers: 0
+  IgnoreStartedOverGui: 0
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
   CheckAngle: 1
   Angle: 90
   AngleThreshold: 45
-  OnFingerSwipe:
+  Clamp: 0
+  Multiplier: 1
+  OnSwipe:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 164554007}
@@ -435,22 +262,27 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: You Swiped Right
+          m_StringArgument: Right
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: Lean.Touch.LeanFingerSwipe+FingerEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  OnSwipeDelta:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &360243817
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 360243818}
   - component: {fileID: 360243819}
   m_Layer: 0
-  m_Name: Down Right
+  m_Name: Down & Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -459,7 +291,7 @@ GameObject:
 --- !u!4 &360243818
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 360243817}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -472,7 +304,7 @@ Transform:
 --- !u!114 &360243819
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 360243817}
   m_Enabled: 1
@@ -480,11 +312,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IgnoreGuiFingers: 0
+  IgnoreStartedOverGui: 0
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
   CheckAngle: 1
   Angle: 135
   AngleThreshold: 45
-  OnFingerSwipe:
+  Clamp: 0
+  Multiplier: 1
+  OnSwipe:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 164554007}
@@ -495,17 +331,22 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: You Swiped Down & Right
+          m_StringArgument: Down & Right
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: Lean.Touch.LeanFingerSwipe+FingerEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  OnSwipeDelta:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &370697361
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 370697366}
   - component: {fileID: 370697365}
@@ -523,34 +364,38 @@ GameObject:
 --- !u!81 &370697362
 AudioListener:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 370697361}
   m_Enabled: 1
 --- !u!124 &370697363
 Behaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 370697361}
   m_Enabled: 1
 --- !u!92 &370697364
 Behaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 370697361}
   m_Enabled: 1
 --- !u!20 &370697365
 Camera:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 370697361}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
+  m_projectionMatrixMode: 1
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -572,6 +417,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -579,7 +425,7 @@ Camera:
 --- !u!4 &370697366
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 370697361}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -592,7 +438,7 @@ Transform:
 --- !u!45 &370697367
 Skybox:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 370697361}
   m_Enabled: 1
@@ -600,9 +446,9 @@ Skybox:
 --- !u!1 &538301999
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 538302000}
   - component: {fileID: 538302001}
@@ -616,7 +462,7 @@ GameObject:
 --- !u!4 &538302000
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 538301999}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -629,7 +475,7 @@ Transform:
 --- !u!114 &538302001
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 538301999}
   m_Enabled: 1
@@ -637,11 +483,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IgnoreGuiFingers: 0
+  IgnoreStartedOverGui: 0
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
   CheckAngle: 1
   Angle: 270
   AngleThreshold: 45
-  OnFingerSwipe:
+  Clamp: 0
+  Multiplier: 1
+  OnSwipe:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 164554007}
@@ -652,17 +502,22 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: You Swiped Left
+          m_StringArgument: Left
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: Lean.Touch.LeanFingerSwipe+FingerEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  OnSwipeDelta:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &841162071
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 841162072}
   - component: {fileID: 841162073}
@@ -676,7 +531,7 @@ GameObject:
 --- !u!4 &841162072
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 841162071}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -689,7 +544,7 @@ Transform:
 --- !u!114 &841162073
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 841162071}
   m_Enabled: 1
@@ -697,11 +552,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IgnoreGuiFingers: 0
+  IgnoreStartedOverGui: 0
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
   CheckAngle: 1
   Angle: 180
   AngleThreshold: 45
-  OnFingerSwipe:
+  Clamp: 0
+  Multiplier: 1
+  OnSwipe:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 164554007}
@@ -712,89 +571,111 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: You Swiped Down
+          m_StringArgument: Down
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: Lean.Touch.LeanFingerSwipe+FingerEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!1 &920545956
+  OnSwipeDelta:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!1 &927658601
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 173658, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
+  m_CorrespondingSourceObject: {fileID: 156106, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
-  - component: {fileID: 995560803}
-  - component: {fileID: 920545959}
-  - component: {fileID: 920545958}
-  - component: {fileID: 920545957}
+  - component: {fileID: 927658602}
+  - component: {fileID: 927658605}
+  - component: {fileID: 927658604}
+  - component: {fileID: 927658603}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Footer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &920545957
+--- !u!224 &927658602
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 22410238, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  m_GameObject: {fileID: 927658601}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 995560803}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 10}
+  m_SizeDelta: {x: -20, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &927658603
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11430394, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+  m_CorrespondingSourceObject: {fileID: 11494288, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
     type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 920545956}
+  m_GameObject: {fileID: 927658601}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!114 &920545958
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.09803922}
+  m_EffectDistance: {x: 1.5, y: 1.5}
+  m_UseGraphicAlpha: 1
+--- !u!114 &927658604
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11414428, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+  m_CorrespondingSourceObject: {fileID: 11448614, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
     type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 920545956}
+  m_GameObject: {fileID: 927658601}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1024, y: 768}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
---- !u!223 &920545959
-Canvas:
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: cee533bdaf5c01a4091b972ae1bbb654, type: 3}
+    m_FontSize: 20
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 7
+    m_AlignByGeometry: 0
+    m_RichText: 0
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 1
+    m_LineSpacing: 0.75
+  m_Text: swipe = output direction
+--- !u!222 &927658605
+CanvasRenderer:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 22325512, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+  m_CorrespondingSourceObject: {fileID: 22245010, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
     type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 920545956}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
+  m_GameObject: {fileID: 927658601}
+  m_CullTransparentMesh: 0
 --- !u!1001 &995560802
 Prefab:
   m_ObjectHideFlags: 0
@@ -804,11 +685,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 22438504, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 320
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22438504, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 240
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22438504, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
       propertyPath: m_LocalPosition.z
@@ -876,46 +757,48 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11438438, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
       propertyPath: m_Text
-      value: this shows how you can use multiple LeanSwipes to detect swipes in 8
-        different directions
+      value: This shows you how the <color=#0FF>LeanFingerSwipe</color> component
+        can be configured to require specific angles, allowing you to detect between
+        8 different directions, and cause them to trigger <color=#0FF>Text.text</color>
+        to change.
       objectReference: {fileID: 0}
     - target: {fileID: 11448614, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
       propertyPath: m_Text
       value: swipe = output direction
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
-  m_RootGameObject: {fileID: 920545956}
-  m_IsPrefabParent: 0
+  m_SourcePrefab: {fileID: 100100000, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
+  m_RootGameObject: {fileID: 1384783073}
+  m_IsPrefabAsset: 0
 --- !u!224 &995560803
 RectTransform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 22438504, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+  m_CorrespondingSourceObject: {fileID: 22438504, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
     type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 920545956}
+  m_GameObject: {fileID: 1384783073}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 320, y: 240, z: 0}
-  m_LocalScale: {x: 0.625, y: 0.625, z: 0.625}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 2137224616}
-  - {fileID: 1447158830}
-  - {fileID: 141991822}
+  - {fileID: 1309924207}
+  - {fileID: 927658602}
+  - {fileID: 1735929224}
   - {fileID: 164554006}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 320, y: 240}
-  m_SizeDelta: {x: 1024, y: 768}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &1219690646
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1219690647}
   - component: {fileID: 1219690648}
@@ -929,7 +812,7 @@ GameObject:
 --- !u!4 &1219690647
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1219690646}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -942,7 +825,7 @@ Transform:
 --- !u!114 &1219690648
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1219690646}
   m_Enabled: 1
@@ -950,11 +833,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IgnoreGuiFingers: 0
+  IgnoreStartedOverGui: 0
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
   CheckAngle: 1
   Angle: 0
   AngleThreshold: 45
-  OnFingerSwipe:
+  Clamp: 0
+  Multiplier: 1
+  OnSwipe:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 164554007}
@@ -965,55 +852,61 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: You Swiped Up
+          m_StringArgument: Up
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: Lean.Touch.LeanFingerSwipe+FingerEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!1 &1447158829
+  OnSwipeDelta:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!1 &1309924206
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 156106, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
+  m_CorrespondingSourceObject: {fileID: 157632, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
-  - component: {fileID: 1447158830}
-  - component: {fileID: 1447158833}
-  - component: {fileID: 1447158832}
-  - component: {fileID: 1447158831}
+  - component: {fileID: 1309924207}
+  - component: {fileID: 1309924210}
+  - component: {fileID: 1309924209}
+  - component: {fileID: 1309924208}
   m_Layer: 5
-  m_Name: Footer
+  m_Name: Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1447158830
+--- !u!224 &1309924207
 RectTransform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 22410238, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+  m_CorrespondingSourceObject: {fileID: 22480264, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
     type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 1447158829}
+  m_GameObject: {fileID: 1309924206}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -374, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 995560803}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 10}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -10}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1447158831
+--- !u!114 &1309924208
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11494288, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+  m_CorrespondingSourceObject: {fileID: 11423346, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
     type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 1447158829}
+  m_GameObject: {fileID: 1309924206}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
@@ -1022,13 +915,13 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.09803922}
   m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
---- !u!114 &1447158832
+--- !u!114 &1309924209
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11448614, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+  m_CorrespondingSourceObject: {fileID: 11438438, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
     type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 1447158829}
+  m_GameObject: {fileID: 1309924206}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
@@ -1049,31 +942,113 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 7
+    m_Alignment: 1
     m_AlignByGeometry: 0
-    m_RichText: 0
+    m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: swipe = output direction
---- !u!222 &1447158833
+  m_Text: This shows you how the <color=#0FF>LeanFingerSwipe</color> component can
+    be configured to require specific angles, allowing you to detect between 8 different
+    directions, and cause them to trigger <color=#0FF>Text.text</color> to change.
+--- !u!222 &1309924210
 CanvasRenderer:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 22245010, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+  m_CorrespondingSourceObject: {fileID: 22281582, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
     type: 2}
   m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 1447158829}
+  m_GameObject: {fileID: 1309924206}
+  m_CullTransparentMesh: 0
+--- !u!1 &1384783073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 173658, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 995560803}
+  - component: {fileID: 1384783076}
+  - component: {fileID: 1384783075}
+  - component: {fileID: 1384783074}
+  m_Layer: 5
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1384783074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 11430394, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  m_GameObject: {fileID: 1384783073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1384783075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 11414428, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  m_GameObject: {fileID: 1384783073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1024, y: 768}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0.5
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+--- !u!223 &1384783076
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 22325512, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  m_GameObject: {fileID: 1384783073}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &1649434670
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1649434671}
   - component: {fileID: 1649434672}
   m_Layer: 0
-  m_Name: Down Left
+  m_Name: Down & Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1082,7 +1057,7 @@ GameObject:
 --- !u!4 &1649434671
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1649434670}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1095,7 +1070,7 @@ Transform:
 --- !u!114 &1649434672
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1649434670}
   m_Enabled: 1
@@ -1103,11 +1078,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IgnoreGuiFingers: 0
+  IgnoreStartedOverGui: 0
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
   CheckAngle: 1
   Angle: 225
   AngleThreshold: 45
-  OnFingerSwipe:
+  Clamp: 0
+  Multiplier: 1
+  OnSwipe:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 164554007}
@@ -1118,17 +1097,22 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: You Swiped Down & Left
+          m_StringArgument: Down & Left
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: Lean.Touch.LeanFingerSwipe+FingerEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  OnSwipeDelta:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &1650081524
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1650081526}
   - component: {fileID: 1650081525}
@@ -1142,7 +1126,7 @@ GameObject:
 --- !u!114 &1650081525
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1650081524}
   m_Enabled: 1
@@ -1166,7 +1150,7 @@ MonoBehaviour:
 --- !u!4 &1650081526
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1650081524}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1179,9 +1163,9 @@ Transform:
 --- !u!1 &1684174759
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1684174761}
   m_Layer: 0
@@ -1194,7 +1178,7 @@ GameObject:
 --- !u!4 &1684174761
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1684174759}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1210,14 +1194,159 @@ Transform:
   - {fileID: 538302000}
   - {fileID: 1915491311}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1735929223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 109382, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1735929224}
+  - component: {fileID: 1735929228}
+  - component: {fileID: 1735929227}
+  - component: {fileID: 1735929226}
+  - component: {fileID: 1735929225}
+  m_Layer: 5
+  m_Name: Logo+
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1735929224
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 22498348, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  m_GameObject: {fileID: 1735929223}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
+  m_Children: []
+  m_Father: {fileID: 995560803}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -60, y: 45}
+  m_SizeDelta: {x: 200, y: 112}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1735929225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 11455062, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  m_GameObject: {fileID: 1735929223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2cf6a4604a9b1c488ead15354d556b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseScale: {x: 0.75, y: 0.75, z: 1}
+  Size: 1
+  PulseInterval: 10
+  PulseSize: 0.2
+  Dampening: 5
+--- !u!114 &1735929226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 11457258, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  m_GameObject: {fileID: 1735929223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.19607843}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0.78431374}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1735929227}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1735929225}
+        m_MethodName: Open
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: http://u3d.as/AV2
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &1735929227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 11417542, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  m_GameObject: {fileID: 1735929223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 9674de981b92a37429713c21f4b149ff, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1735929228
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 22230118, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 995560802}
+  m_GameObject: {fileID: 1735929223}
+  m_CullTransparentMesh: 0
 --- !u!1 &1785649532
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1785649536}
   - component: {fileID: 1785649535}
@@ -1233,7 +1362,7 @@ GameObject:
 --- !u!114 &1785649533
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1785649532}
   m_Enabled: 1
@@ -1245,7 +1374,7 @@ MonoBehaviour:
 --- !u!114 &1785649534
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1785649532}
   m_Enabled: 1
@@ -1263,7 +1392,7 @@ MonoBehaviour:
 --- !u!114 &1785649535
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1785649532}
   m_Enabled: 1
@@ -1277,7 +1406,7 @@ MonoBehaviour:
 --- !u!4 &1785649536
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1785649532}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1290,14 +1419,14 @@ Transform:
 --- !u!1 &1915491310
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1915491311}
   - component: {fileID: 1915491312}
   m_Layer: 0
-  m_Name: Up Left
+  m_Name: Up & Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1306,7 +1435,7 @@ GameObject:
 --- !u!4 &1915491311
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1915491310}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1319,7 +1448,7 @@ Transform:
 --- !u!114 &1915491312
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1915491310}
   m_Enabled: 1
@@ -1327,11 +1456,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IgnoreGuiFingers: 0
+  IgnoreStartedOverGui: 0
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
   CheckAngle: 1
   Angle: 315
   AngleThreshold: 45
-  OnFingerSwipe:
+  Clamp: 0
+  Multiplier: 1
+  OnSwipe:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 164554007}
@@ -1342,22 +1475,27 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: You Swiped Up & Left
+          m_StringArgument: Up & Left
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: Lean.Touch.LeanFingerSwipe+FingerEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  OnSwipeDelta:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &2009326014
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2009326015}
   - component: {fileID: 2009326016}
   m_Layer: 0
-  m_Name: Up Right
+  m_Name: Up & Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1366,7 +1504,7 @@ GameObject:
 --- !u!4 &2009326015
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2009326014}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1379,7 +1517,7 @@ Transform:
 --- !u!114 &2009326016
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2009326014}
   m_Enabled: 1
@@ -1387,11 +1525,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IgnoreGuiFingers: 0
+  IgnoreStartedOverGui: 0
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
   CheckAngle: 1
   Angle: 45
   AngleThreshold: 45
-  OnFingerSwipe:
+  Clamp: 0
+  Multiplier: 1
+  OnSwipe:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 164554007}
@@ -1402,102 +1544,13 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: You Swiped Up & Right
+          m_StringArgument: Up & Right
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: Lean.Touch.LeanFingerSwipe+FingerEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!1 &2137224615
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 157632, guid: e2a63f1f28575a549abdfbc4eb9b28d2, type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2137224616}
-  - component: {fileID: 2137224619}
-  - component: {fileID: 2137224618}
-  - component: {fileID: 2137224617}
-  m_Layer: 5
-  m_Name: Header
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2137224616
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 22480264, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 2137224615}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 374, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 995560803}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: -20, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2137224617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11423346, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 2137224615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.09803922}
-  m_EffectDistance: {x: 1.5, y: 1.5}
-  m_UseGraphicAlpha: 1
---- !u!114 &2137224618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11438438, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 2137224615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
+  OnSwipeDelta:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: cee533bdaf5c01a4091b972ae1bbb654, type: 3}
-    m_FontSize: 20
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 1
-    m_AlignByGeometry: 0
-    m_RichText: 0
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 1
-    m_LineSpacing: 0.75
-  m_Text: this shows how you can use multiple LeanSwipes to detect swipes in 8 different
-    directions
---- !u!222 &2137224619
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 22281582, guid: e2a63f1f28575a549abdfbc4eb9b28d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 995560802}
-  m_GameObject: {fileID: 2137224615}
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null

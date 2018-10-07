@@ -2,11 +2,14 @@ using UnityEngine;
 
 namespace Lean.Touch
 {
-	// This script allows you to transform the current GameObject
+	// This script allows you to translate the current GameObject relative to the camera
 	public class LeanTranslate : MonoBehaviour
 	{
 		[Tooltip("Ignore fingers with StartedOverGui?")]
-		public bool IgnoreGuiFingers = true;
+		public bool IgnoreStartedOverGui = true;
+
+		[Tooltip("Ignore fingers with IsOverGui?")]
+		public bool IgnoreIsOverGui;
 
 		[Tooltip("Ignore fingers if the finger count doesn't match? (0 = any)")]
 		public int RequiredFingerCount;
@@ -34,20 +37,38 @@ namespace Lean.Touch
 
 		protected virtual void Update()
 		{
-			// If we require a selectable and it isn't selected, cancel translation
-			if (RequiredSelectable != null && RequiredSelectable.IsSelected == false)
-			{
-				return;
-			}
-
 			// Get the fingers we want to use
-			var fingers = LeanTouch.GetFingers(IgnoreGuiFingers, RequiredFingerCount, RequiredSelectable);
+			var fingers = LeanSelectable.GetFingers(IgnoreStartedOverGui, IgnoreIsOverGui, RequiredFingerCount, RequiredSelectable);
 
 			// Calculate the screenDelta value based on these fingers
 			var screenDelta = LeanGesture.GetScreenDelta(fingers);
 
 			// Perform the translation
-			Translate(screenDelta);
+			if (transform is RectTransform)
+			{
+				TranslateUI(screenDelta);
+			}
+			else
+			{
+				Translate(screenDelta);
+			}
+		}
+
+		protected virtual void TranslateUI(Vector2 screenDelta)
+		{
+			// Screen position of the transform
+			var screenPoint = RectTransformUtility.WorldToScreenPoint(Camera, transform.position);
+
+			// Add the deltaPosition
+			screenPoint += screenDelta;
+
+			// Convert back to world space
+			var worldPoint = default(Vector3);
+
+			if (RectTransformUtility.ScreenPointToWorldPointInRectangle(transform.parent as RectTransform, screenPoint, Camera, out worldPoint) == true)
+			{
+				transform.position = worldPoint;
+			}
 		}
 
 		protected virtual void Translate(Vector2 screenDelta)
@@ -58,13 +79,17 @@ namespace Lean.Touch
 			if (camera != null)
 			{
 				// Screen position of the transform
-				var screenPosition = camera.WorldToScreenPoint(transform.position);
+				var screenPoint = camera.WorldToScreenPoint(transform.position);
 
 				// Add the deltaPosition
-				screenPosition += (Vector3)screenDelta;
+				screenPoint += (Vector3)screenDelta;
 
 				// Convert back to world space
-				transform.position = camera.ScreenToWorldPoint(screenPosition);
+				transform.position = camera.ScreenToWorldPoint(screenPoint);
+			}
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", this);
 			}
 		}
 	}

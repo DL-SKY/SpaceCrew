@@ -11,7 +11,7 @@ public class MainMenuScreenController : ScreenController
     private void OnEnable()
     {
         if (IsInit)
-            StartCoroutine(Show());
+            StartCoroutine(Initializing());//StartCoroutine(Show());
     }
     #endregion
 
@@ -29,6 +29,11 @@ public class MainMenuScreenController : ScreenController
     public void OnClickPlay()
     {
         StartCoroutine(StartPlay());
+    }
+
+    public void OnClickTest()
+    {
+        MainGameManager.Instance.LoadScene("Test");
     }
     #endregion
 

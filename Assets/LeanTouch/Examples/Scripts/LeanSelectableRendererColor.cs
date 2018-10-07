@@ -25,11 +25,11 @@ namespace Lean.Touch
 #if UNITY_EDITOR
 		protected virtual void Reset()
 		{
-			Start();
+			Awake();
 		}
 #endif
 
-		protected virtual void Start()
+		protected virtual void Awake()
 		{
 			if (cachedRenderer == null) cachedRenderer = GetComponent<Renderer>();
 

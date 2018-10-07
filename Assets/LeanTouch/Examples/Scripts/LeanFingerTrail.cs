@@ -22,13 +22,19 @@ namespace Lean.Touch
 		}
 
 		[Tooltip("Ignore fingers with StartedOverGui?")]
-		public bool IgnoreGuiFingers = true;
+		public bool IgnoreStartedOverGui = true;
+
+		[Tooltip("Ignore fingers with IsOverGui?")]
+		public bool IgnoreIsOverGui;
+
+		[Tooltip("Must RequiredSelectable.IsSelected be true?")]
+		public LeanSelectable RequiredSelectable;
 
 		[Tooltip("The line prefab")]
 		public LineRenderer LinePrefab;
 
-		[Tooltip("The distance from the camera the line points will be spawned in world space")]
-		public float Distance = 1.0f;
+		[Tooltip("The conversion method used to find a world point from a screen point")]
+		public LeanScreenDepth ScreenDepth;
 
 		[Tooltip("The maximum amount of fingers used")]
 		public int MaxLines;
@@ -39,20 +45,33 @@ namespace Lean.Touch
 		// This stores all the links
 		private List<Link> links = new List<Link>();
 
+#if UNITY_EDITOR
+		protected virtual void Reset()
+		{
+			Start();
+		}
+#endif
+
+		protected virtual void Start()
+		{
+			if (RequiredSelectable == null)
+			{
+				RequiredSelectable = GetComponent<LeanSelectable>();
+			}
+		}
+
 		protected virtual void OnEnable()
 		{
 			// Hook events
-			LeanTouch.OnFingerDown += FingerDown;
-			LeanTouch.OnFingerSet  += FingerSet;
-			LeanTouch.OnFingerUp   += FingerUp;
+			LeanTouch.OnFingerSet += FingerSet;
+			LeanTouch.OnFingerUp  += FingerUp;
 		}
 
 		protected virtual void OnDisable()
 		{
 			// Unhook events
-			LeanTouch.OnFingerDown -= FingerDown;
-			LeanTouch.OnFingerSet  -= FingerSet;
-			LeanTouch.OnFingerUp   -= FingerUp;
+			LeanTouch.OnFingerSet -= FingerSet;
+			LeanTouch.OnFingerUp  -= FingerUp;
 		}
 
 		// Override the WritePositions method from LeanDragLine
@@ -70,39 +89,39 @@ namespace Lean.Touch
 				var snapshot = finger.Snapshots[i];
 
 				// Get the world postion of this snapshot
-				var position = snapshot.GetWorldPosition(Distance, Camera);
+				var worldPoint = ScreenDepth.Convert(snapshot.ScreenPosition, Camera, gameObject);
 
 				// Write position
-				line.SetPosition(i, position);
+				line.SetPosition(i, worldPoint);
 			}
 		}
 
-		private void FingerDown(LeanFinger finger)
+		private void FingerSet(LeanFinger finger)
 		{
+			// ignore?
 			if (MaxLines > 0 && links.Count >= MaxLines)
 			{
 				return;
 			}
 
-			// Make new link
-			var link = new Link();
+			if (IgnoreStartedOverGui == true && finger.StartedOverGui == true)
+			{
+				return;
+			}
 
-			// Assign this finger to this link
-			link.Finger = finger;
+			if (IgnoreIsOverGui == true && finger.IsOverGui == true)
+			{
+				return;
+			}
 
-			// Create LineRenderer instance for this link
-			link.Line = Instantiate(LinePrefab);
+			if (RequiredSelectable != null && RequiredSelectable.IsSelected == false)
+			{
+				return;
+			}
 
-			// Add new link to list
-			links.Add(link);
-		}
+			// Get link for this finger and write positions
+			var link = FindLink(finger, true);
 
-		private void FingerSet(LeanFinger finger)
-		{
-			// Try and find the link for this finger
-			var link = FindLink(finger);
-
-			// Link exists?
 			if (link != null && link.Line != null)
 			{
 				WritePositions(link.Line, link.Finger);
@@ -111,19 +130,15 @@ namespace Lean.Touch
 
 		private void FingerUp(LeanFinger finger)
 		{
-			// Try and find the link for this finger
-			var link = FindLink(finger);
+			// Find link for this finger, and clear it
+			var link = FindLink(finger, false);
 
-			// Link exists?
 			if (link != null)
 			{
-				// Remove link from list
 				links.Remove(link);
 
-				// Call link up event
 				LinkFingerUp(link);
 
-				// Destroy line GameObject
 				if (link.Line != null)
 				{
 					Destroy(link.Line.gameObject);
@@ -136,8 +151,9 @@ namespace Lean.Touch
 		}
 
 		// Searches through all links for the one associated with the input finger
-		private Link FindLink(LeanFinger finger)
+		private Link FindLink(LeanFinger finger, bool createIfNull)
 		{
+			// Find existing link?
 			for (var i = 0; i < links.Count; i++)
 			{
 				var link = links[i];
@@ -146,6 +162,19 @@ namespace Lean.Touch
 				{
 					return link;
 				}
+			}
+
+			// Make new link?
+			if (createIfNull == true)
+			{
+				var link = new Link();
+
+				link.Finger = finger;
+				link.Line   = Instantiate(LinePrefab);
+
+				links.Add(link);
+
+				return link;
 			}
 
 			return null;

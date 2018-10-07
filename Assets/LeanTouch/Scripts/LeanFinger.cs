@@ -27,6 +27,12 @@ namespace Lean.Touch
 		// This tells you if the finger was just swiped
 		public bool Swipe;
 
+		// This tells you the Pressure value last frame
+		public float LastPressure;
+
+		// This tells you the current pressure of this finger (NOTE: only some devices support this)
+		public float Pressure;
+
 		// This tells you the screen position of the touch on the frame it was first set
 		public Vector2 StartScreenPosition;
 
@@ -60,7 +66,7 @@ namespace Lean.Touch
 				{
 					return Age - Snapshots[0].Age;
 				}
-				
+
 				return 0.0f;
 			}
 		}
@@ -98,17 +104,17 @@ namespace Lean.Touch
 			get
 			{
 				var snapshotCount = Snapshots.Count;
-				
+
 				if (snapshotCount > 0)
 				{
 					var snapshot = Snapshots[snapshotCount - 1];
-					
+
 					if (snapshot != null)
 					{
 						return ScreenPosition - snapshot.ScreenPosition;
 					}
 				}
-				
+
 				return Vector2.zero;
 			}
 		}
@@ -165,6 +171,10 @@ namespace Lean.Touch
 			{
 				return camera.ScreenPointToRay(ScreenPosition);
 			}
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.");
+			}
 
 			return default(Ray);
 		}
@@ -179,7 +189,11 @@ namespace Lean.Touch
 			{
 				return camera.ScreenPointToRay(StartScreenPosition);
 			}
-			
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.");
+			}
+
 			return default(Ray);
 		}
 
@@ -213,10 +227,14 @@ namespace Lean.Touch
 			{
 				var screenPosition = GetSnapshotScreenPosition(targetAge);
 				var point          = new Vector3(screenPosition.x, screenPosition.y, distance);
-				
+
 				return camera.ScreenToWorldPoint(point);
 			}
-			
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.");
+			}
+
 			return default(Vector3);
 		}
 
@@ -253,12 +271,12 @@ namespace Lean.Touch
 			var a = GetLastRadians(lastReferencePoint);
 			var b = GetRadians(referencePoint);
 			var d = Mathf.Repeat(a - b, Mathf.PI * 2.0f);
-			
+
 			if (d > Mathf.PI)
 			{
 				d -= Mathf.PI * 2.0f;
 			}
-			
+
 			return d;
 		}
 
@@ -294,6 +312,17 @@ namespace Lean.Touch
 			return GetLastScreenDistance(point) * LeanTouch.ScalingFactor;
 		}
 
+		// This will return the distance between the start finger and the reference point
+		public float GetStartScreenDistance(Vector2 point)
+		{
+			return Vector2.Distance(StartScreenPosition, point);
+		}
+
+		public float GetStartScaledDistance(Vector2 point)
+		{
+			return GetStartScreenDistance(point) * LeanTouch.ScalingFactor;
+		}
+
 		// This will return the start world position of this finger based on the distance from the camera
 		public Vector3 GetStartWorldPosition(float distance, Camera camera = null)
 		{
@@ -303,10 +332,14 @@ namespace Lean.Touch
 			if (camera != null)
 			{
 				var point = new Vector3(StartScreenPosition.x, StartScreenPosition.y, distance);
-				
+
 				return camera.ScreenToWorldPoint(point);
 			}
-			
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.");
+			}
+
 			return default(Vector3);
 		}
 
@@ -319,10 +352,14 @@ namespace Lean.Touch
 			if (camera != null)
 			{
 				var point = new Vector3(LastScreenPosition.x, LastScreenPosition.y, distance);
-				
+
 				return camera.ScreenToWorldPoint(point);
 			}
-			
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.");
+			}
+
 			return default(Vector3);
 		}
 
@@ -335,10 +372,14 @@ namespace Lean.Touch
 			if (camera != null)
 			{
 				var point = new Vector3(ScreenPosition.x, ScreenPosition.y, distance);
-				
+
 				return camera.ScreenToWorldPoint(point);
 			}
-			
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.");
+			}
+
 			return default(Vector3);
 		}
 
@@ -357,7 +398,11 @@ namespace Lean.Touch
 			{
 				return GetWorldPosition(distance, camera) - GetLastWorldPosition(lastDistance, camera);
 			}
-			
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.");
+			}
+
 			return default(Vector3);
 		}
 
@@ -371,14 +416,14 @@ namespace Lean.Touch
 				{
 					LeanSnapshot.InactiveSnapshots.Add(Snapshots[i]);
 				}
-				
+
 				Snapshots.RemoveRange(0, count);
 			}
 			// Clear all?
 			else if (count < 0)
 			{
 				LeanSnapshot.InactiveSnapshots.AddRange(Snapshots);
-				
+
 				Snapshots.Clear();
 			}
 		}

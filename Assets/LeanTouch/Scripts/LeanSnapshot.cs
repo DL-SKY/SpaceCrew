@@ -24,6 +24,10 @@ namespace Lean.Touch
 				
 				return camera.ScreenToWorldPoint(point);
 			}
+			else
+			{
+				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.");
+			}
 			
 			return default(Vector3);
 		}

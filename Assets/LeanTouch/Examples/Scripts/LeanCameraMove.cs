@@ -9,33 +9,55 @@ namespace Lean.Touch
 		public Camera Camera;
 
 		[Tooltip("Ignore fingers with StartedOverGui?")]
-		public bool IgnoreGuiFingers = true;
+		public bool IgnoreStartedOverGui = true;
+
+		[Tooltip("Ignore fingers with IsOverGui?")]
+		public bool IgnoreIsOverGui;
 
 		[Tooltip("Ignore fingers if the finger count doesn't match? (0 = any)")]
 		public int RequiredFingerCount;
 
-		[Tooltip("The distance from the camera the world drag delta will be calculated from (this only matters for perspective cameras)")]
-		public float Distance = 1.0f;
-
 		[Tooltip("The sensitivity of the movement, use -1 to invert")]
 		public float Sensitivity = 1.0f;
 
+		public LeanScreenDepth ScreenDepth;
+
+		public virtual void SnapToSelection()
+		{
+			var center = default(Vector3);
+			var count  = 0;
+
+			for (var i = 0; i < LeanSelectable.Instances.Count; i++)
+			{
+				var selectable = LeanSelectable.Instances[i];
+
+				if (selectable.IsSelected == true)
+				{
+					center += selectable.transform.position;
+					count  += 1;
+				}
+			}
+
+			if (count > 0)
+			{
+				transform.position = center / count;
+			}
+		}
+
 		protected virtual void LateUpdate()
 		{
-			// Make sure the camera exists
-			var camera = LeanTouch.GetCamera(Camera, gameObject);
+			// Get the fingers we want to use
+			var fingers = LeanTouch.GetFingers(IgnoreStartedOverGui, IgnoreIsOverGui, RequiredFingerCount);
 
-			if (camera != null)
-			{
-				// Get the fingers we want to use
-				var fingers = LeanTouch.GetFingers(IgnoreGuiFingers, RequiredFingerCount);
+			// Get the last and current screen point of all fingers
+			var lastScreenPoint = LeanGesture.GetLastScreenCenter(fingers);
+			var screenPoint     = LeanGesture.GetScreenCenter(fingers);
 
-				// Get the world delta of all the fingers
-				var worldDelta = LeanGesture.GetWorldDelta(fingers, Distance, camera);
+			// Get the world delta of them after conversion
+			var worldDelta = ScreenDepth.ConvertDelta(lastScreenPoint, screenPoint, Camera, gameObject);
 
-				// Pan the camera based on the world delta
-				transform.position -= worldDelta * Sensitivity;
-			}
+			// Pan the camera based on the world delta
+			transform.position -= worldDelta * Sensitivity;
 		}
 	}
 }

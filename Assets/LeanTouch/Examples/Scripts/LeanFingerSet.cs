@@ -6,16 +6,49 @@ namespace Lean.Touch
 	// This script calls the OnFingerSet event while a finger is touching the screen
 	public class LeanFingerSet : MonoBehaviour
 	{
+		public enum DeltaCoordinatesType
+		{
+			Screen,
+			Scaled
+		}
+
 		// Event signature
 		[System.Serializable] public class LeanFingerEvent : UnityEvent<LeanFinger> {}
+		[System.Serializable] public class Vector2Event : UnityEvent<Vector2> {}
 
-		[Tooltip("If the finger is over the GUI, ignore it?")]
-		public bool IgnoreIfOverGui;
+		[Tooltip("Ignore fingers with StartedOverGui?")]
+		public bool IgnoreStartedOverGui = true;
 
-		[Tooltip("If the finger started over the GUI, ignore it?")]
-		public bool IgnoreIfStartedOverGui;
+		[Tooltip("Ignore fingers with IsOverGui?")]
+		public bool IgnoreIsOverGui;
 
-		public LeanFingerEvent OnFingerSet;
+		[Tooltip("If the finger didn't move, ignore it?")]
+		public bool IgnoreIfStatic;
+
+		[Tooltip("If RequiredSelectable.IsSelected is false, ignore?")]
+		public LeanSelectable RequiredSelectable;
+
+		[Tooltip("The coordinate space of the OnSetDelta values")]
+		public DeltaCoordinatesType DeltaCoordinates;
+
+		public LeanFingerEvent OnSet;
+
+		public Vector2Event OnSetDelta;
+
+#if UNITY_EDITOR
+		protected virtual void Reset()
+		{
+			Start();
+		}
+#endif
+
+		protected virtual void Start()
+		{
+			if (RequiredSelectable == null)
+			{
+				RequiredSelectable = GetComponent<LeanSelectable>();
+			}
+		}
 
 		protected virtual void OnEnable()
 		{
@@ -31,19 +64,46 @@ namespace Lean.Touch
 
 		private void FingerSet(LeanFinger finger)
 		{
+			// Get delta
+			var delta = finger.ScreenDelta;
+
 			// Ignore?
-			if (IgnoreIfOverGui == true && finger.IsOverGui == true)
+			if (IgnoreStartedOverGui == true && finger.StartedOverGui == true)
 			{
 				return;
 			}
 
-			if (IgnoreIfStartedOverGui == true && finger.StartedOverGui == true)
+			if (IgnoreIsOverGui == true && finger.IsOverGui == true)
 			{
 				return;
+			}
+
+			if (IgnoreIfStatic == true && finger.ScreenDelta.magnitude <= 0.0f)
+			{
+				return;
+			}
+
+			if (RequiredSelectable != null && RequiredSelectable.IsSelected == false)
+			{
+				return;
+			}
+
+			// Scale?
+			if (DeltaCoordinates == DeltaCoordinatesType.Scaled)
+			{
+				delta *= LeanTouch.ScalingFactor;
 			}
 
 			// Call event
-			OnFingerSet.Invoke(finger);
+			if (OnSet != null)
+			{
+				OnSet.Invoke(finger);
+			}
+
+			if (OnSetDelta != null)
+			{
+				OnSetDelta.Invoke(delta);
+			}
 		}
 	}
 }

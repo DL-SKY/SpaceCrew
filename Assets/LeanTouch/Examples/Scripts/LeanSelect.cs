@@ -1,10 +1,9 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
 namespace Lean.Touch
 {
-	// This script allows you to select LeanSelectable components
+	// This component allows you to select LeanSelectable components
 	public class LeanSelect : MonoBehaviour
 	{
 		public enum SelectType
@@ -29,31 +28,27 @@ namespace Lean.Touch
 			SelectAgain
 		}
 
+		public static List<LeanSelect> Instances = new List<LeanSelect>();
+
 		public SelectType SelectUsing;
 
-		[Tooltip("This stores the layers we want the raycast/overlap to hit (make sure this GameObject's layer is included!)")]
+		[Tooltip("The layers you want the raycast/overlap to hit")]
 		public LayerMask LayerMask = Physics.DefaultRaycastLayers;
 
 		[Tooltip("The camera used to calculate the ray (None = MainCamera)")]
 		public Camera Camera;
 
-		[Tooltip("How should the selected GameObject be searched for the LeanSelectable component?")]
-		public SearchType Search;
+		[Tooltip("The maximum number of selectables that can be selected at the same time (0 = Unlimited)")]
+		public int MaxSelectables;
 
-		[Tooltip("The currently selected LeanSelectables")]
-		public List<LeanSelectable> CurrentSelectables;
+		[Tooltip("How should the candidate GameObjects be searched for the LeanSelectable component?")]
+		public SearchType Search = SearchType.GetComponentInParent;
 
 		[Tooltip("If you select an already selected selectable, what should happen?")]
 		public ReselectType Reselect;
 
-		[Tooltip("Automatically deselect the CurrentSelectable if Select gets called with null?")]
+		[Tooltip("Automatically deselect everything if nothing was selected?")]
 		public bool AutoDeselect;
-
-		[Tooltip("Automatically deselect a LeanSelectable when the selecting finger goes up?")]
-		public bool DeselectOnUp;
-
-		[Tooltip("The maximum amount of selectables that can be selected at once (0 = Unlimited)")]
-		public int MaxSelectables;
 
 		// NOTE: This must be called from somewhere
 		public void SelectStartScreenPosition(LeanFinger finger)
@@ -90,6 +85,10 @@ namespace Lean.Touch
 							component = hit.collider;
 						}
 					}
+					else
+					{
+						Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", this);
+					}
 				}
 				break;
 
@@ -103,6 +102,10 @@ namespace Lean.Touch
 						var point = camera.ScreenToWorldPoint(screenPosition);
 
 						component = Physics2D.OverlapPoint(point, LayerMask);
+					}
+					else
+					{
+						Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", this);
 					}
 				}
 				break;
@@ -143,89 +146,6 @@ namespace Lean.Touch
 			Select(finger, selectable);
 		}
 
-		public LeanSelectable FindSelectable(LeanFinger finger)
-		{
-			for (var i = CurrentSelectables.Count - 1; i >= 0; i--)
-			{
-				var currentSelectable = CurrentSelectables[i];
-
-				if (currentSelectable.SelectingFinger == finger)
-				{
-					return currentSelectable;
-				}
-			}
-
-			return null;
-		}
-
-		public bool IsSelected(LeanSelectable selectable)
-		{
-			// Loop through all current selectables
-			for (var i = CurrentSelectables.Count - 1; i >= 0; i--)
-			{
-				var currentSelectable = CurrentSelectables[i];
-
-				if (currentSelectable == selectable)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		public void Select(LeanFinger finger, List<LeanSelectable> selectables)
-		{
-			var selectableCount = 0;
-
-			// Deselect missing selectables
-			if (CurrentSelectables != null)
-			{
-				for (var i = CurrentSelectables.Count - 1; i >= 0; i--)
-				{
-					var currentSelectable = CurrentSelectables[i];
-
-					if (currentSelectable != null)
-					{
-						if (selectables != null && selectables.Contains(currentSelectable) == false)
-						{
-							CurrentSelectables.RemoveAt(i);
-
-							currentSelectable.Deselect();
-						}
-					}
-				}
-			}
-
-			// Add new selectables
-			if (selectables != null)
-			{
-				for (var i = selectables.Count - 1; i >= 0; i--)
-				{
-					var selectable = selectables[i];
-
-					if (selectable != null)
-					{
-						if (CurrentSelectables == null || CurrentSelectables.Contains(selectable) == false)
-						{
-							Select(finger, selectable);
-						}
-
-						selectableCount += 1;
-					}
-				}
-			}
-
-			// Nothing was selected?
-			if (selectableCount == 0)
-			{
-				// Deselect?
-				if (AutoDeselect == true)
-				{
-					DeselectAll();
-				}
-			}
-		}
-
 		public void Select(LeanFinger finger, LeanSelectable selectable)
 		{
 			// Something was selected?
@@ -233,11 +153,11 @@ namespace Lean.Touch
 			{
 				if (selectable.HideWithFinger == true)
 				{
-					for (var i = CurrentSelectables.Count - 1; i >= 0; i--)
+					for (var i = LeanSelectable.Instances.Count - 1; i >= 0; i--)
 					{
-						var currentSelectable = CurrentSelectables[i];
+						var instance = LeanSelectable.Instances[i];
 
-						if (currentSelectable.HideWithFinger == true && currentSelectable.IsSelected == true)
+						if (instance.HideWithFinger == true && instance.IsSelected == true)
 						{
 							return;
 						}
@@ -245,26 +165,15 @@ namespace Lean.Touch
 				}
 
 				// Did we select a new LeanSelectable?
-				if (IsSelected(selectable) == false)
+				if (selectable.IsSelected == false)
 				{
 					// Deselect some if we have too many
 					if (MaxSelectables > 0)
 					{
-						var extras = CurrentSelectables.Count - MaxSelectables + 1;
-
-						for (var i = extras - 1; i >= 0; i--)
-						{
-							var currentSelectable = CurrentSelectables[i];
-
-							currentSelectable.Deselect();
-
-							CurrentSelectables.RemoveAt(i);
-						}
+						LeanSelectable.Cull(MaxSelectables - 1);
 					}
 
-					// Add to selection and select
-					CurrentSelectables.Add(selectable);
-
+					// Select
 					selectable.Select(finger);
 				}
 				// Did we reselect the current LeanSelectable?
@@ -275,24 +184,18 @@ namespace Lean.Touch
 						case ReselectType.Deselect:
 						{
 							selectable.Deselect();
-
-							CurrentSelectables.Remove(selectable);
 						}
 						break;
 
 						case ReselectType.DeselectAndSelect:
 						{
-							// Change current
 							selectable.Deselect();
-
-							// Call select event on current
 							selectable.Select(finger);
 						}
 						break;
 
 						case ReselectType.SelectAgain:
 						{
-							// Call select event on current
 							selectable.Select(finger);
 						}
 						break;
@@ -313,47 +216,22 @@ namespace Lean.Touch
 		[ContextMenu("Deselect All")]
 		public void DeselectAll()
 		{
-			// Loop through all current selectables and deselect if not null
-			if (CurrentSelectables != null)
-			{
-				for (var i = CurrentSelectables.Count - 1; i >= 0; i--)
-				{
-					var currentSelectable = CurrentSelectables[i];
-
-					if (currentSelectable != null)
-					{
-						currentSelectable.Deselect();
-					}
-				}
-
-				// Clear
-				CurrentSelectables.Clear();
-			}
+			LeanSelectable.DeselectAll();
 		}
 
-		protected virtual void Update()
+		protected virtual void OnEnable()
 		{
-			if (DeselectOnUp == true)
+			if (Instances.Count > 0)
 			{
-				if (CurrentSelectables != null)
-				{
-					for (var i = CurrentSelectables.Count - 1; i >= 0; i--)
-					{
-						var currentSelectable = CurrentSelectables[i];
-
-						if (currentSelectable != null)
-						{
-							// Selecting finger no longer down?
-							if (currentSelectable.SelectingFinger != null && currentSelectable.SelectingFinger.Set == false)
-							{
-								currentSelectable.Deselect();
-
-								CurrentSelectables.RemoveAt(i);
-							}
-						}
-					}
-				}
+				Debug.LogWarning("Your scene already contains a LeanSelect component, using more than once at once may cause selection issues", Instances[0]);
 			}
+
+			Instances.Add(this);
+		}
+
+		protected virtual void OnDisable()
+		{
+			Instances.Remove(this);
 		}
 	}
 }

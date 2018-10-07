@@ -25,9 +25,9 @@ namespace Lean.Touch
 		[Tooltip("Should the line originate from a target point?")]
 		public Transform Target;
 
-		public Vector3Vector3Event OnLineFingerUp;
+		public Vector3Vector3Event OnReleasedFromTo;
 
-		public Vector3Event OnLineFingerUpVelocity;
+		public Vector3Event OnReleasedTo;
 
 		protected override void LinkFingerUp(Link link)
 		{
@@ -35,14 +35,14 @@ namespace Lean.Touch
 			var start = GetStartPoint(link.Finger);
 			var end   = GetEndPoint(link.Finger, start);
 
-			if (OnLineFingerUp != null)
+			if (OnReleasedFromTo != null)
 			{
-				OnLineFingerUp.Invoke(start, end);
+				OnReleasedFromTo.Invoke(start, end);
 			}
 
-			if (OnLineFingerUpVelocity != null)
+			if (OnReleasedTo != null)
 			{
-				OnLineFingerUpVelocity.Invoke(end - start);
+				OnReleasedTo.Invoke(end);
 			}
 		}
 
@@ -84,46 +84,29 @@ namespace Lean.Touch
 				return Target.position;
 			}
 
-			// Make sure the camera exists
-			var camera = LeanTouch.GetCamera(Camera, gameObject);
-
-			if (camera != null)
-			{
-				// Get start and current world position of finger
-				return finger.GetStartWorldPosition(Distance, camera);
-			}
-
-			return default(Vector3);
+			// Convert
+			return ScreenDepth.Convert(finger.StartScreenPosition, Camera, gameObject);
 		}
 
 		private Vector3 GetEndPoint(LeanFinger finger, Vector3 start)
 		{
-			// Make sure the camera exists
-			var camera = LeanTouch.GetCamera(Camera, gameObject);
+			// Cauculate distance based on start position, because the Target point may override Distance
+			var end      = ScreenDepth.Convert(finger.ScreenPosition, Camera, gameObject);
+			var length   = Vector3.Distance(start, end);
 
-			if (camera != null)
+			// Limit the length?
+			if (LengthMin > 0.0f && length < LengthMin)
 			{
-				// Cauculate distance based on start position, because the Target point may override Distance
-				var distance = camera.WorldToScreenPoint(start).z;
-				var end      = finger.GetWorldPosition(distance, camera);
-				var length   = Vector3.Distance(start, end);
-
-				// Limit the length?
-				if (LengthMin > 0.0f && length < LengthMin)
-				{
-					length = LengthMin;
-				}
-
-				if (LengthMax > 0.0f && length > LengthMax)
-				{
-					length = LengthMax;
-				}
-
-				// Recalculate end
-				return start + Vector3.Normalize(end - start) * length;
+				length = LengthMin;
 			}
 
-			return default(Vector3);
+			if (LengthMax > 0.0f && length > LengthMax)
+			{
+				length = LengthMax;
+			}
+
+			// Recalculate end
+			return start + Vector3.Normalize(end - start) * length;
 		}
 	}
 }

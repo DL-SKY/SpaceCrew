@@ -9,13 +9,31 @@ namespace Lean.Touch
 		// Event signature
 		[System.Serializable] public class LeanFingerEvent : UnityEvent<LeanFinger> {}
 
-		[Tooltip("If the finger is over the GUI, ignore it?")]
-		public bool IgnoreIfOverGui;
+		[Tooltip("Ignore fingers with StartedOverGui?")]
+		public bool IgnoreStartedOverGui = true;
 
-		[Tooltip("If the finger started over the GUI, ignore it?")]
-		public bool IgnoreIfStartedOverGui;
+		[Tooltip("Ignore fingers with IsOverGui?")]
+		public bool IgnoreIsOverGui;
 
-		public LeanFingerEvent OnFingerUp;
+		[Tooltip("Do nothing if this LeanSelectable isn't selected?")]
+		public LeanSelectable RequiredSelectable;
+
+		public LeanFingerEvent OnUp;
+
+#if UNITY_EDITOR
+		protected virtual void Reset()
+		{
+			Start();
+		}
+#endif
+
+		protected virtual void Start()
+		{
+			if (RequiredSelectable == null)
+			{
+				RequiredSelectable = GetComponent<LeanSelectable>();
+			}
+		}
 
 		protected virtual void OnEnable()
 		{
@@ -32,18 +50,26 @@ namespace Lean.Touch
 		private void FingerUp(LeanFinger finger)
 		{
 			// Ignore?
-			if (IgnoreIfOverGui == true && finger.IsOverGui == true)
+			if (IgnoreStartedOverGui == true && finger.StartedOverGui == true)
 			{
 				return;
 			}
 
-			if (IgnoreIfStartedOverGui == true && finger.StartedOverGui == true)
+			if (IgnoreIsOverGui == true && finger.IsOverGui == true)
+			{
+				return;
+			}
+
+			if (RequiredSelectable != null && RequiredSelectable.IsSelected == false)
 			{
 				return;
 			}
 
 			// Call event
-			OnFingerUp.Invoke(finger);
+			if (OnUp != null)
+			{
+				OnUp.Invoke(finger);
+			}
 		}
 	}
 }
