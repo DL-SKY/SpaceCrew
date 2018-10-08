@@ -157,6 +157,8 @@ public class Configs
     public List<LocalizationConfig> localization = new List<LocalizationConfig>();
     public List<ColorsConfig> colors = new List<ColorsConfig>();
 
+    public List<SpaceshipsConfig> spaceships = new List<SpaceshipsConfig>();
+
     //public List<SpaceshipConfig> spaceships = new List<SpaceshipConfig>();
     //public List<EquipmentConfig> equipments = new List<EquipmentConfig>();
 }
@@ -181,6 +183,12 @@ public class ColorsConfig
 {
     public string id;
     public string color;
+}
+
+[Serializable]
+public class SpaceshipsConfig
+{
+    public string model;
 }
 
 /*
