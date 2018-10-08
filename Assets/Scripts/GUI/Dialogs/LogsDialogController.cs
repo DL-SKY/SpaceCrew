@@ -1,11 +1,14 @@
-﻿using DllSky.Utility;
+﻿using DllSky.Extensions;
+using DllSky.Utility;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LogsDialogController : DialogController
 {
     #region Variables
-    public ScrollRect scroller;
+    public bool isInit = false;
+    public ScrollRect scroller;    
 
     private LogManager logManager;
     #endregion
@@ -15,7 +18,7 @@ public class LogsDialogController : DialogController
     {
         logManager = LogManager.Instance;
         
-        Show();
+        StartCoroutine(Show());
     }
 
     private void OnEnable()
@@ -37,19 +40,11 @@ public class LogsDialogController : DialogController
     #endregion
 
     #region Private methods
-    private void Show()
-    {
-        foreach (var log in logManager.logs)
-        {
-            var newLog = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, "LogItem"), scroller.content.transform);
-            newLog.GetComponent<LogItemController>().Initialize(log, false);
-        }
-
-        //scroller.
-    }
-
     private void HandleLog(string _logString, string _stackTrace, LogType _type)
     {
+        if (!isInit)
+            return;
+
         var newItem = new LogItem(_type, _logString);
         
         var newLog = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, "LogItem"), scroller.content.transform);
@@ -58,5 +53,22 @@ public class LogsDialogController : DialogController
     #endregion
 
     #region Coroutines
+    private IEnumerator Show()
+    {
+        //TODO...
+
+        yield return null;
+
+        foreach (var log in logManager.logs)
+        {
+            var newLog = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, "LogItem"), scroller.content.transform);
+            newLog.GetComponent<LogItemController>().Initialize(log, false);
+        }
+
+        yield return null;
+        scroller.ScrollToPosition(1.0f);
+
+        isInit = true;
+    }
     #endregion
 }
