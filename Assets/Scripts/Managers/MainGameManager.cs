@@ -1,5 +1,6 @@
 ﻿using DllSky.Managers;
 using DllSky.Patterns;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -99,6 +100,9 @@ public class MainGameManager : Singleton<MainGameManager>
             yield return SceneManager.UnloadSceneAsync(oldScene);
             Debug.Log("<color=#FFD800>[MainGameManager] Scene unloaded: " + oldName + "</color>");
         }
+
+        Resources.UnloadUnusedAssets();
+        GC.Collect();
 
         //Загружаем новую сцену
         currentScene = _scene;

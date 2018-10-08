@@ -13,7 +13,7 @@ public class MainMenuSceneController : Singleton<MainMenuSceneController>
     #region Unity methods
     private void Start()
     {
-        StartCoroutine(Initialize());
+        StartCoroutine(Initializing());
     }
     #endregion
 
@@ -24,7 +24,7 @@ public class MainMenuSceneController : Singleton<MainMenuSceneController>
     #endregion
 
     #region Coroutines
-    private IEnumerator Initialize()
+    private IEnumerator Initializing()
     {
         yield return null;
         //-------------------------------

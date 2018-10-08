@@ -103,6 +103,12 @@ public static class ExtensionGlobal
     #endregion
 
     #region Profile
+    /*public static void ApplyDefaultSettings(this Profile _pr)
+    {
+        _pr.spaceships = new List<SpaceshipData>();
+        _pr.items = new List<ProfileItem>();
+    }*/
+
     public static Profile LoadProfile()
     {
         var startTime = DateTime.UtcNow;

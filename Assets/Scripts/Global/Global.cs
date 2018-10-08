@@ -130,7 +130,7 @@ public class Profile
 {
     public string currentShip;
 
-    //public List<SpaceshipConfig> spaceships = new List<SpaceshipConfig>();
+    public List<SpaceshipData> spaceships = new List<SpaceshipData>();
     public List<ProfileItem> items = new List<ProfileItem>();
 }
 
