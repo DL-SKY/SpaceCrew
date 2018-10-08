@@ -69,7 +69,8 @@ public class GameScreenController : ScreenController
 
     public void OnClickEsc()
     {
-        StartCoroutine(CloseCoroutine());
+        if (IsInit)
+            StartCoroutine(CloseCoroutine());
     }
     #endregion
 
@@ -141,6 +142,8 @@ public class GameScreenController : ScreenController
 
     private IEnumerator CloseCoroutine()
     {
+        IsInit = false;
+
         yield return SplashScreenManager.Instance.ShowBlack();
 
         Close();
