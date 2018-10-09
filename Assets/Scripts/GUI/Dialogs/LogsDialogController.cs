@@ -55,8 +55,6 @@ public class LogsDialogController : DialogController
     #region Coroutines
     private IEnumerator Show()
     {
-        //TODO...
-
         yield return null;
 
         foreach (var log in logManager.logs)
@@ -64,9 +62,6 @@ public class LogsDialogController : DialogController
             var newLog = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, "LogItem"), scroller.content.transform);
             newLog.GetComponent<LogItemController>().Initialize(log, false);
         }
-
-        yield return null;
-        scroller.ScrollToPosition(1.0f);
 
         isInit = true;
     }

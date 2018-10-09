@@ -28,7 +28,7 @@ public class SpaceshipController : MonoBehaviour
 
     #region Public methods
     public void InitializeSpaceship()
-    {
+    {      
         data = Global.Instance.PROFILE.spaceships.Find(x => x.model == model);
         if (data == null)
         {
@@ -41,9 +41,9 @@ public class SpaceshipController : MonoBehaviour
                 model = "mk6",
                 material = "Default",
             };
+            Global.Instance.PROFILE.spaceships.Add(data);
         }
 
-        model = data.model;
         material = data.material;
 
         //LoadedMainMesh();

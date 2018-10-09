@@ -2,11 +2,11 @@
   "settings": [
     {
       "id": "name",
-      "value": "SPACE SCROLLER"
+      "value": "SPACE CREW"
     },
     {
       "id": "version",
-      "value": "0.0.1"
+      "value": "0.0.0"
     },
     {
       "id": "console",
@@ -111,36 +111,65 @@
   ],
   "spaceships": [
     {
-      "id": "TestShip",
-      "description": "testshipDesc",
-      "hitPoints": 2,
-      "shieldPoints": 1,
-      "equipments": [
-        ""
+      "model": "mk6",
+      "mks": [
+        10,
+        15,
+        20,
+        25,
+        50
       ],
-      "slots": 2
-    }
-  ],
-  "equipments": [
-    {
-      "id": "testMissileLauncher",
-      "description": "testMissileLauncherDesc",
-      "ammoPrefab": "TestMissile",
-      "slotImage": "Objects/_testMissile",
-      "level": 1,
-      "uses": [
-        2,
+      "weapons": [
+        3,
+        3,
+        3,
         4,
-        6,
-        8,
-        10
+        5
       ],
-      "cooldown": [
+      "slots": [
         3,
-        3,
+        4,
+        4,
+        5,
+        5
+      ],
+      "items": [
+        1,
         2,
         2,
-        1
+        3,
+        4
+      ],
+      "armor": [
+        100,
+        110,
+        120,
+        135,
+        150
+      ],
+      "shield": [
+        100,
+        110,
+        120,
+        135,
+        150
+      ],
+      "speed": [
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "maneuver": [
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "skills": [
+        "default"
       ]
     }
   ]

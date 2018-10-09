@@ -32,6 +32,11 @@ public class SplashScreenManager : Singleton<SplashScreenManager>
         DialogController controller = splashScreen.GetComponent<DialogController>();
         controller.CloseSplashScreenImmediately();
     }
+
+    public bool IsOpenSplashscreen()
+    {
+        return splashScreen != null;
+    }
     #endregion
 
     #region Private methods

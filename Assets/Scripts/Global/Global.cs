@@ -189,6 +189,18 @@ public class ColorsConfig
 public class SpaceshipsConfig
 {
     public string model;
+    public int[] mks;
+
+    public int[] weapons;
+    public int[] slots;
+    public int[] items;
+
+    public float[] armor;
+    public float[] shield;
+    public float[] speed;
+    public float[] maneuver;
+
+    public string[] skills;
 }
 
 /*
