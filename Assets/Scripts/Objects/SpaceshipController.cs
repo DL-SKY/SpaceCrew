@@ -9,6 +9,9 @@ public class SpaceshipController : MonoBehaviour
     public string model;
     public string material;
 
+    [Header("Targets")]
+    public Transform targetMove;
+
     [Header("Main Renderer")]
     public MeshFilter mainFilter;
     public MeshRenderer mainRenderer;
@@ -17,9 +20,15 @@ public class SpaceshipController : MonoBehaviour
     public SpaceshipCameraPlace cameraPlace;
 
     private SpaceshipData data;
+    private Rigidbody rb;
     #endregion
 
     #region Unity methods
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();    
+    }
+
     private void Start()
     {
         InitializeSpaceship();
@@ -49,6 +58,17 @@ public class SpaceshipController : MonoBehaviour
         //LoadedMainMesh();
         LoadedMainMaterial();
     }
+
+    public void SetTargetMove(Transform _target)
+    {
+        targetMove = _target;
+        StartCoroutine(ToMove());
+    }
+
+    public void ClearTargetMove()
+    {
+        targetMove = null;
+    }
     #endregion
 
     #region Private methods
@@ -66,5 +86,48 @@ public class SpaceshipController : MonoBehaviour
     #endregion
 
     #region Coroutines
+    private IEnumerator ToMove()
+    {
+        //TODO
+        var speedMove = 5.0f;
+
+        while (targetMove)
+        {
+            //yield return ToRotate(targetMove);
+            transform.LookAt(targetMove);
+
+            if (transform.position == targetMove.position)
+            {
+                targetMove = null;
+            }
+            else
+            {
+                //transform.position.
+                //transform.Translate(Vector3. * speedMove * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, targetMove.position, speedMove * Time.deltaTime);
+            }
+
+            yield return null;
+        }
+
+        Debug.Log("DONE!!!");
+    }
+
+    private IEnumerator ToRotate(Transform _target)
+    {
+        //TODO: speed rotate
+        var speedRotation = 5.0f;
+        var quatToTarget = Quaternion.LookRotation(_target.position);
+
+        while (quatToTarget != transform.rotation)
+        {            
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, quatToTarget, speedRotation * Time.deltaTime);
+            //transform.rotation = Quaternion.Slerp(transform.rotation, quatToTarget, speedRotation * Time.deltaTime);
+            yield return null;
+            quatToTarget = Quaternion.LookRotation(_target.position);
+        }
+
+        
+    }
     #endregion
 }
