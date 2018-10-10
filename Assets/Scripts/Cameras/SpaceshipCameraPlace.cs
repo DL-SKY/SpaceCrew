@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraSpaceship : LeanCameraZoom
+public class SpaceshipCameraPlace : LeanCameraZoom
 {
     #region Variables
     [Space(10.0f)]

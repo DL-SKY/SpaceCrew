@@ -131,7 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4873221078854176}
-  - component: {fileID: 114850607779575150}
+  - component: {fileID: 114840501207151052}
   m_Layer: 0
   m_Name: CameraPlace
   m_TagString: Untagged
@@ -456,7 +456,7 @@ MonoBehaviour:
   mainFilter: {fileID: 33338975699840710}
   mainRenderer: {fileID: 23525421186841426}
   cameraPlace: {fileID: 0}
---- !u!114 &114850607779575150
+--- !u!114 &114840501207151052
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1837052262689068}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b303ab4729eb19448adfb144fba6728f, type: 3}
+  m_Script: {fileID: 11500000, guid: cd2609f5bd773de4db9a9f8482c36231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 0}

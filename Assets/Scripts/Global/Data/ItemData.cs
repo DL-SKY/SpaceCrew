@@ -7,7 +7,8 @@ public class ItemData
     #region Variables
     public string id;
 
-    public List<ParameterData> parameters = new List<ParameterData>();
+    public List<ParameterData> SelfParameters = new List<ParameterData>();
+    public List<ParameterData> ShipParameters = new List<ParameterData>();
     public List<string> skills = new List<string>();
     #endregion
 }

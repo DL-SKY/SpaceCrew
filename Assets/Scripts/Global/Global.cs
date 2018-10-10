@@ -199,6 +199,8 @@ public class SpaceshipsConfig
     public float[] shield;
     public float[] speed;
     public float[] maneuver;
+    public float[] energy;
+    public float[] energyRecovery;
 
     public string[] skills;
 }

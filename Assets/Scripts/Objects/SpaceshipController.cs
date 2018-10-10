@@ -14,7 +14,7 @@ public class SpaceshipController : MonoBehaviour
     public MeshRenderer mainRenderer;
 
     [Header("Camera")]
-    public CameraSpaceship cameraPlace;
+    public SpaceshipCameraPlace cameraPlace;
 
     private SpaceshipData data;
     #endregion
