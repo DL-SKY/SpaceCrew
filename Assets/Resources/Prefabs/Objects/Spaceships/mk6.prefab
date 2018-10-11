@@ -527,6 +527,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: mk6
   material: Default
+  length: 0.65
+  targetMovePoint: {fileID: 0}
   mainFilter: {fileID: 33338975699840710}
   mainRenderer: {fileID: 23525421186841426}
   cameraPlace: {fileID: 0}

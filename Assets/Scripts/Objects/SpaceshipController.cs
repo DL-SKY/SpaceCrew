@@ -8,9 +8,10 @@ public class SpaceshipController : MonoBehaviour
     #region Variables
     public string model;
     public string material;
+    public float length;
 
     [Header("Targets")]
-    public Transform targetMove;
+    public Transform targetMovePoint;
 
     [Header("Main Renderer")]
     public MeshFilter mainFilter;
@@ -19,8 +20,11 @@ public class SpaceshipController : MonoBehaviour
     [Header("Camera")]
     public SpaceshipCameraPlace cameraPlace;
 
-    private SpaceshipData data;
     private Rigidbody rb;
+
+    private SpaceshipData data;
+    private SpaceshipsConfig config;
+    private SpaceshipMetadata meta;
     #endregion
 
     #region Unity methods
@@ -31,6 +35,7 @@ public class SpaceshipController : MonoBehaviour
 
     private void Start()
     {
+        //TODO, пока тестирование
         InitializeSpaceship();
     }
     #endregion
@@ -41,7 +46,7 @@ public class SpaceshipController : MonoBehaviour
         data = Global.Instance.PROFILE.spaceships.Find(x => x.model == model);
         if (data == null)
         {
-            //Debug.LogWarning("<color=#FF0000>[SpaceshipController] _data is null!</color>");
+            //Debug.LogWarning("<color=#FF0000>[SpaceshipController] \"data\" is null!</color>");
             //model = "ERROR";
             //return;
 
@@ -49,9 +54,20 @@ public class SpaceshipController : MonoBehaviour
             {
                 model = "mk6",
                 material = "Default",
+                mk = 1,
             };
             Global.Instance.PROFILE.spaceships.Add(data);
         }
+
+        config = Global.Instance.CONFIGS.spaceships.Find(x => x.model == model);
+        if (config == null)
+        {
+            Debug.LogWarning("<color=#FF0000>[SpaceshipController] \"config\" is null!</color>");
+            model = "ERROR";
+            return;
+        }
+
+        meta = new SpaceshipMetadata(data, config);
 
         material = data.material;
 
@@ -59,17 +75,17 @@ public class SpaceshipController : MonoBehaviour
         LoadedMainMaterial();
     }
 
-    public void SetTargetMove(Transform _target)
+    public void SetTargetMovePoint(Transform _target)
     {
         StopAllCoroutines();
 
-        targetMove = _target;
-        StartCoroutine(ToMove());
+        targetMovePoint = _target;
+        StartCoroutine(ToMove(EnumDistanceType.ToPoint));
     }
 
-    public void ClearTargetMove()
+    public void ClearTargetMovePoint()
     {
-        targetMove = null;
+        targetMovePoint = null;
     }
     #endregion
 
@@ -85,48 +101,63 @@ public class SpaceshipController : MonoBehaviour
         Material mat = Resources.Load(ConstantsResourcesPath.MATERIALS_SPACESHIPS + model + "/" + material, typeof(Material)) as Material;
         mainRenderer.material = mat;
     }
+
+    private float GetDistanceMinimum(EnumDistanceType _distanceType)
+    {
+        var result = 0.0f;
+        switch (_distanceType)
+        {
+            case EnumDistanceType.ToPoint:
+                //result = length / 0.5f;
+                break;
+
+            case EnumDistanceType.ToObject:
+                break;
+
+            case EnumDistanceType.ToEnemy:
+                break;
+        }
+
+        return result;
+    }
     #endregion
 
     #region Coroutines
-    private IEnumerator ToMove()
+    private IEnumerator ToMove(EnumDistanceType _distanceType)
     {
-        //TODO
-        var speedMove = 5.0f;
+        var distanceMin = GetDistanceMinimum(_distanceType);        
+        var distance = Vector3.Distance(transform.position, targetMovePoint.position);
 
-        while (targetMove)
+        //Пока есть Цель
+        while (targetMovePoint)
         {
-            yield return ToRotate(targetMove);
-            //transform.LookAt(targetMove);
+            //Поворачиваем в сторону Цели
+            yield return ToRotate(targetMovePoint);
 
-            if (transform.position == targetMove.position)
+            //Движемся в сторону Цели
+            if (distance <= distanceMin)
             {
-                targetMove = null;
+                ClearTargetMovePoint();
             }
             else
             {
-                //transform.position.
-                //transform.Translate(Vector3.forward * speedMove * Time.deltaTime);
-                transform.position = Vector3.MoveTowards(transform.position, targetMove.position, speedMove * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, targetMovePoint.position, meta.Speed * Time.deltaTime);
+                distance = Vector3.Distance(transform.position, targetMovePoint.position);
             }
 
-            //Debug.Log("dist: " + Vector3.Distance(transform.position, targetMove.position));
-
-            yield return null;
+            yield return null;            
         }
     }
 
     private IEnumerator ToRotate(Transform _target)
     {
-        //TODO: speed rotate
-        var speedRotation = 1.0f;
-
         var targetRot = _target.position - transform.position;
         var quatToTarget = Quaternion.LookRotation(targetRot);
     
         while ((_target.position - transform.position) != Vector3.zero && quatToTarget != transform.rotation)
         {
             
-            var step = speedRotation * Time.deltaTime;
+            var step = meta.Maneuver * Time.deltaTime;
             var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
 
             transform.rotation = Quaternion.LookRotation(newRot);
@@ -136,8 +167,6 @@ public class SpaceshipController : MonoBehaviour
             targetRot = _target.position - transform.position;
             quatToTarget = Quaternion.LookRotation(targetRot);
         }
-
-        Debug.Log("Rotation DONE");
     }
     #endregion
 }

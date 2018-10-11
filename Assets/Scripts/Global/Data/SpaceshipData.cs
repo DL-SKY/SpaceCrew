@@ -21,13 +21,13 @@ public class SpaceshipData
     #region Public methods
     public SpaceshipData()
     {
-    
+        
     }
     
-    public SpaceshipData(string _model)
+    /*public SpaceshipData(string _model)
     {
 
-    }
+    }*/
     #endregion
 
     #region Private methods

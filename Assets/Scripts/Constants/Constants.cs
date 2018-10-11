@@ -128,6 +128,13 @@ public static class ConstantsEmail
 }
 
 #region ENUM
+public enum EnumDistanceType
+{
+    ToPoint,
+    ToObject,
+    ToEnemy,
+}
+
 //Тип объекта
 /*public enum EnumSpaceObject
 {

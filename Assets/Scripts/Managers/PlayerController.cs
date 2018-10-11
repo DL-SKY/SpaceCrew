@@ -15,8 +15,7 @@ public class PlayerController : Singleton<PlayerController>
     #region Public methods
     public void SetPoint(PointController _point)
     {
-        //player.transform.LookAt(_point.transform);
-        player.SetTargetMove(_point.transform);
+        player.SetTargetMovePoint(_point.transform);
     }
     #endregion
 
