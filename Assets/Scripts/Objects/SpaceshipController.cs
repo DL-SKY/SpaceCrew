@@ -61,6 +61,8 @@ public class SpaceshipController : MonoBehaviour
 
     public void SetTargetMove(Transform _target)
     {
+        StopAllCoroutines();
+
         targetMove = _target;
         StartCoroutine(ToMove());
     }
@@ -93,8 +95,8 @@ public class SpaceshipController : MonoBehaviour
 
         while (targetMove)
         {
-            //yield return ToRotate(targetMove);
-            transform.LookAt(targetMove);
+            yield return ToRotate(targetMove);
+            //transform.LookAt(targetMove);
 
             if (transform.position == targetMove.position)
             {
@@ -103,31 +105,39 @@ public class SpaceshipController : MonoBehaviour
             else
             {
                 //transform.position.
-                //transform.Translate(Vector3. * speedMove * Time.deltaTime);
+                //transform.Translate(Vector3.forward * speedMove * Time.deltaTime);
                 transform.position = Vector3.MoveTowards(transform.position, targetMove.position, speedMove * Time.deltaTime);
             }
 
+            //Debug.Log("dist: " + Vector3.Distance(transform.position, targetMove.position));
+
             yield return null;
         }
-
-        Debug.Log("DONE!!!");
     }
 
     private IEnumerator ToRotate(Transform _target)
     {
         //TODO: speed rotate
-        var speedRotation = 5.0f;
-        var quatToTarget = Quaternion.LookRotation(_target.position);
+        var speedRotation = 1.0f;
 
-        while (quatToTarget != transform.rotation)
-        {            
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, quatToTarget, speedRotation * Time.deltaTime);
-            //transform.rotation = Quaternion.Slerp(transform.rotation, quatToTarget, speedRotation * Time.deltaTime);
+        var targetRot = _target.position - transform.position;
+        var quatToTarget = Quaternion.LookRotation(targetRot);
+    
+        while ((_target.position - transform.position) != Vector3.zero && quatToTarget != transform.rotation)
+        {
+            
+            var step = speedRotation * Time.deltaTime;
+            var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
+
+            transform.rotation = Quaternion.LookRotation(newRot);
+
             yield return null;
-            quatToTarget = Quaternion.LookRotation(_target.position);
+
+            targetRot = _target.position - transform.position;
+            quatToTarget = Quaternion.LookRotation(targetRot);
         }
 
-        
+        Debug.Log("Rotation DONE");
     }
     #endregion
 }
