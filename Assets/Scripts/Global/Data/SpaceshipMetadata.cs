@@ -1,11 +1,15 @@
 ﻿using System;
+using UnityEngine;
 
+[Serializable]
 public class SpaceshipMetadata
 {
     #region Variables
     public int mk;
 
+    [SerializeField]
     private float armorMax;
+    [SerializeField]
     private float armor;
     public float Armor
     {
@@ -13,7 +17,9 @@ public class SpaceshipMetadata
         set { armor = value > armorMax ? armorMax : value; }
     }
 
+    [SerializeField]
     private float shieldMax;
+    [SerializeField]
     private float shield;
     public float Shield
     {
@@ -21,7 +27,9 @@ public class SpaceshipMetadata
         set { shield = value > shieldMax ? shieldMax : value; }
     }
 
+    [SerializeField]
     private float speedMax;
+    [SerializeField]
     private float speed;
     public float Speed
     {
@@ -29,7 +37,9 @@ public class SpaceshipMetadata
         set { speed = value > speedMax ? speedMax : value; }
     }
 
+    [SerializeField]
     private float maneuverMax;
+    [SerializeField]
     private float maneuver;
     public float Maneuver
     {
@@ -37,7 +47,9 @@ public class SpaceshipMetadata
         set { maneuver = value > maneuverMax ? maneuverMax : value; }
     }
 
+    [SerializeField]
     private float energyMax;
+    [SerializeField]
     private float energy;
     public float Energy
     {
@@ -45,7 +57,9 @@ public class SpaceshipMetadata
         set { energy = value > energyMax ? energyMax : value; }
     }
 
+    [SerializeField]
     private float energyRecoveryMax;
+    [SerializeField]
     private float energyRecovery;
     public float EnergyRecovery
     {

@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpaceshipController : MonoBehaviour
 {
     #region Variables
+    [Header("Base")]
     public string model;
     public string material;
     public float length;
@@ -26,6 +27,8 @@ public class SpaceshipController : MonoBehaviour
 
     private SpaceshipData data;
     private SpaceshipsConfig config;
+    [Header("Metadata")]
+    [SerializeField]
     private SpaceshipMetadata meta;
     #endregion
 
@@ -101,7 +104,7 @@ public class SpaceshipController : MonoBehaviour
 
         ClearAllTargets();
         targetOrbit = _target;
-        StartCoroutine(ToOrbit(EnumDistanceType.ToFollow));
+        StartCoroutine(ToOrbit(EnumDistanceType.ToOrbit));
     }
 
     public void ClearAllTargets()
@@ -154,7 +157,7 @@ public class SpaceshipController : MonoBehaviour
                 break;
 
             case EnumDistanceType.ToOrbit:
-                result = length;
+                result = length * 10.0f;
                 break;
 
             case EnumDistanceType.ToObject:
@@ -238,7 +241,7 @@ public class SpaceshipController : MonoBehaviour
             else
             {
                 //Поворот
-                var quaternionNeed = Quaternion.LookRotation(targetOrbit.position - transform.position) * Quaternion.AngleAxis(87.0f, Vector3.up);
+                var quaternionNeed = Quaternion.LookRotation(targetOrbit.position - transform.position) * Quaternion.AngleAxis(89.0f, Vector3.up);
                 var step = meta.Maneuver * Time.deltaTime * 57.3f;  //В градусах
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, quaternionNeed, step);
 
