@@ -33,7 +33,8 @@ public class MainMenuScreenController : ScreenController
 
     public void OnClickTest()
     {
-        MainGameManager.Instance.LoadScene("Test");
+        //MainGameManager.Instance.LoadScene("Test");
+        StartCoroutine(StartTest());
     }
     #endregion
 
@@ -76,6 +77,14 @@ public class MainMenuScreenController : ScreenController
         //yield return new WaitForSeconds(2.5f);
 
         ScreenManager.Instance.ShowScreen(ConstantsScreen.GAME_SCREEN, Global.Instance.PROFILE.currentShip);
+    }
+
+    private IEnumerator StartTest()
+    {
+        //Прелоадер
+        yield return SplashScreenManager.Instance.ShowBlack();
+
+        ScreenManager.Instance.ShowScreen(ConstantsScreen.DEADSPACE);
     }
     #endregion
 }

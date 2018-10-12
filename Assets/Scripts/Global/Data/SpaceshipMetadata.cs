@@ -94,11 +94,11 @@ public class SpaceshipMetadata
         maneuverMax = GetManeuverMax();
         Maneuver = maneuverMax;
 
-        //energyMax = GetEnergyMax();
-        //Energy = energyMax;
+        energyMax = GetEnergyMax();
+        Energy = energyMax;
 
-        //energyRecoveryMax = GetEnergyRecoveryMax();
-        //EnergyRecovery = energyRecoveryMax;
+        energyRecoveryMax = GetEnergyRecoveryMax();
+        EnergyRecovery = energyRecoveryMax;
     }
     #endregion
 

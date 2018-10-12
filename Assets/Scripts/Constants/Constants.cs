@@ -50,6 +50,7 @@ public static class ConstantsResourcesPath
     public const string SCREENS = "Prefabs/UI/Screens/";
     public const string DIALOGS = "Prefabs/UI/Dialogs/";
     public const string ELEMENTS_UI = "Prefabs/UI/Elements/";
+
     public const string PREF_OBJECTS = "Prefabs/Objects/";
 
     //Sprites
@@ -80,6 +81,8 @@ public static class ConstantsScene
 public static class ConstantsScreen
 {
     public const string MAIN_MENU = "MainMenuScreen";
+
+    public const string DEADSPACE = "DeadspaceScreen";
 
     public const string GAME_SCREEN = "GameScreen";
 }
