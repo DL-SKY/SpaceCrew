@@ -12,6 +12,7 @@ public class SpaceshipController : MonoBehaviour
 
     [Header("Targets")]
     public Transform targetMovePoint;
+    public Transform targetFollow;
 
     [Header("Main Renderer")]
     public MeshFilter mainFilter;
@@ -80,7 +81,17 @@ public class SpaceshipController : MonoBehaviour
         StopAllCoroutines();
 
         targetMovePoint = _target;
+        targetFollow = null;
         StartCoroutine(ToMove(EnumDistanceType.ToPoint));
+    }
+
+    public void SetTargetFollow(Transform _target)
+    {
+        StopAllCoroutines();
+
+        targetMovePoint = null;
+        targetFollow = _target;        
+        StartCoroutine(ToFollow(EnumDistanceType.ToFollow));
     }
 
     public void ClearTargetMovePoint()
@@ -111,6 +122,10 @@ public class SpaceshipController : MonoBehaviour
                 //result = length / 0.5f;
                 break;
 
+            case EnumDistanceType.ToFollow:
+                result = length * 3.0f;
+                break;
+
             case EnumDistanceType.ToObject:
                 break;
 
@@ -123,6 +138,7 @@ public class SpaceshipController : MonoBehaviour
     #endregion
 
     #region Coroutines
+    //Перемещение к Цели
     private IEnumerator ToMove(EnumDistanceType _distanceType)
     {
         var distanceMin = GetDistanceMinimum(_distanceType);        
@@ -141,11 +157,34 @@ public class SpaceshipController : MonoBehaviour
             }
             else
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetMovePoint.position, meta.Speed * Time.deltaTime);
-                distance = Vector3.Distance(transform.position, targetMovePoint.position);
+                transform.position = Vector3.MoveTowards(transform.position, targetMovePoint.position, meta.Speed * Time.deltaTime);                
             }
 
+            distance = Vector3.Distance(transform.position, targetMovePoint.position);
             yield return null;            
+        }
+    }
+
+    //Следование за целью
+    private IEnumerator ToFollow(EnumDistanceType _distanceType)
+    {
+        var distanceMin = GetDistanceMinimum(_distanceType);
+        var distance = Vector3.Distance(transform.position, targetFollow.position);
+
+        //Пока есть Цель
+        while (targetFollow)
+        {
+            //Поворачиваем в сторону Цели
+            yield return ToRotate(targetFollow);
+
+            //Движемся в сторону Цели
+            if (distance > distanceMin)
+            {                
+                transform.position = Vector3.MoveTowards(transform.position, targetFollow.position, meta.Speed * Time.deltaTime);                
+            }
+
+            distance = Vector3.Distance(transform.position, targetFollow.position);
+            yield return null;
         }
     }
 
@@ -154,9 +193,9 @@ public class SpaceshipController : MonoBehaviour
         var targetRot = _target.position - transform.position;
         var quatToTarget = Quaternion.LookRotation(targetRot);
     
+        //TODO: выловить БАГ в условии (бывает некорректное поведении при перемещении только по одной оси)
         while ((_target.position - transform.position) != Vector3.zero && quatToTarget != transform.rotation)
-        {
-            
+        {            
             var step = meta.Maneuver * Time.deltaTime;
             var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
 

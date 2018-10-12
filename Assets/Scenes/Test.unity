@@ -211,7 +211,7 @@ Skybox:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 132982508}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CustomSkybox: {fileID: 2100000, guid: d330444468a69504ea073ea14b284b34, type: 2}
 --- !u!1 &145334144
 GameObject:
@@ -724,7 +724,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 563281158}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -39.97, y: 2.53, z: -4.58}
+  m_LocalPosition: {x: -2.11, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 569585591}

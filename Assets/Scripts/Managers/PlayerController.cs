@@ -15,7 +15,8 @@ public class PlayerController : Singleton<PlayerController>
     #region Public methods
     public void SetPoint(PointController _point)
     {
-        player.SetTargetMovePoint(_point.transform);
+        //player.SetTargetMovePoint(_point.transform);
+        player.SetTargetFollow(_point.transform);
     }
     #endregion
 

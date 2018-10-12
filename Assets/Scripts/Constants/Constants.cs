@@ -131,6 +131,7 @@ public static class ConstantsEmail
 public enum EnumDistanceType
 {
     ToPoint,
+    ToFollow,
     ToObject,
     ToEnemy,
 }

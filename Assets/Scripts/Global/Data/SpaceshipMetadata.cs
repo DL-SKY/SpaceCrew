@@ -52,25 +52,101 @@ public class SpaceshipMetadata
         get { return energyRecovery; }
         set { energyRecovery = value > energyRecoveryMax ? energyRecoveryMax : value; }
     }
+
+    private int mkIndex;
+    private SpaceshipData data;
+    private SpaceshipsConfig config;
     #endregion
 
     #region Public methods
     public SpaceshipMetadata(SpaceshipData _data, SpaceshipsConfig _config)
     {
-        mk = _data.mk;
-        var mkIndex = mk - 1;
+        data = _data;
+        config = _config;
+        mk = data.mk;
+        mkIndex = mk - 1;
         if (mkIndex < 0)
             mkIndex = 0;
 
-        speedMax = _config.speed[mkIndex];
+        armorMax = GetArmorMax();
+        Armor = armorMax;
+
+        shieldMax = GetShieldMax();
+        Shield = shieldMax;
+
+        speedMax = GetSpeedMax();
         Speed = speedMax;
 
-        maneuverMax = _config.maneuver[mkIndex];
+        maneuverMax = GetManeuverMax();
         Maneuver = maneuverMax;
 
+        //energyMax = GetEnergyMax();
+        //Energy = energyMax;
+
+        //energyRecoveryMax = GetEnergyRecoveryMax();
+        //EnergyRecovery = energyRecoveryMax;
     }
     #endregion
 
     #region Private methods
+    private float GetArmorMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.armor[mkIndex];
+
+        return result;
+    }
+
+    private float GetShieldMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.shield[mkIndex];
+
+        return result;
+    }
+
+    private float GetSpeedMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.speed[mkIndex];
+
+        return result;
+    }
+
+    private float GetManeuverMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.maneuver[mkIndex];
+
+        return result;
+    }
+
+    private float GetEnergyMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.energy[mkIndex];
+
+        return result;
+    }
+
+    private float GetEnergyRecoveryMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.energyRecovery[mkIndex];
+
+        return result;
+    }
     #endregion
 }
