@@ -132,6 +132,7 @@ public enum EnumDistanceType
 {
     ToPoint,
     ToFollow,
+    ToOrbit,
     ToObject,
     ToEnemy,
 }

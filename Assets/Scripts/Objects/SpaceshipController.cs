@@ -13,6 +13,7 @@ public class SpaceshipController : MonoBehaviour
     [Header("Targets")]
     public Transform targetMovePoint;
     public Transform targetFollow;
+    public Transform targetOrbit;
 
     [Header("Main Renderer")]
     public MeshFilter mainFilter;
@@ -80,8 +81,8 @@ public class SpaceshipController : MonoBehaviour
     {
         StopAllCoroutines();
 
+        ClearAllTargets();
         targetMovePoint = _target;
-        targetFollow = null;
         StartCoroutine(ToMove(EnumDistanceType.ToPoint));
     }
 
@@ -89,14 +90,40 @@ public class SpaceshipController : MonoBehaviour
     {
         StopAllCoroutines();
 
-        targetMovePoint = null;
+        ClearAllTargets();
         targetFollow = _target;        
         StartCoroutine(ToFollow(EnumDistanceType.ToFollow));
+    }
+
+    public void SetTargetOrbit(Transform _target)
+    {
+        StopAllCoroutines();
+
+        ClearAllTargets();
+        targetOrbit = _target;
+        StartCoroutine(ToOrbit(EnumDistanceType.ToFollow));
+    }
+
+    public void ClearAllTargets()
+    {
+        ClearTargetMovePoint();
+        ClearTargetFollow();
+        ClearTargetOrbit();
     }
 
     public void ClearTargetMovePoint()
     {
         targetMovePoint = null;
+    }
+
+    public void ClearTargetFollow()
+    {
+        targetFollow = null;
+    }
+
+    public void ClearTargetOrbit()
+    {
+        targetOrbit = null;
     }
     #endregion
 
@@ -124,6 +151,10 @@ public class SpaceshipController : MonoBehaviour
 
             case EnumDistanceType.ToFollow:
                 result = length * 3.0f;
+                break;
+
+            case EnumDistanceType.ToOrbit:
+                result = length;
                 break;
 
             case EnumDistanceType.ToObject:
@@ -157,10 +188,10 @@ public class SpaceshipController : MonoBehaviour
             }
             else
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetMovePoint.position, meta.Speed * Time.deltaTime);                
+                transform.position = Vector3.MoveTowards(transform.position, targetMovePoint.position, meta.Speed * Time.deltaTime);
+                distance = Vector3.Distance(transform.position, targetMovePoint.position);
             }
-
-            distance = Vector3.Distance(transform.position, targetMovePoint.position);
+            
             yield return null;            
         }
     }
@@ -188,6 +219,38 @@ public class SpaceshipController : MonoBehaviour
         }
     }
 
+    //Вокруг орбиты
+    private IEnumerator ToOrbit(EnumDistanceType _distanceType)
+    {
+        var distanceMin = GetDistanceMinimum(_distanceType);
+        var distance = Vector3.Distance(transform.position, targetOrbit.position);
+
+        //Пока есть Цель
+        while (targetOrbit)
+        {
+            //Движемся к объекту
+            if (distance > distanceMin * 1.15f)
+            {
+                targetMovePoint = targetOrbit;
+                yield return ToMove(_distanceType);
+            }
+            //Двигаемся по орбите
+            else
+            {
+                //Поворот
+                var quaternionNeed = Quaternion.LookRotation(targetOrbit.position - transform.position) * Quaternion.AngleAxis(87.0f, Vector3.up);
+                var step = meta.Maneuver * Time.deltaTime * 57.3f;  //В градусах
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, quaternionNeed, step);
+
+                //Движение
+                transform.Translate(Vector3.forward * meta.Speed * Time.deltaTime);
+            }
+
+            distance = Vector3.Distance(transform.position, targetOrbit.position);
+            yield return null;
+        }
+    }
+
     private IEnumerator ToRotate(Transform _target)
     {
         var targetRot = _target.position - transform.position;
@@ -196,7 +259,7 @@ public class SpaceshipController : MonoBehaviour
         //TODO: выловить БАГ в условии (бывает некорректное поведении при перемещении только по одной оси)
         while ((_target.position - transform.position) != Vector3.zero && quatToTarget != transform.rotation)
         {            
-            var step = meta.Maneuver * Time.deltaTime;
+            var step = meta.Maneuver * Time.deltaTime;  //В радианах
             var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
 
             transform.rotation = Quaternion.LookRotation(newRot);
