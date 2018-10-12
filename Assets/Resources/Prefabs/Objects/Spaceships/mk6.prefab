@@ -37,6 +37,7 @@ GameObject:
   - component: {fileID: 4130244126006730}
   - component: {fileID: 33338975699840710}
   - component: {fileID: 23525421186841426}
+  - component: {fileID: 114094854870600594}
   m_Layer: 0
   m_Name: MainRenderer
   m_TagString: Untagged
@@ -525,13 +526,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0de9a6bfcce4894d800a9cddcd606a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visibleToCamera: 0
   model: mk6
   material: Default
   length: 0.65
   targetMovePoint: {fileID: 0}
+  targetFollow: {fileID: 0}
+  targetOrbit: {fileID: 0}
   mainFilter: {fileID: 33338975699840710}
   mainRenderer: {fileID: 23525421186841426}
   cameraPlace: {fileID: 0}
+  meta:
+    mk: 0
+    armorMax: 0
+    armor: 0
+    shieldMax: 0
+    shield: 0
+    speedMax: 0
+    speed: 0
+    maneuverMax: 0
+    maneuver: 0
+    energyMax: 0
+    energy: 0
+    energyRecoveryMax: 0
+    energyRecovery: 0
+--- !u!114 &114094854870600594
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1166323681356442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fec5c77493b6949478020efb90e1a177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114840501207151052
 MonoBehaviour:
   m_ObjectHideFlags: 1

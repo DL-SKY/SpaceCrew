@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DllSky.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,13 @@ public class SpaceshipController : MonoBehaviour
 {
     #region Variables
     [Header("Base")]
+    [SerializeField]
+    private bool visibleToCamera;
+    public bool VisibleToCamera
+    {
+        get { return visibleToCamera; }
+        set { visibleToCamera = value; }
+    }
     public string model;
     public string material;
     public float length;
@@ -24,6 +32,7 @@ public class SpaceshipController : MonoBehaviour
     public SpaceshipCameraPlace cameraPlace;
 
     private Rigidbody rb;
+    private RendererController rendererController;
 
     private SpaceshipData data;
     private SpaceshipsConfig config;
@@ -35,13 +44,26 @@ public class SpaceshipController : MonoBehaviour
     #region Unity methods
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();    
+        rb = GetComponent<Rigidbody>();
+        rendererController = mainRenderer.GetComponent<RendererController>();
     }
 
     private void Start()
     {
         //TODO, пока тестирование
         InitializeSpaceship();
+    }
+
+    private void OnEnable()
+    {
+        if (rendererController)
+            rendererController.OnVisibleToCamera += SetVisibleToCamera;
+    }
+
+    private void OnDisable()
+    {
+        if (rendererController)
+            rendererController.OnVisibleToCamera -= SetVisibleToCamera;
     }
     #endregion
 
@@ -131,6 +153,11 @@ public class SpaceshipController : MonoBehaviour
     #endregion
 
     #region Private methods
+    private void SetVisibleToCamera(bool _isVisible)
+    {
+        VisibleToCamera = _isVisible;
+    }
+
     /*private void LoadedMainMesh()
     {
         Mesh mesh = Resources.Load(ConstantsResourcesPath.MODELS_SPACESHIPS + model, typeof(Mesh)) as Mesh;
