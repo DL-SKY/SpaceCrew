@@ -6,18 +6,30 @@ using UnityEngine;
 public class UIMarker : MonoBehaviour
 {
     #region Variables
-    //public EnumUIMarkerType type;
-    public Transform target;
-    //public ProgressBar progressBar;
     public bool isInit = false;
+    public bool alwaysVisible = true;
 
-    //[SerializeField]
-    //private float distance;
+    [Space(5)]
+    public Transform targetTransform;
+    private float screenCoef = 1.0f;
 
+    [Header("Visible")]    
+    public RectTransform selfTransformVisible;
+    [SerializeField]
+    private float halfVisibleSizeX;
+    [SerializeField]
+    private float halfVisibleSizeY;
+    
+    [Header("Invisible")]
+    public RectTransform selfTransformInvisible;
+    [SerializeField]
+    private float halfInvisibleSizeX;
+    [SerializeField]
+    private float halfInvisibleSizeY;
+
+    private RectTransform parent;
     private RectTransform selfTransform;
-    private PointController point;
-    //private SpaceObject targetScript;
-    //private Transform player;
+    private PointController pointController;
     new private Camera camera;
     #endregion
 
@@ -34,44 +46,70 @@ public class UIMarker : MonoBehaviour
         {
             return;
         }
-        if (!target || !point)
+        if (!targetTransform || !pointController)
         {
             //DeleteMarker();
             return;
+        }        
+
+        //Отображаемая часть Маркера
+        selfTransformVisible.gameObject.SetActive(pointController.VisibleToCamera);
+        selfTransformInvisible.gameObject.SetActive(!pointController.VisibleToCamera);
+
+        float halfSizeX, halfSizeY;
+        if (pointController.VisibleToCamera)
+        {
+            halfSizeX = halfVisibleSizeX;
+            halfSizeY = halfVisibleSizeY;
+        }
+        else
+        {
+            halfSizeX = halfInvisibleSizeX;
+            halfSizeY = halfInvisibleSizeY;
         }
 
-        selfTransform.position = camera.WorldToScreenPoint(target.position);
-        transform.localScale = (point.VisibleToCamera) ? Vector3.one : Vector3.zero;
+        //Вычисляем положение
+        var newPos = camera.WorldToScreenPoint(targetTransform.position);
 
-        UpdateDistance();
+        newPos.x = Mathf.Clamp(newPos.x, halfSizeX, Screen.width - halfSizeX);
+        newPos.y = Mathf.Clamp(newPos.y, halfSizeY, Screen.height - halfSizeY);
+
+        //Новое расположение
+        transform.position = new Vector3(newPos.x, newPos.y, 0);
     }
     #endregion
 
     #region Public methods
-    public void Initialize(PointController _point)
+    public void Initialize(PointController _point, RectTransform _parent, float _coef)
     {
-        //type = _type;
+        //Цель
+        pointController = _point;
+        targetTransform = _point.transform;
 
-        //targetScript = _target;
-        //target = targetScript.transform;
-        //player = _player;
+        parent = _parent;
+        Debug.Log("Parent: " + parent.rect);
 
-        point = _point;
-        target = _point.transform;
+        //Коэффициент
+        screenCoef = _coef;
+
+        var sizeVisible = selfTransformVisible.sizeDelta.x / 2;
+        halfVisibleSizeX = sizeVisible * screenCoef;
+        halfVisibleSizeY = sizeVisible * screenCoef;
+        var sizeInvisible = selfTransformInvisible.sizeDelta.x / 2;
+        halfInvisibleSizeX = sizeInvisible * screenCoef;
+        halfInvisibleSizeY = sizeInvisible * screenCoef;
 
         isInit = true;
-
-        UpdateDistance();
     }
 
-    public void UpdateDistance()
+    public void OnClickVisible()
     {
-        /*if (type == EnumUIMarkerType.Player)
-        {
-            return;
-        }*/
+        pointController.OnClick();
+    }
 
-        //distance = Vector3.Distance(player.position, target.position);
+    public void OnClickInvisible()
+    {
+        pointController.OnClick();
     }
     #endregion
 }

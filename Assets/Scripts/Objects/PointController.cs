@@ -37,13 +37,17 @@ public class PointController : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        Debug.Log("OnClick to Point");
+        Debug.Log("OnMouseUpAsButton to Point");
 
-        PlayerController.Instance.SetPoint(this);
+        OnClick();
     }
     #endregion
 
     #region Public methods
+    public void OnClick()
+    {
+        PlayerController.Instance.SetPoint(this);
+    }
     #endregion
 
     #region Private methods

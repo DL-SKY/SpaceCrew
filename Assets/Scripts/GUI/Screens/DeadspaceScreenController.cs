@@ -4,6 +4,7 @@ using DllSky.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DeadspaceScreenController : ScreenController
 {
@@ -44,6 +45,11 @@ public class DeadspaceScreenController : ScreenController
     {
         ClearAllMarkers();
 
+        var parent = markersPlace.GetComponent<RectTransform>();
+
+        var scaler = ScreenManager.Instance.GetComponent<CanvasScaler>();
+        var screenCoef = Screen.height / scaler.referenceResolution.y;
+
         //Игрок
         //var markerPlayerObj = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, "MarkerObject"), markersPlace);
         //var markerPlayerScr = markerPlayerObj.GetComponent<UIMarker>();
@@ -57,7 +63,7 @@ public class DeadspaceScreenController : ScreenController
             var markerObj = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, "MarkerPoint"), markersPlace);
             var markerScr = markerObj.GetComponent<UIMarker>();
             markers.Add(markerScr);
-            markerScr.Initialize(point);
+            markerScr.Initialize(point, parent, screenCoef/*screenWidthCoef, screenHeightCoef*/);
         }
     }
 
