@@ -56,23 +56,33 @@ public class UIMarker : MonoBehaviour
         selfTransformVisible.gameObject.SetActive(pointController.VisibleToCamera);
         selfTransformInvisible.gameObject.SetActive(!pointController.VisibleToCamera);
 
+        //Вычисляем положение
+        var newPos = camera.WorldToScreenPoint(targetTransform.position);
+
         float halfSizeX, halfSizeY;
         if (pointController.VisibleToCamera)
         {
             halfSizeX = halfVisibleSizeX;
             halfSizeY = halfVisibleSizeY;
+
+            newPos.x = Mathf.Clamp(newPos.x, halfSizeX, Screen.width - halfSizeX);
+            newPos.y = Mathf.Clamp(newPos.y, halfSizeY, Screen.height - halfSizeY);
         }
         else
         {
             halfSizeX = halfInvisibleSizeX;
             halfSizeY = halfInvisibleSizeY;
-        }
 
-        //Вычисляем положение
-        var newPos = camera.WorldToScreenPoint(targetTransform.position);
+            var maxPosX = Screen.width - halfSizeX;
+            var maxPosY = Screen.height - halfSizeY;
+            
+            newPos.x = Mathf.Clamp(newPos.x, halfSizeX, maxPosX); 
+            newPos.y = Mathf.Clamp(newPos.y, halfSizeY, maxPosY);
 
-        newPos.x = Mathf.Clamp(newPos.x, halfSizeX, Screen.width - halfSizeX);
-        newPos.y = Mathf.Clamp(newPos.y, halfSizeY, Screen.height - halfSizeY);
+            //Маркер на объект за камерой прижимаем к бокам экрана
+            /*if (newPos.x > halfSizeX && newPos.x < maxPosX)
+                newPos.x = newPos.x > 0 ? halfSizeX : maxPosX;*/
+        }        
 
         //Новое расположение
         transform.position = new Vector3(newPos.x, newPos.y, 0);
@@ -86,8 +96,14 @@ public class UIMarker : MonoBehaviour
         pointController = _point;
         targetTransform = _point.transform;
 
+        //Родительский объект
         parent = _parent;
-        Debug.Log("Parent: " + parent.rect);
+        Debug.Log("parent.anchoredPosition: " + parent.anchoredPosition);
+        Debug.Log("parent.sizeDelta: " + parent.sizeDelta);
+        Debug.Log("parent.up: " + parent.up);
+        Debug.Log("parent.right: " + parent.right);
+        Debug.Log("parent.anchorMax: " + parent.anchorMax);
+        Debug.Log("parent.anchorMin: " + parent.anchorMin);
 
         //Коэффициент
         screenCoef = _coef;
@@ -95,6 +111,7 @@ public class UIMarker : MonoBehaviour
         var sizeVisible = selfTransformVisible.sizeDelta.x / 2;
         halfVisibleSizeX = sizeVisible * screenCoef;
         halfVisibleSizeY = sizeVisible * screenCoef;
+
         var sizeInvisible = selfTransformInvisible.sizeDelta.x / 2;
         halfInvisibleSizeX = sizeInvisible * screenCoef;
         halfInvisibleSizeY = sizeInvisible * screenCoef;
