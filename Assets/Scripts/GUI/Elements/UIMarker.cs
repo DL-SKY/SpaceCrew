@@ -82,6 +82,14 @@ public class UIMarker : MonoBehaviour
             //Маркер на объект за камерой прижимаем к бокам экрана
             /*if (newPos.x > halfSizeX && newPos.x < maxPosX)
                 newPos.x = newPos.x > 0 ? halfSizeX : maxPosX;*/
+            //Если не верхняя/нижняя границы
+            if (newPos.y > halfSizeY && newPos.y < maxPosY)
+            {
+                var targetRot = targetTransform.position - camera.transform.position;
+                Debug.Log("Angle forvard(targetRot): " + Vector3.Angle(camera.transform.forward, targetRot));
+                Debug.Log("Angle right(targetRot): " + Vector3.Angle(camera.transform.right, targetRot));
+                //TODO: 
+            }
         }        
 
         //Новое расположение

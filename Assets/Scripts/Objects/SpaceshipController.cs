@@ -284,10 +284,16 @@ public class SpaceshipController : MonoBehaviour
     private IEnumerator ToRotate(Transform _target)
     {
         var targetRot = _target.position - transform.position;
-        var quatToTarget = Quaternion.LookRotation(targetRot);
-    
+        //var quatToTarget = Quaternion.LookRotation(targetRot);
+
+        //Возможное условие
+        //float angle = Vector3.Angle(dir, transform.forward);
+        //if (angle <= 0.25)
+        //Player.position = Vector3.MoveTowards(Player.position, needPos, Time.deltaTime * 5);
+
         //TODO: выловить БАГ в условии (бывает некорректное поведении при перемещении только по одной оси)
-        while ((_target.position - transform.position) != Vector3.zero && quatToTarget != transform.rotation)
+        //while ((_target.position - transform.position) != Vector3.zero && quatToTarget != transform.rotation)
+        while (targetRot != Vector3.zero && Vector3.Angle(transform.forward, targetRot) > 0.25)
         {            
             var step = meta.Maneuver * Time.deltaTime;  //В радианах
             var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
@@ -297,7 +303,7 @@ public class SpaceshipController : MonoBehaviour
             yield return null;
 
             targetRot = _target.position - transform.position;
-            quatToTarget = Quaternion.LookRotation(targetRot);
+            //quatToTarget = Quaternion.LookRotation(targetRot);
         }
     }
     #endregion
