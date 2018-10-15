@@ -48,7 +48,7 @@ public class UIMarker : MonoBehaviour
         }
         if (!targetTransform || !pointController)
         {
-            //DeleteMarker();
+            DeleteMarker();
             return;
         }        
 
@@ -86,9 +86,23 @@ public class UIMarker : MonoBehaviour
             if (newPos.y > halfSizeY && newPos.y < maxPosY)
             {
                 var targetRot = targetTransform.position - camera.transform.position;
-                Debug.Log("Angle forvard(targetRot): " + Vector3.Angle(camera.transform.forward, targetRot));
-                Debug.Log("Angle right(targetRot): " + Vector3.Angle(camera.transform.right, targetRot));
-                //TODO: 
+                var angleForward = Vector3.Angle(camera.transform.forward, targetRot);                
+                Debug.Log("angleForward: " + angleForward);
+
+                if (angleForward < 90.0f)
+                {
+                    newPos.x = newPos.x > 0 ? halfSizeX : maxPosX;
+                }
+                else
+                {
+                    var angleRight = Vector3.Angle(camera.transform.right, targetRot);
+                    Debug.Log("Angle right(targetRot): " + angleRight);
+
+                    if (angleRight < 90.0f)
+                        newPos.x = maxPosX;
+                    else
+                        newPos.x = halfSizeX;
+                }
             }
         }        
 
@@ -135,6 +149,13 @@ public class UIMarker : MonoBehaviour
     public void OnClickInvisible()
     {
         pointController.OnClick();
+    }
+    #endregion
+
+    #region Private methods
+    private void DeleteMarker()
+    {
+        Destroy(gameObject);
     }
     #endregion
 }
