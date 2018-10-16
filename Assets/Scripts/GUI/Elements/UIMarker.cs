@@ -80,23 +80,19 @@ public class UIMarker : MonoBehaviour
             newPos.y = Mathf.Clamp(newPos.y, halfSizeY, maxPosY);
 
             //Маркер на объект за камерой прижимаем к бокам экрана
-            /*if (newPos.x > halfSizeX && newPos.x < maxPosX)
-                newPos.x = newPos.x > 0 ? halfSizeX : maxPosX;*/
             //Если не верхняя/нижняя границы
             if (newPos.y > halfSizeY && newPos.y < maxPosY)
             {
                 var targetRot = targetTransform.position - camera.transform.position;
-                var angleForward = Vector3.Angle(camera.transform.forward, targetRot);                
-                Debug.Log("angleForward: " + angleForward);
+                var angleForward = Vector3.Angle(camera.transform.forward, targetRot);
 
                 if (angleForward < 90.0f)
                 {
-                    newPos.x = newPos.x > 0 ? halfSizeX : maxPosX;
+                    newPos.x = newPos.x < ((maxPosX + halfSizeX) / 2) ? halfSizeX : maxPosX;
                 }
                 else
                 {
                     var angleRight = Vector3.Angle(camera.transform.right, targetRot);
-                    Debug.Log("Angle right(targetRot): " + angleRight);
 
                     if (angleRight < 90.0f)
                         newPos.x = maxPosX;
@@ -120,12 +116,6 @@ public class UIMarker : MonoBehaviour
 
         //Родительский объект
         parent = _parent;
-        Debug.Log("parent.anchoredPosition: " + parent.anchoredPosition);
-        Debug.Log("parent.sizeDelta: " + parent.sizeDelta);
-        Debug.Log("parent.up: " + parent.up);
-        Debug.Log("parent.right: " + parent.right);
-        Debug.Log("parent.anchorMax: " + parent.anchorMax);
-        Debug.Log("parent.anchorMin: " + parent.anchorMin);
 
         //Коэффициент
         screenCoef = _coef;
