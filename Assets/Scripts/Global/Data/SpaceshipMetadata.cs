@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 [Serializable]
@@ -161,6 +162,41 @@ public class SpaceshipMetadata
         result = config.energyRecovery[mkIndex];
 
         return result;
+    }
+    #endregion
+
+    #region Coroutines
+    public IEnumerator StartChangeSpeed(float _normalizeValue)
+    {
+        _normalizeValue = Mathf.Clamp01(_normalizeValue);
+
+        var speedResult = speedMax * _normalizeValue;
+        var modifier = Speed > speedResult ? -1.0f : 1.0f;
+
+        while (true)
+        {
+            Speed += modifier * Maneuver * Time.deltaTime;
+
+            //Проверка
+            if (modifier < 0)
+            {
+                if (Speed < speedResult)
+                {
+                    Speed = speedResult;
+                    break;
+                }
+            }
+            else
+            {
+                if (Speed > speedResult)
+                {
+                    Speed = speedResult;
+                    break;
+                }
+            }
+
+            yield return null;
+        }        
     }
     #endregion
 }
