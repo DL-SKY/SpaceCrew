@@ -118,6 +118,11 @@ public static class ConstantsSkill
 
 }
 
+public static class ConstantsSpaceshipSettings
+{
+
+}
+
 public static class ConstantsLanguage
 {
     public const string RUSSIAN = "rus";
