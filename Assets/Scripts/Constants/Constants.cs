@@ -120,7 +120,15 @@ public static class ConstantsSkill
 
 public static class ConstantsSpaceshipSettings
 {
+    //Скорость (нормализованная 0.0-1.0)
+    public const float SPEED_STOP = 0.0f;
+    public const float SPEED_TURN = 0.3f;               //Поворот
+    public const float SPEED_HALF = 0.5f;
+    public const float SPEED_ARMS = 0.6f;               //Активное вооружение    
+    public const float SPEED_FULL = 1.0f;
+    //public const float SPEED_BURN = 1.25f;
 
+    //...
 }
 
 public static class ConstantsLanguage

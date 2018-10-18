@@ -101,6 +101,18 @@ public class SpaceshipMetadata
         energyRecoveryMax = GetEnergyRecoveryMax();
         EnergyRecovery = energyRecoveryMax;
     }
+
+    public float GetSpeedNormalize(float _speed)
+    {
+        return _speed / speedMax;
+    }
+
+    public float GetSpeedValue(float _normalizeValue)
+    {
+        _normalizeValue = Mathf.Clamp01(_normalizeValue);
+
+        return speedMax * _normalizeValue;
+    }
     #endregion
 
     #region Private methods
@@ -168,9 +180,7 @@ public class SpaceshipMetadata
     #region Coroutines
     public IEnumerator StartChangeSpeed(float _normalizeValue)
     {
-        _normalizeValue = Mathf.Clamp01(_normalizeValue);
-
-        var speedResult = speedMax * _normalizeValue;
+        var speedResult = GetSpeedValue(_normalizeValue);
         var modifier = Speed > speedResult ? -1.0f : 1.0f;
 
         while (true)

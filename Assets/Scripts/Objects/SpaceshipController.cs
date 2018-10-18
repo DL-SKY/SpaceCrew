@@ -39,6 +39,9 @@ public class SpaceshipController : MonoBehaviour
     [Header("Metadata")]
     [SerializeField]
     private SpaceshipMetadata meta;
+
+    //private Coroutine coroutine;
+    private Coroutine speedCoroutine;
     #endregion
 
     #region Unity methods
@@ -69,7 +72,10 @@ public class SpaceshipController : MonoBehaviour
 
     #region Public methods
     public void InitializeSpaceship()
-    {      
+    {
+        //coroutine = null;
+        speedCoroutine = null;
+
         data = Global.Instance.PROFILE.spaceships.Find(x => x.model == model);
         if (data == null)
         {
@@ -105,27 +111,36 @@ public class SpaceshipController : MonoBehaviour
     public void SetTargetMovePoint(Transform _target)
     {
         StopAllCoroutines();
+        //if (coroutine != null)
+            //StopCoroutine(coroutine);
 
         ClearAllTargets();
         targetMovePoint = _target;
+        //coroutine = 
         StartCoroutine(ToMove(EnumDistanceType.ToPoint));
     }
 
     public void SetTargetFollow(Transform _target)
     {
         StopAllCoroutines();
+        //if (coroutine != null)
+            //StopCoroutine(coroutine);
 
         ClearAllTargets();
         targetFollow = _target;        
+        //coroutine = 
         StartCoroutine(ToFollow(EnumDistanceType.ToFollow));
     }
 
     public void SetTargetOrbit(Transform _target)
     {
         StopAllCoroutines();
+        //if (coroutine != null)
+            //StopCoroutine(coroutine);
 
         ClearAllTargets();
         targetOrbit = _target;
+        //coroutine = 
         StartCoroutine(ToOrbit(EnumDistanceType.ToOrbit));
     }
 
@@ -149,6 +164,14 @@ public class SpaceshipController : MonoBehaviour
     public void ClearTargetOrbit()
     {
         targetOrbit = null;
+    }
+
+    public void SetSpeed(float _normalizeValue)
+    {
+        if (speedCoroutine != null)
+            StopCoroutine(speedCoroutine);
+
+        speedCoroutine = StartCoroutine(meta.StartChangeSpeed(_normalizeValue));
     }
     #endregion
 
@@ -269,7 +292,7 @@ public class SpaceshipController : MonoBehaviour
             {
                 //Поворот
                 var quaternionNeed = Quaternion.LookRotation(targetOrbit.position - transform.position) * Quaternion.AngleAxis(89.0f, Vector3.up);
-                var step = meta.Maneuver * Time.deltaTime * 57.3f;  //В градусах
+                var step = meta.Maneuver * Time.deltaTime * 57.3f;  //Радианы в градусы
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, quaternionNeed, step);
 
                 //Движение
@@ -286,6 +309,15 @@ public class SpaceshipController : MonoBehaviour
         var targetRot = _target.position - transform.position;
         //var quatToTarget = Quaternion.LookRotation(targetRot);
 
+        //Запоминаем текущую скорость
+        var lastSpeedNormalize = meta.GetSpeedNormalize(meta.Speed);
+        if (lastSpeedNormalize > ConstantsSpaceshipSettings.SPEED_TURN)
+        {
+            if (speedCoroutine != null)
+                StopCoroutine(speedCoroutine);
+            yield return speedCoroutine = StartCoroutine(meta.StartChangeSpeed(ConstantsSpaceshipSettings.SPEED_TURN));
+        }
+
         //Возможное условие
         //float angle = Vector3.Angle(dir, transform.forward);
         //if (angle <= 0.25)
@@ -295,7 +327,7 @@ public class SpaceshipController : MonoBehaviour
         //while ((_target.position - transform.position) != Vector3.zero && quatToTarget != transform.rotation)
         while (targetRot != Vector3.zero && Vector3.Angle(transform.forward, targetRot) > 0.25)
         {            
-            var step = meta.Maneuver * Time.deltaTime;  //В радианах
+            var step = meta.Maneuver * Time.deltaTime;  //В радианах (маневренность будем испоьзовать как скорость поворота в радианах)
             var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
 
             transform.rotation = Quaternion.LookRotation(newRot);
@@ -305,6 +337,11 @@ public class SpaceshipController : MonoBehaviour
             targetRot = _target.position - transform.position;
             //quatToTarget = Quaternion.LookRotation(targetRot);
         }
+
+        //Восстанавливаем предыдущую скорость
+        if (speedCoroutine != null)
+            StopCoroutine(speedCoroutine);
+        yield return speedCoroutine = StartCoroutine(meta.StartChangeSpeed(lastSpeedNormalize));
     }
     #endregion
 }
