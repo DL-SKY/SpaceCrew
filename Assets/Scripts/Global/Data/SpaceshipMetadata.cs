@@ -179,9 +179,13 @@ public class SpaceshipMetadata
 
     #region Coroutines
     public IEnumerator StartChangeSpeed(float _normalizeValue)
-    {
+    {     
         var speedResult = GetSpeedValue(_normalizeValue);
+        if (speedResult == Speed)
+            yield break;
         var modifier = Speed > speedResult ? -1.0f : 1.0f;
+
+        Debug.LogWarning("START StartChangeSpeed: " + Speed + "/" + speedResult);
 
         while (true)
         {
@@ -206,7 +210,9 @@ public class SpaceshipMetadata
             }
 
             yield return null;
-        }        
+        }
+
+        Debug.LogWarning("STOP StartChangeSpeed: " + Speed + "/" + speedResult);
     }
     #endregion
 }

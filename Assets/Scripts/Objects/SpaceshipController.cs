@@ -306,27 +306,27 @@ public class SpaceshipController : MonoBehaviour
 
     private IEnumerator ToRotate(Transform _target)
     {
-        var targetRot = _target.position - transform.position;
-        //var quatToTarget = Quaternion.LookRotation(targetRot);
-
         //Запоминаем текущую скорость
         var lastSpeedNormalize = meta.GetSpeedNormalize(meta.Speed);
-        if (lastSpeedNormalize > ConstantsSpaceshipSettings.SPEED_TURN)
-        {
-            if (speedCoroutine != null)
-                StopCoroutine(speedCoroutine);
-            yield return speedCoroutine = StartCoroutine(meta.StartChangeSpeed(ConstantsSpaceshipSettings.SPEED_TURN));
-        }
+        if (lastSpeedNormalize < ConstantsSpaceshipSettings.SPEED_DOCK)
+            lastSpeedNormalize = ConstantsSpaceshipSettings.SPEED_DOCK;
 
-        //Возможное условие
-        //float angle = Vector3.Angle(dir, transform.forward);
-        //if (angle <= 0.25)
-        //Player.position = Vector3.MoveTowards(Player.position, needPos, Time.deltaTime * 5);
+        //Вычисляем точку для поворота
+        var targetRot = _target.position - transform.position;
+        //var quatToTarget = Quaternion.LookRotation(targetRot);        
 
         //TODO: выловить БАГ в условии (бывает некорректное поведении при перемещении только по одной оси)
         //while ((_target.position - transform.position) != Vector3.zero && quatToTarget != transform.rotation)
         while (targetRot != Vector3.zero && Vector3.Angle(transform.forward, targetRot) > 0.25)
-        {            
+        {
+            //Уменьшаем скорость
+            if (meta.GetSpeedNormalize(meta.Speed) > ConstantsSpaceshipSettings.SPEED_TURN)
+            {
+                if (speedCoroutine != null)
+                    StopCoroutine(speedCoroutine);
+                yield return speedCoroutine = StartCoroutine(meta.StartChangeSpeed(ConstantsSpaceshipSettings.SPEED_TURN));
+            }
+
             var step = meta.Maneuver * Time.deltaTime;  //В радианах (маневренность будем испоьзовать как скорость поворота в радианах)
             var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
 
