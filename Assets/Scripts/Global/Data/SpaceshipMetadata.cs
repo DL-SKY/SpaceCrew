@@ -6,8 +6,10 @@ using UnityEngine;
 public class SpaceshipMetadata
 {
     #region Variables
+    [Header("Mark")]
     public int mk;
 
+    [Header("Main subsystems")]
     [SerializeField]
     private float armorMax;
     [SerializeField]
@@ -19,6 +21,17 @@ public class SpaceshipMetadata
     }
 
     [SerializeField]
+    private float cargoMax;
+    [SerializeField]
+    private float cargo;
+    public float Cargo
+    {
+        get { return cargo; }
+        set { cargo = value > cargoMax ? cargoMax : value; }
+    }
+
+    [Header("Shield subsystems")]
+    [SerializeField]
     private float shieldMax;
     [SerializeField]
     private float shield;
@@ -28,6 +41,17 @@ public class SpaceshipMetadata
         set { shield = value > shieldMax ? shieldMax : value; }
     }
 
+    [SerializeField]
+    private float shieldRecoveryMax;
+    [SerializeField]
+    private float shieldRecovery;
+    public float ShieldRecovery
+    {
+        get { return shieldRecovery; }
+        set { shieldRecovery = value > shieldRecoveryMax ? shieldRecoveryMax : value; }
+    }
+
+    [Header("Navigation subsystems")]
     [SerializeField]
     private float speedMax;
     [SerializeField]
@@ -48,6 +72,28 @@ public class SpaceshipMetadata
         set { maneuver = value > maneuverMax ? maneuverMax : value; }
     }
 
+    [Header("Weapons subsystems")]
+    [SerializeField]
+    private float accuracyMax;
+    [SerializeField]
+    private float accuracy;
+    public float Accuracy
+    {
+        get { return accuracy; }
+        set { accuracy = value > accuracyMax ? accuracyMax : value; }
+    }
+
+    [SerializeField]
+    private float criticalMax;
+    [SerializeField]
+    private float critical;
+    public float Critical
+    {
+        get { return critical; }
+        set { critical = value > criticalMax ? criticalMax : value; }
+    }
+
+    [Header("Energy subsystems")]
     [SerializeField]
     private float energyMax;
     [SerializeField]
@@ -83,21 +129,33 @@ public class SpaceshipMetadata
         if (mkIndex < 0)
             mkIndex = 0;
 
+        //Main subsystems
         armorMax = GetArmorMax();
         Armor = armorMax;
+        cargoMax = GetCargoMax();
+        Cargo = cargoMax;
 
+        //Shield subsystems
         shieldMax = GetShieldMax();
         Shield = shieldMax;
+        shieldRecoveryMax = GetShieldRecoveryMax();
+        ShieldRecovery = shieldRecoveryMax;
 
+        //Navigation subsystems
         speedMax = GetSpeedMax();
         Speed = speedMax;
-
         maneuverMax = GetManeuverMax();
         Maneuver = maneuverMax;
 
+        //Weapons subsystems
+        accuracyMax = GetAccuracyMax();
+        Accuracy = accuracyMax;
+        criticalMax = GetCriticalMax();
+        Critical = criticalMax;
+
+        //Energy subsystems
         energyMax = GetEnergyMax();
         Energy = energyMax;
-
         energyRecoveryMax = GetEnergyRecoveryMax();
         EnergyRecovery = energyRecoveryMax;
     }
@@ -126,12 +184,32 @@ public class SpaceshipMetadata
         return result;
     }
 
+    private float GetCargoMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.cargo[mkIndex];
+
+        return result;
+    }
+
     private float GetShieldMax()
     {
         float result = 0.0f;
 
         //Базовое значение из Конфигурации
         result = config.shield[mkIndex];
+
+        return result;
+    }
+
+    private float GetShieldRecoveryMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.shieldRecovery[mkIndex];
 
         return result;
     }
@@ -152,6 +230,26 @@ public class SpaceshipMetadata
 
         //Базовое значение из Конфигурации
         result = config.maneuver[mkIndex];
+
+        return result;
+    }
+
+    private float GetAccuracyMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.accuracy[mkIndex];
+
+        return result;
+    }
+
+    private float GetCriticalMax()
+    {
+        float result = 0.0f;
+
+        //Базовое значение из Конфигурации
+        result = config.critical[mkIndex];
 
         return result;
     }

@@ -159,6 +159,10 @@ public class Configs
 
     public List<SpaceshipsConfig> spaceships = new List<SpaceshipsConfig>();
 
+    public List<SubsystemsConfig> subsystems = new List<SubsystemsConfig>();
+    public List<ParametersConfig> parameters = new List<ParametersConfig>();
+
+
     //public List<SpaceshipConfig> spaceships = new List<SpaceshipConfig>();
     //public List<EquipmentConfig> equipments = new List<EquipmentConfig>();
 }
@@ -196,13 +200,30 @@ public class SpaceshipsConfig
     public int[] items;
 
     public float[] armor;
+    public float[] cargo;
     public float[] shield;
+    public float[] shieldRecovery;
     public float[] speed;
     public float[] maneuver;
+    public float[] accuracy;
+    public float[] critical;
     public float[] energy;
     public float[] energyRecovery;
 
     public string[] skills;
+}
+
+[Serializable]
+public class SubsystemsConfig
+{
+    public string id;
+}
+
+[Serializable]
+public class ParametersConfig
+{
+    public string id;
+    public string subsystem;
 }
 
 /*

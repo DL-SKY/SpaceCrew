@@ -147,26 +147,12 @@
         7,
         8
       ],
-      "cargo": [
-        1,
-        1,
-        1.5,
-        1.5,
-        2
-      ],
       "shield": [
         5,
         6,
         6,
         6,
         7
-      ],
-      "shieldRecovery": [
-        0.5,
-        0.5,
-        0.5,
-        0.5,
-        0.5
       ],
       "speed": [
         3,
@@ -182,20 +168,6 @@
         3,
         4
       ],
-      "accuracy": [
-        4,
-        4,
-        4,
-        5,
-        5
-      ],
-      "critical": [
-        1,
-        1,
-        2,
-        3,
-        5
-      ],
       "energy": [
         6,
         6,
@@ -204,74 +176,15 @@
         6
       ],
       "energyRecovery": [
-        0.6,
-        0.7,
-        0.8,
-        0.9,
-        1
+        1,
+        1,
+        1,
+        2,
+        2
       ],
       "skills": [
         "default"
       ]
-    }
-  ],
-  "subsystems": [
-    {
-      "id": "main"
-    },
-    {
-      "id": "shield"
-    },
-    {
-      "id": "navigation"
-    },
-    {
-      "id": "weapon"
-    },
-    {
-      "id": "energy"
-    }
-  ],
-  "parameters": [
-    {
-      "id": "armor",
-      "subsystem": "main"
-    },
-    {
-      "id": "cargo",
-      "subsystem": "main"
-    },
-    {
-      "id": "shield",
-      "subsystem": "shield"
-    },
-    {
-      "id": "shieldRecovery",
-      "subsystem": "shield"
-    },
-    {
-      "id": "speed",
-      "subsystem": "navigation"
-    },
-    {
-      "id": "maneuver",
-      "subsystem": "navigation"
-    },
-    {
-      "id": "accuracy",
-      "subsystem": "weapon"
-    },
-    {
-      "id": "critical",
-      "subsystem": "weapon"
-    },
-    {
-      "id": "energy",
-      "subsystem": "energy"
-    },
-    {
-      "id": "energyRecovery",
-      "subsystem": "energy"
     }
   ]
 }
