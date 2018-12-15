@@ -4,7 +4,7 @@
 public class ParameterData
 {
     #region Variables
-    public string id;
+    public EnumParameters id;
     public float value;
     #endregion
 }

@@ -27,7 +27,7 @@ public class ToolsMain : Singleton<ToolsMain>
 
 #if UNITY_EDITOR
     #region Menu
-    [MenuItem("Tools/Open profile folder")]
+    [MenuItem("Tools/Save/Open profile folder")]
     private static void ToolsOpenProfileFolder()
     {
         //System.Diagnostics.Process.Start("explorer.exe", " " + Application.persistentDataPath);
@@ -39,6 +39,30 @@ public class ToolsMain : Singleton<ToolsMain>
     private static void ToolsEmail()
     {
         LogManager.Instance.SendLogs();
+    }
+
+    [MenuItem("Tools/Settings/Save settings")]
+    private static void SaveSettings()
+    {
+        Global.Instance.SETTINGS.SaveSettings();
+    }
+
+    [MenuItem("Tools/Settings/Delete settings")]
+    private static void DeleteSettings()
+    {
+        Global.Instance.SETTINGS.DeleteSettings();
+    }
+
+    [MenuItem("Tools/Save/Save profile")]
+    private static void SaveProfile()
+    {
+        Global.Instance.PROFILE.SaveProfile();
+    }
+
+    [MenuItem("Tools/Save/Delete profile")]
+    private static void DeleteProfile()
+    {
+        Global.Instance.PROFILE.DeleteProfile();
     }
     #endregion
 #endif

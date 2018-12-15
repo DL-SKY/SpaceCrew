@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DllSky.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,9 +22,29 @@ public class SpaceshipData
     #region Public methods
     public SpaceshipData()
     {
-        
+        var spaceships = Global.Instance.CONFIGS.spaceships;
+        var config = spaceships.Count > 0 ? spaceships[0] : null;
+
+        if (config == null)
+        {
+            Debug.LogError("[SpaceshipData] Config is NULL. Create default values.");
+
+            id = "";
+            model = "mk6";
+            material = "Default";
+            mk = 1;
+
+            return;
+        }
+
+        model = config.model;
+        id = UtilityBase.GetMD5(model + DateTime.UtcNow.ToString());
+        material = "Default";
+        mk = 1;
+
+        DefaultSubsystems();
     }
-    
+
     /*public SpaceshipData(string _model)
     {
 
@@ -31,5 +52,21 @@ public class SpaceshipData
     #endregion
 
     #region Private methods
+    private void ClearSubsystems()
+    {
+        subsystems.Clear();
+    }
+
+    private void DefaultSubsystems()
+    {
+        ClearSubsystems();
+
+        var configs = Global.Instance.CONFIGS.subsystems;
+        foreach (var item in configs)
+        {
+            var newSubsystem = new SubsystemData((EnumSubsystems)Enum.Parse(typeof(EnumSubsystems), item.id));
+            subsystems.Add(newSubsystem);
+        }
+    }
     #endregion
 }

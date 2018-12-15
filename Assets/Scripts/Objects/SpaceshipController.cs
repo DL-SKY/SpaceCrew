@@ -34,7 +34,11 @@ public class SpaceshipController : MonoBehaviour
     private Rigidbody rb;
     private RendererController rendererController;
 
+    [Header("Data")]
+    [SerializeField]
     private SpaceshipData data;
+    [Header("Configuration")]
+    [SerializeField]
     private SpaceshipsConfig config;
     [Header("Metadata")]
     [SerializeField]
@@ -83,12 +87,7 @@ public class SpaceshipController : MonoBehaviour
             //model = "ERROR";
             //return;
 
-            data = new SpaceshipData()
-            {
-                model = "mk6",
-                material = "Default",
-                mk = 1,
-            };
+            data = new SpaceshipData();
             Global.Instance.PROFILE.spaceships.Add(data);
         }
 

@@ -144,6 +144,33 @@ public static class ConstantsEmail
     public const string SUBJECT_LOGS = "Game Logs";
 }
 
+/*public static class ConstantsSubsystems
+{
+    public const string MAIN = "main";
+    public const string SHIELD = "shield";
+    public const string NAVIGATION = "navigation";
+    public const string WEAPON = "weapon";
+    public const string ENERGY = "energy";
+}
+
+public static class ConstantsParameters
+{
+    public const string ARMOR = "armor";
+    public const string CARGO = "cargo";
+
+    public const string SHIELD = "shield";
+    public const string SHIELD_RECOVERY = "shieldRecovery";
+
+    public const string SPEED = "speed";
+    public const string SPEED_RECOVERY = "maneuver";
+
+    public const string ACCURACY = "accuracy";
+    public const string CRITICAL = "critical";
+
+    public const string ENERGY = "energy";
+    public const string ENERGY_RECOVERY = "energyRecovery";
+}*/
+
 #region ENUM
 public enum EnumDistanceType
 {
@@ -152,6 +179,29 @@ public enum EnumDistanceType
     ToOrbit,
     ToObject,
     ToEnemy,
+}
+
+public enum EnumSubsystems
+{
+    main,
+    shield,
+    navigation,
+    weapon,
+    energy,
+}
+
+public enum EnumParameters
+{
+    armor,
+    cargo,
+    shield,
+    shieldRecovery,
+    speed,
+    maneuver,
+    accuracy,
+    critical,
+    energy,
+    energyRecovery,
 }
 
 //Тип объекта
