@@ -13,17 +13,20 @@ public class SpaceshipData
     public string material;                                                     //Используемый материал
     public int mk;                                                              //Mark/Модель №/Уровень
 
-    public List<SubsystemData> subsystems = new List<SubsystemData>();          //Список подсистем (каждая подсистема содержит перки/скиллы)
-    public List<ItemData> weapons = new List<ItemData>();                       //Список установленного вооружения
-    public List<ItemData> slots = new List<ItemData>();                         //Список установленного оборудования
-    public List<ItemData> items = new List<ItemData>();                         //Список используемых предметов
+    //public List<string> subsystems = new List<string>();                        //Список подсистем (каждая подсистема содержит перки/скиллы)
+    public List<string> weapons = new List<string>();                           //Список установленного вооружения
+    public List<string> slots = new List<string>();                             //Список установленного оборудования
+    public List<string> items = new List<string>();                             //Список используемых предметов
+
+    [NonSerialized]
+    private SpaceshipsConfig config;
     #endregion
 
     #region Public methods
     public SpaceshipData()
     {
         var spaceships = Global.Instance.CONFIGS.spaceships;
-        var config = spaceships.Count > 0 ? spaceships[0] : null;
+        config = spaceships.Count > 0 ? spaceships[0] : null;
 
         if (config == null)
         {
@@ -41,32 +44,35 @@ public class SpaceshipData
         id = UtilityBase.GetMD5(model + DateTime.UtcNow.ToString());
         material = "Default";
         mk = 1;
-
-        DefaultSubsystems();
     }
 
     /*public SpaceshipData(string _model)
     {
 
     }*/
+
+    public int GetMkIndex()
+    {
+        var mkIndex = mk - 1;
+        if (mkIndex < 0)
+            mkIndex = 0;
+
+        return mkIndex;
+    }
+
+    public SpaceshipsConfig GetConfig()
+    {
+        if (config == null)
+            config = Global.Instance.CONFIGS.spaceships.Find(x => x.model == model);
+
+        if (config == null)
+            Debug.LogWarning("<color=#FF0000>[SpaceshipData] \"config\" is null!</color>");
+
+        return config;
+    }
     #endregion
 
     #region Private methods
-    private void ClearSubsystems()
-    {
-        subsystems.Clear();
-    }
-
-    private void DefaultSubsystems()
-    {
-        ClearSubsystems();
-
-        var configs = Global.Instance.CONFIGS.subsystems;
-        foreach (var item in configs)
-        {
-            var newSubsystem = new SubsystemData((EnumSubsystems)Enum.Parse(typeof(EnumSubsystems), item.id));
-            subsystems.Add(newSubsystem);
-        }
-    }
+    
     #endregion
 }

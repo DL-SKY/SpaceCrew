@@ -91,13 +91,7 @@ public class SpaceshipController : MonoBehaviour
             Global.Instance.PROFILE.spaceships.Add(data);
         }
 
-        config = Global.Instance.CONFIGS.spaceships.Find(x => x.model == model);
-        if (config == null)
-        {
-            Debug.LogWarning("<color=#FF0000>[SpaceshipController] \"config\" is null!</color>");
-            model = "ERROR";
-            return;
-        }
+        config = data.GetConfig();
 
         meta = new SpaceshipMetadata(data, config);
 

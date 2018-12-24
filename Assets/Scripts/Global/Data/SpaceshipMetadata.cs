@@ -1,13 +1,32 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
 public class SpaceshipMetadata
 {
     #region Variables
+    [Header("Subsystems")]
+    public List<SubsystemData> subsystems = new List<SubsystemData>();          //Список подсистем (каждая подсистема содержит перки/скиллы)
+    [Header("Weapons")]
+    public List<ItemData> weapons = new List<ItemData>();                       //Список установленного вооружения
+    [Header("Slots")]
+    public List<ItemData> slots = new List<ItemData>();                         //Список установленного оборудования
+    [Header("Items")]
+    public List<ItemData> items = new List<ItemData>();                         //Список используемых предметов
+
     [Header("Mark")]
-    public int mk;
+    public int mk;                                                              //Модель, модификация
+
+    [Header("Max parameters")]
+    public Dictionary<EnumParameters, float> parametersMax = new Dictionary<EnumParameters, float>();
+
+    [Header("Current parameters")]
+    public Dictionary<EnumParameters, float> parameters = new Dictionary<EnumParameters, float>();
+
+
+
 
     [Header("Main subsystems")]
     [SerializeField]
@@ -124,10 +143,15 @@ public class SpaceshipMetadata
     {
         data = _data;
         config = _config;
+
         mk = data.mk;
-        mkIndex = mk - 1;
-        if (mkIndex < 0)
-            mkIndex = 0;
+        mkIndex = data.GetMkIndex();
+
+        ApplySubsystems();
+
+        ApplyMaxParameters();
+        ApplyParameters();
+
 
         //Main subsystems
         armorMax = GetArmorMax();
@@ -158,6 +182,7 @@ public class SpaceshipMetadata
         Energy = energyMax;
         energyRecoveryMax = GetEnergyRecoveryMax();
         EnergyRecovery = energyRecoveryMax;
+       
     }
 
     public float GetSpeedNormalize(float _speed)
@@ -272,6 +297,45 @@ public class SpaceshipMetadata
         result = config.energyRecovery[mkIndex];
 
         return result;
+    }
+
+    private void ApplySubsystems()
+    {
+        subsystems.Clear();
+
+        var configs = Global.Instance.CONFIGS.subsystems;
+        foreach (var item in configs)
+        {
+            var newSubsystem = new SubsystemData((EnumSubsystems)Enum.Parse(typeof(EnumSubsystems), item.id), config, mkIndex);
+            subsystems.Add(newSubsystem);
+        }
+    }
+
+    private void ApplyMaxParameters()
+    {
+        parametersMax.Clear();
+
+        foreach (var item in subsystems)
+        {
+            foreach (var param in item.parameters)
+            {
+                parametersMax.Add(param.id, param.value);
+            }
+        }
+
+        Debug.LogWarning("parametersMax: " + parametersMax.Count);
+    }
+
+    private void ApplyParameters()
+    {
+        parameters.Clear();
+
+        foreach (var param in parametersMax)
+        {
+            parameters.Add(param.Key, param.Value);
+        }
+
+        Debug.LogWarning("parameters: " + parameters.Count);
     }
     #endregion
 
