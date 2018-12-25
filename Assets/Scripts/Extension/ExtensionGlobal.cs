@@ -190,4 +190,14 @@ public static class ExtensionGlobal
 
     #region Config
     #endregion
+
+    #region Lists / Dictionaries / Arrays
+    public static void AddOrUpdate(this Dictionary<EnumParameters, float> _dictionary, EnumParameters _key, float _value)
+    {
+        if (_dictionary.ContainsKey(_key))      //Ключ уже есть в словаре - обновляем значение
+            _dictionary[_key] += _value;
+        else                                    //Ключа в словаре нет, добавляем новый ключ
+            _dictionary.Add(_key, _value);
+    }
+    #endregion
 }
