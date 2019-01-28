@@ -20,9 +20,8 @@ public class SpaceshipController : MonoBehaviour
     public float length;
 
     [Header("Targets")]
-    public Transform targetMovePoint;
-    public Transform targetFollow;
-    public Transform targetOrbit;
+    public EnumTargetType targetType;
+    public Transform target;
 
     [Header("Main Renderer")]
     public MeshFilter mainFilter;
@@ -72,6 +71,15 @@ public class SpaceshipController : MonoBehaviour
         if (rendererController)
             rendererController.OnVisibleToCamera -= SetVisibleToCamera;
     }
+
+    private void FixedUpdate()
+    {
+        //Вращение
+        FixedUpdateRotation();
+
+        //Перемещение
+        FixedUpdatePosition();        
+    }
     #endregion
 
     #region Public methods
@@ -103,68 +111,46 @@ public class SpaceshipController : MonoBehaviour
 
     public void SetTargetMovePoint(Transform _target)
     {
-        StopAllCoroutines();
-        //if (coroutine != null)
-            //StopCoroutine(coroutine);
+        targetType = EnumTargetType.ToPoint;
 
-        ClearAllTargets();
-        targetMovePoint = _target;
-        //coroutine = 
-        StartCoroutine(ToMove(EnumDistanceType.ToPoint));
+        target = _target;
     }
 
-    public void SetTargetFollow(Transform _target)
+    public void ClearTarget()
     {
-        StopAllCoroutines();
-        //if (coroutine != null)
-            //StopCoroutine(coroutine);
-
-        ClearAllTargets();
-        targetFollow = _target;        
-        //coroutine = 
-        StartCoroutine(ToFollow(EnumDistanceType.ToFollow));
+        target = null;
     }
 
-    public void SetTargetOrbit(Transform _target)
-    {
-        StopAllCoroutines();
-        //if (coroutine != null)
-            //StopCoroutine(coroutine);
-
-        ClearAllTargets();
-        targetOrbit = _target;
-        //coroutine = 
-        StartCoroutine(ToOrbit(EnumDistanceType.ToOrbit));
-    }
-
-    public void ClearAllTargets()
-    {
-        ClearTargetMovePoint();
-        ClearTargetFollow();
-        ClearTargetOrbit();
-    }
-
-    public void ClearTargetMovePoint()
-    {
-        targetMovePoint = null;
-    }
-
-    public void ClearTargetFollow()
-    {
-        targetFollow = null;
-    }
-
-    public void ClearTargetOrbit()
-    {
-        targetOrbit = null;
-    }
-
-    public void SetSpeed(float _normalizeValue)
+    public void SetSpeedNormalize(float _normalizeValue)
     {
         if (speedCoroutine != null)
             StopCoroutine(speedCoroutine);
 
         speedCoroutine = StartCoroutine(meta.StartChangeSpeed(_normalizeValue));
+    }
+
+    public void AddSpeedNormalize(float _additionalNormalizeValue)
+    {
+        if (speedCoroutine != null)
+            StopCoroutine(speedCoroutine);
+
+        var normalizeValue = meta.GetSpeedCurrentNormalize() + _additionalNormalizeValue;
+        speedCoroutine = StartCoroutine(meta.StartChangeSpeed(normalizeValue));
+    }
+
+    public float GetSpeed()
+    {
+        return meta.GetParameter(EnumParameters.speed);
+    }
+
+    public float GetArmor()
+    {
+        return meta.GetParameter(EnumParameters.armor);
+    }
+
+    public float GetShield()
+    {
+        return meta.GetParameter(EnumParameters.shield);
     }
     #endregion
 
@@ -172,6 +158,37 @@ public class SpaceshipController : MonoBehaviour
     private void SetVisibleToCamera(bool _isVisible)
     {
         VisibleToCamera = _isVisible;
+    }
+
+    private void FixedUpdateRotation()
+    {
+        if (target == null)
+            return;
+
+        //Вычисляем точку для поворота
+        var targetRot = target.position - transform.position;
+    
+        if (targetRot != Vector3.zero && Vector3.Angle(transform.forward, targetRot) > 0.25)
+        {
+            var step = meta.GetParameter(EnumParameters.maneuver) * Time.fixedDeltaTime;  //В радианах (маневренность будем испоьзовать как скорость поворота в радианах)
+            var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
+
+            //transform.rotation = Quaternion.LookRotation(newRot);
+            rb.rotation = Quaternion.LookRotation(newRot);
+        }
+    }
+
+    private void FixedUpdatePosition()
+    {
+        //if (targetType != EnumTargetType.None && target == null)
+        //return;
+
+        if (target != null)
+        {
+            //TODO: добавить проверку на дистанцию. В случае необходимости останавливаем корабль
+        }
+
+        rb.MovePosition(transform.position + transform.forward * GetSpeed() * Time.fixedDeltaTime);
     }
 
     /*private void LoadedMainMesh()
@@ -186,27 +203,30 @@ public class SpaceshipController : MonoBehaviour
         mainRenderer.material = mat;
     }
 
-    private float GetDistanceMinimum(EnumDistanceType _distanceType)
+    private float GetDistanceMinimum(EnumTargetType _distanceType)
     {
         var result = 0.0f;
         switch (_distanceType)
         {
-            case EnumDistanceType.ToPoint:
+            case EnumTargetType.None:
+                break;
+
+            case EnumTargetType.ToPoint:
                 //result = length / 0.5f;
                 break;
 
-            case EnumDistanceType.ToFollow:
+            case EnumTargetType.ToFollow:
                 result = length * 3.0f;
                 break;
 
-            case EnumDistanceType.ToOrbit:
+            case EnumTargetType.ToOrbit:
                 result = length * 10.0f;
                 break;
 
-            case EnumDistanceType.ToObject:
+            case EnumTargetType.ToObject:
                 break;
 
-            case EnumDistanceType.ToEnemy:
+            case EnumTargetType.ToEnemy:
                 break;
         }
 
@@ -214,127 +234,6 @@ public class SpaceshipController : MonoBehaviour
     }
     #endregion
 
-    #region Coroutines
-    //Перемещение к Цели
-    private IEnumerator ToMove(EnumDistanceType _distanceType)
-    {
-        var distanceMin = GetDistanceMinimum(_distanceType);        
-        var distance = Vector3.Distance(transform.position, targetMovePoint.position);
-
-        //Пока есть Цель
-        while (targetMovePoint)
-        {
-            //Поворачиваем в сторону Цели
-            yield return ToRotate(targetMovePoint);
-
-            //Движемся в сторону Цели
-            if (distance <= distanceMin)
-            {
-                ClearTargetMovePoint();
-            }
-            else
-            {
-                transform.position = Vector3.MoveTowards(transform.position, targetMovePoint.position, meta.Speed * Time.deltaTime);
-                distance = Vector3.Distance(transform.position, targetMovePoint.position);
-            }
-            
-            yield return null;            
-        }
-    }
-
-    //Следование за целью
-    private IEnumerator ToFollow(EnumDistanceType _distanceType)
-    {
-        var distanceMin = GetDistanceMinimum(_distanceType);
-        var distance = Vector3.Distance(transform.position, targetFollow.position);
-
-        //Пока есть Цель
-        while (targetFollow)
-        {
-            //Поворачиваем в сторону Цели
-            yield return ToRotate(targetFollow);
-
-            //Движемся в сторону Цели
-            if (distance > distanceMin)
-            {                
-                transform.position = Vector3.MoveTowards(transform.position, targetFollow.position, meta.Speed * Time.deltaTime);                
-            }
-
-            distance = Vector3.Distance(transform.position, targetFollow.position);
-            yield return null;
-        }
-    }
-
-    //Вокруг орбиты
-    private IEnumerator ToOrbit(EnumDistanceType _distanceType)
-    {
-        var distanceMin = GetDistanceMinimum(_distanceType);
-        var distance = Vector3.Distance(transform.position, targetOrbit.position);
-
-        //Пока есть Цель
-        while (targetOrbit)
-        {
-            //Движемся к объекту
-            if (distance > distanceMin * 1.15f)
-            {
-                targetMovePoint = targetOrbit;
-                yield return ToMove(_distanceType);
-            }
-            //Двигаемся по орбите
-            else
-            {
-                //Поворот
-                var quaternionNeed = Quaternion.LookRotation(targetOrbit.position - transform.position) * Quaternion.AngleAxis(89.0f, Vector3.up);
-                var step = meta.Maneuver * Time.deltaTime * 57.3f;  //Радианы в градусы
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, quaternionNeed, step);
-
-                //Движение
-                transform.Translate(Vector3.forward * meta.Speed * Time.deltaTime);
-            }
-
-            distance = Vector3.Distance(transform.position, targetOrbit.position);
-            yield return null;
-        }
-    }
-
-    private IEnumerator ToRotate(Transform _target)
-    {
-        //Запоминаем текущую скорость
-        var lastSpeedNormalize = meta.GetSpeedNormalize(meta.Speed);
-        if (lastSpeedNormalize < ConstantsSpaceshipSettings.SPEED_DOCK)
-            lastSpeedNormalize = ConstantsSpaceshipSettings.SPEED_DOCK;
-
-        //Вычисляем точку для поворота
-        var targetRot = _target.position - transform.position;
-        //var quatToTarget = Quaternion.LookRotation(targetRot);        
-
-        //TODO: выловить БАГ в условии (бывает некорректное поведении при перемещении только по одной оси)
-        //while ((_target.position - transform.position) != Vector3.zero && quatToTarget != transform.rotation)
-        while (targetRot != Vector3.zero && Vector3.Angle(transform.forward, targetRot) > 0.25)
-        {
-            //Уменьшаем скорость
-            if (meta.GetSpeedNormalize(meta.Speed) > ConstantsSpaceshipSettings.SPEED_TURN)
-            {
-                if (speedCoroutine != null)
-                    StopCoroutine(speedCoroutine);
-                yield return speedCoroutine = StartCoroutine(meta.StartChangeSpeed(ConstantsSpaceshipSettings.SPEED_TURN));
-            }
-
-            var step = meta.Maneuver * Time.deltaTime;  //В радианах (маневренность будем испоьзовать как скорость поворота в радианах)
-            var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
-
-            transform.rotation = Quaternion.LookRotation(newRot);
-
-            yield return null;
-
-            targetRot = _target.position - transform.position;
-            //quatToTarget = Quaternion.LookRotation(targetRot);
-        }
-
-        //Восстанавливаем предыдущую скорость
-        if (speedCoroutine != null)
-            StopCoroutine(speedCoroutine);
-        yield return speedCoroutine = StartCoroutine(meta.StartChangeSpeed(lastSpeedNormalize));
-    }
+    #region Coroutines    
     #endregion
 }

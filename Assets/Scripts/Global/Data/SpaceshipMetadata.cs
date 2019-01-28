@@ -19,119 +19,10 @@ public class SpaceshipMetadata
     [Header("Mark")]
     public int mk;                                                              //Модель, модификация
 
-    [Header("Max parameters")]
-    public Dictionary<EnumParameters, float> parametersMax = new Dictionary<EnumParameters, float>();
-
-    [Header("Current parameters")]
-    public Dictionary<EnumParameters, float> parameters = new Dictionary<EnumParameters, float>();
-
-
-
-
-    [Header("Main subsystems")]
-    [SerializeField]
-    private float armorMax;
-    [SerializeField]
-    private float armor;
-    public float Armor
-    {
-        get { return armor; }
-        set { armor = value > armorMax ? armorMax : value; }
-    }
-
-    [SerializeField]
-    private float cargoMax;
-    [SerializeField]
-    private float cargo;
-    public float Cargo
-    {
-        get { return cargo; }
-        set { cargo = value > cargoMax ? cargoMax : value; }
-    }
-
-    [Header("Shield subsystems")]
-    [SerializeField]
-    private float shieldMax;
-    [SerializeField]
-    private float shield;
-    public float Shield
-    {
-        get { return shield; }
-        set { shield = value > shieldMax ? shieldMax : value; }
-    }
-
-    [SerializeField]
-    private float shieldRecoveryMax;
-    [SerializeField]
-    private float shieldRecovery;
-    public float ShieldRecovery
-    {
-        get { return shieldRecovery; }
-        set { shieldRecovery = value > shieldRecoveryMax ? shieldRecoveryMax : value; }
-    }
-
-    [Header("Navigation subsystems")]
-    [SerializeField]
-    private float speedMax;
-    [SerializeField]
-    private float speed;
-    public float Speed
-    {
-        get { return speed; }
-        set { speed = value > speedMax ? speedMax : value; }
-    }
-
-    [SerializeField]
-    private float maneuverMax;
-    [SerializeField]
-    private float maneuver;
-    public float Maneuver
-    {
-        get { return maneuver; }
-        set { maneuver = value > maneuverMax ? maneuverMax : value; }
-    }
-
-    [Header("Weapons subsystems")]
-    [SerializeField]
-    private float accuracyMax;
-    [SerializeField]
-    private float accuracy;
-    public float Accuracy
-    {
-        get { return accuracy; }
-        set { accuracy = value > accuracyMax ? accuracyMax : value; }
-    }
-
-    [SerializeField]
-    private float criticalMax;
-    [SerializeField]
-    private float critical;
-    public float Critical
-    {
-        get { return critical; }
-        set { critical = value > criticalMax ? criticalMax : value; }
-    }
-
-    [Header("Energy subsystems")]
-    [SerializeField]
-    private float energyMax;
-    [SerializeField]
-    private float energy;
-    public float Energy
-    {
-        get { return energy; }
-        set { energy = value > energyMax ? energyMax : value; }
-    }
-
-    [SerializeField]
-    private float energyRecoveryMax;
-    [SerializeField]
-    private float energyRecovery;
-    public float EnergyRecovery
-    {
-        get { return energyRecovery; }
-        set { energyRecovery = value > energyRecoveryMax ? energyRecoveryMax : value; }
-    }
+    //[Header("Max parameters")]
+    private Dictionary<EnumParameters, float> parametersMax = new Dictionary<EnumParameters, float>();
+    //[Header("Current parameters")]
+    private Dictionary<EnumParameters, float> parameters = new Dictionary<EnumParameters, float>();    
 
     private int mkIndex;
     private SpaceshipData data;
@@ -152,153 +43,67 @@ public class SpaceshipMetadata
         ApplyMaxParameters();
         ApplyParameters();
 
+        ApplyDefault();
+    }
 
-        //Main subsystems
-        armorMax = GetArmorMax();
-        Armor = armorMax;
-        cargoMax = GetCargoMax();
-        Cargo = cargoMax;
+    public float GetMaxParameter(EnumParameters _key)
+    {
+        if (parametersMax.ContainsKey(_key))
+            return parametersMax[_key];
+        else
+            return 0.0f;
+    }
 
-        //Shield subsystems
-        shieldMax = GetShieldMax();
-        Shield = shieldMax;
-        shieldRecoveryMax = GetShieldRecoveryMax();
-        ShieldRecovery = shieldRecoveryMax;
+    public float GetParameter(EnumParameters _key)
+    {
+        if (parameters.ContainsKey(_key))
+            return parameters[_key];
+        else
+            return 0.0f;
+    }
 
-        //Navigation subsystems
-        speedMax = GetSpeedMax();
-        Speed = speedMax;
-        maneuverMax = GetManeuverMax();
-        Maneuver = maneuverMax;
+    public void SetDeltaParameter(EnumParameters _key, float _value)
+    {
+        var max = GetMaxParameter(_key);
 
-        //Weapons subsystems
-        accuracyMax = GetAccuracyMax();
-        Accuracy = accuracyMax;
-        criticalMax = GetCriticalMax();
-        Critical = criticalMax;
+        parameters.AddOrUpdate(_key, _value);
 
-        //Energy subsystems
-        energyMax = GetEnergyMax();
-        Energy = energyMax;
-        energyRecoveryMax = GetEnergyRecoveryMax();
-        EnergyRecovery = energyRecoveryMax;
-       
+        if (GetParameter(_key) > max)
+            parameters[_key] = max;
+    }
+
+    public void SetParameter(EnumParameters _key, float _value)
+    {
+        var max = GetMaxParameter(_key);
+
+        if (!parameters.ContainsKey(_key))
+            parameters.Add(_key, _value);
+        else
+            parameters[_key] = _value;
+
+        if (GetParameter(_key) > max)
+            parameters[_key] = max;
     }
 
     public float GetSpeedNormalize(float _speed)
     {
-        return _speed / speedMax;
+        return _speed / GetMaxParameter(EnumParameters.speed);
     }
 
     public float GetSpeedValue(float _normalizeValue)
     {
         _normalizeValue = Mathf.Clamp01(_normalizeValue);
 
-        return speedMax * _normalizeValue;
+        return GetMaxParameter(EnumParameters.speed) * _normalizeValue;
+    }
+
+    public float GetSpeedCurrentNormalize()
+    {
+        return GetSpeedNormalize(GetParameter(EnumParameters.speed));
     }
     #endregion
 
     #region Private methods
-    private float GetArmorMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.armor[mkIndex];
-
-        return result;
-    }
-
-    private float GetCargoMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.cargo[mkIndex];
-
-        return result;
-    }
-
-    private float GetShieldMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.shield[mkIndex];
-
-        return result;
-    }
-
-    private float GetShieldRecoveryMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.shieldRecovery[mkIndex];
-
-        return result;
-    }
-
-    private float GetSpeedMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.speed[mkIndex];
-
-        return result;
-    }
-
-    private float GetManeuverMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.maneuver[mkIndex];
-
-        return result;
-    }
-
-    private float GetAccuracyMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.accuracy[mkIndex];
-
-        return result;
-    }
-
-    private float GetCriticalMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.critical[mkIndex];
-
-        return result;
-    }
-
-    private float GetEnergyMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.energy[mkIndex];
-
-        return result;
-    }
-
-    private float GetEnergyRecoveryMax()
-    {
-        float result = 0.0f;
-
-        //Базовое значение из Конфигурации
-        result = config.energyRecovery[mkIndex];
-
-        return result;
-    }
-
     private void ApplySubsystems()
     {
         subsystems.Clear();
@@ -319,11 +124,9 @@ public class SpaceshipMetadata
         {
             foreach (var param in item.parameters)
             {
-                parametersMax.Add(param.id, param.value);
+                parametersMax.AddOrUpdate(param.id, param.value);
             }
         }
-
-        Debug.LogWarning("parametersMax: " + parametersMax.Count);
     }
 
     private void ApplyParameters()
@@ -332,10 +135,13 @@ public class SpaceshipMetadata
 
         foreach (var param in parametersMax)
         {
-            parameters.Add(param.Key, param.Value);
+            parameters.AddOrUpdate(param.Key, param.Value);
         }
+    }
 
-        Debug.LogWarning("parameters: " + parameters.Count);
+    private void ApplyDefault()
+    {
+        SetParameter(EnumParameters.speed, 0.0f);
     }
     #endregion
 
@@ -343,30 +149,31 @@ public class SpaceshipMetadata
     public IEnumerator StartChangeSpeed(float _normalizeValue)
     {     
         var speedResult = GetSpeedValue(_normalizeValue);
-        if (speedResult == Speed)
+        if (speedResult == GetParameter(EnumParameters.speed))
             yield break;
-        var modifier = Speed > speedResult ? -1.0f : 1.0f;
+        var modifier = GetParameter(EnumParameters.speed) > speedResult ? -1.0f : 1.0f;
 
-        Debug.LogWarning("START StartChangeSpeed: " + Speed + "/" + speedResult);
+        Debug.LogWarning("START StartChangeSpeed: " + GetParameter(EnumParameters.speed) + "/" + speedResult);
 
         while (true)
         {
-            Speed += modifier * Maneuver * Time.deltaTime;
+            var delta = modifier * GetParameter(EnumParameters.maneuver) * ConstantsGameSettings.MANEUVER_MOD * Time.deltaTime;
+            SetDeltaParameter(EnumParameters.speed, delta);
 
             //Проверка
             if (modifier < 0)
             {
-                if (Speed < speedResult)
+                if (GetParameter(EnumParameters.speed) < speedResult)
                 {
-                    Speed = speedResult;
+                    SetParameter(EnumParameters.speed, speedResult);
                     break;
                 }
             }
             else
             {
-                if (Speed > speedResult)
+                if (GetParameter(EnumParameters.speed) > speedResult)
                 {
-                    Speed = speedResult;
+                    SetParameter(EnumParameters.speed, speedResult);
                     break;
                 }
             }
@@ -374,7 +181,7 @@ public class SpaceshipMetadata
             yield return null;
         }
 
-        Debug.LogWarning("STOP StartChangeSpeed: " + Speed + "/" + speedResult);
+        Debug.LogWarning("STOP StartChangeSpeed: " + GetParameter(EnumParameters.speed) + "/" + speedResult);
     }
     #endregion
 }

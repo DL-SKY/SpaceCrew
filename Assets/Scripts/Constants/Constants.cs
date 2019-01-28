@@ -14,6 +14,8 @@
     //public const float GAMEPLAY_GENERATION_TIMER = 2.5f;   //1.0
     //public static Vector2 GAMEPLAY_GENERATION_ROTATION = new Vector2(-25.0f, 25.0f);
 
+    public const float MANEUVER_MOD = 1.0f / 2.0f;
+
 }
 
 public static class ConstantsTag
@@ -172,8 +174,9 @@ public static class ConstantsParameters
 }*/
 
 #region ENUM
-public enum EnumDistanceType
+public enum EnumTargetType
 {
+    None,
     ToPoint,
     ToFollow,
     ToOrbit,
