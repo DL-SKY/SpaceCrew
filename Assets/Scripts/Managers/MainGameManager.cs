@@ -10,7 +10,7 @@ public class MainGameManager : Singleton<MainGameManager>
 {
     #region Variables
     private string currentScene = null;
-    #endregion
+    #endregion    
 
     #region Unity methods
     private void Start()

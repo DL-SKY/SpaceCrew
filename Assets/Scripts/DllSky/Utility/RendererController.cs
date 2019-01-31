@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 
@@ -49,7 +50,10 @@ namespace DllSky.Utility
             var mesh = GetComponent<MeshFilter>().sharedMesh;
             var name = mesh.name;
 
-            var convexMesh = MeshUtility.CreateMesh(mesh.vertices);
+            List<Vector2> uv = new List<Vector2>();
+            mesh.GetUVs(0, uv);
+
+            var convexMesh = MeshUtility.CreateMesh(mesh);
 
             UnityEditor.AssetDatabase.CreateAsset(convexMesh, string.Format(@"Assets/{0}_convex.asset", name));
 

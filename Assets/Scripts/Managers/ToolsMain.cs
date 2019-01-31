@@ -86,7 +86,11 @@ public class ToolsMain : Singleton<ToolsMain>
         var full = AssetDatabase.GetAssetPath(Selection.activeObject);
         var path = full.Remove(full.LastIndexOf('/'));
         var name = mesh.name;
-        var convexMesh = Utility.MeshUtility.CreateMesh(mesh.vertices);
+
+        List<Vector2> uv = new List<Vector2>();
+        mesh.GetUVs(0, uv);
+
+        var convexMesh = Utility.MeshUtility.CreateMesh(mesh);
 
         AssetDatabase.CreateAsset(convexMesh, string.Format(@"{0}/{1}_convex.asset", path, name));
 

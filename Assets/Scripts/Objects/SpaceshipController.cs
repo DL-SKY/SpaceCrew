@@ -1,4 +1,5 @@
-﻿using DllSky.Utility;
+﻿using DllSky.Extensions;
+using DllSky.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,8 @@ using UnityEngine;
 public class SpaceshipController : MonoBehaviour
 {
     #region Variables
+    public bool isPlayer = false;
+
     [Header("Base")]
     [SerializeField]
     private bool visibleToCamera;
@@ -45,6 +48,19 @@ public class SpaceshipController : MonoBehaviour
 
     //private Coroutine coroutine;
     private Coroutine speedCoroutine;
+    #endregion
+
+    #region Gizmo
+    private void OnDrawGizmos()
+    {
+        //DrawGizmoSpaceship();
+    }
+
+    private void DrawGizmoSpaceship()
+    {
+        var file = isPlayer ? "SpaceshipSelf" : "SpaceshipEnemy";
+        Gizmos.DrawIcon(transform.position, file);
+    }
     #endregion
 
     #region Unity methods
