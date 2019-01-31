@@ -18,7 +18,8 @@ namespace DllSky.Utility
         {
             visibleToCamera = true;
 
-            OnVisibleToCamera.Invoke(true);
+            if (OnVisibleToCamera != null)
+                OnVisibleToCamera.Invoke(true);
         }
 
         //Объект не виден камерами
@@ -26,7 +27,8 @@ namespace DllSky.Utility
         {
             visibleToCamera = false;
 
-            OnVisibleToCamera.Invoke(false);
+            if(OnVisibleToCamera != null)
+                OnVisibleToCamera.Invoke(false);
         }
         #endregion
 
