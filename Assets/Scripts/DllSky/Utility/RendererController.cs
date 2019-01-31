@@ -44,12 +44,16 @@ namespace DllSky.Utility
         [ContextMenu("Create Convex Mesh")]
         private void CreateConvexMesh()
         {
-            var mesh = GetComponent<MeshFilter>().mesh;
+            var tStart = DateTime.Now;
+
+            var mesh = GetComponent<MeshFilter>().sharedMesh;
             var name = mesh.name;
 
             var convexMesh = MeshUtility.CreateMesh(mesh.vertices);
 
             UnityEditor.AssetDatabase.CreateAsset(convexMesh, string.Format(@"Assets/{0}_convex.asset", name));
+
+            Debug.Log("Convexing: " + (DateTime.Now - tStart).TotalSeconds);
         }
         #endregion
     }
