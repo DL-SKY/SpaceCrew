@@ -1,5 +1,6 @@
 ﻿using DllSky.Patterns;
 using DllSky.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 #if UNITY_EDITOR
@@ -26,31 +27,13 @@ public class ToolsMain : Singleton<ToolsMain>
     #endregion
 
 #if UNITY_EDITOR
-    #region Menu
+    #region Save
     [MenuItem("Tools/Save/Open profile folder")]
     private static void ToolsOpenProfileFolder()
     {
         //System.Diagnostics.Process.Start("explorer.exe", " " + Application.persistentDataPath);
         System.Diagnostics.Process.Start(Application.persistentDataPath);
         Debug.Log("<color=#FFD800>[ToolsMain]</color> " + Application.persistentDataPath);
-    }
-
-    [MenuItem("Tools/Email")]
-    private static void ToolsEmail()
-    {
-        LogManager.Instance.SendLogs();
-    }
-
-    [MenuItem("Tools/Settings/Save settings")]
-    private static void SaveSettings()
-    {
-        Global.Instance.SETTINGS.SaveSettings();
-    }
-
-    [MenuItem("Tools/Settings/Delete settings")]
-    private static void DeleteSettings()
-    {
-        Global.Instance.SETTINGS.DeleteSettings();
     }
 
     [MenuItem("Tools/Save/Save profile")]
@@ -63,6 +46,51 @@ public class ToolsMain : Singleton<ToolsMain>
     private static void DeleteProfile()
     {
         Global.Instance.PROFILE.DeleteProfile();
+    }
+    #endregion
+
+    #region Email
+    [MenuItem("Tools/Email")]
+    private static void ToolsEmail()
+    {
+        LogManager.Instance.SendLogs();
+    }
+    #endregion
+
+    #region Settings
+    [MenuItem("Tools/Settings/Save settings")]
+    private static void SaveSettings()
+    {
+        Global.Instance.SETTINGS.SaveSettings();
+    }
+
+    [MenuItem("Tools/Settings/Delete settings")]
+    private static void DeleteSettings()
+    {
+        Global.Instance.SETTINGS.DeleteSettings();
+    }
+    #endregion    
+
+    #region Mesh
+    [MenuItem("Tools/Mesh/Create convex mesh")]
+    private static void CreateConvexMesh()
+    {  
+        var mesh = Selection.activeObject as Mesh;
+        if (mesh == null)
+        {
+            EditorUtility.DisplayDialog("SELECT MESH", "You must select a Mesh first!", "OK");
+            return;
+        }
+
+        var tStart = DateTime.Now;
+        var full = AssetDatabase.GetAssetPath(Selection.activeObject);
+        var path = full.Remove(full.LastIndexOf('/'));
+        var name = mesh.name;
+        var convexMesh = Utility.MeshUtility.CreateMesh(mesh.vertices);
+
+        AssetDatabase.CreateAsset(convexMesh, string.Format(@"{0}/{1}_convex.asset", path, name));
+
+        Debug.Log("Convexing: " + (DateTime.Now - tStart).TotalSeconds);
     }
     #endregion
 #endif
