@@ -8,6 +8,8 @@ TagManager:
   - ScreensCanvas
   - DialogsCanvas
   - Spaceship
+  - MainCollider
+  - ShieldCollider
   layers:
   - Default
   - TransparentFX

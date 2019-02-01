@@ -92,7 +92,7 @@ public class ToolsMain : Singleton<ToolsMain>
 
         var convexMesh = Utility.MeshUtility.CreateMesh(mesh);
 
-        AssetDatabase.CreateAsset(convexMesh, string.Format(@"{0}/{1}_convex.asset", path, name));
+        AssetDatabase.CreateAsset(convexMesh, string.Format(@"{0}/{1}_convex_collider.asset", path, name));
 
         Debug.Log("Convexing: " + (DateTime.Now - tStart).TotalSeconds);
     }

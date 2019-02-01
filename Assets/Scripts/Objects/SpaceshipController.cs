@@ -30,6 +30,13 @@ public class SpaceshipController : MonoBehaviour
     public MeshFilter mainFilter;
     public MeshRenderer mainRenderer;
 
+    [Header("Energy shield Renderer")]
+    public EnergyShieldRendererController shieldController;
+
+    [Header("Colliders")]
+    public Collider mainCollider;
+    public Collider shieldCollider;
+
     [Header("Camera")]
     public SpaceshipCameraPlace cameraPlace;
 
@@ -48,6 +55,8 @@ public class SpaceshipController : MonoBehaviour
 
     //private Coroutine coroutine;
     private Coroutine speedCoroutine;
+    private float minDistance;              //Расстояние до цели, на котором корабль останавливается
+    private float brakingDistance;          //Расстояние, на котором корабль начинает снижать скорость
     #endregion
 
     #region Gizmo
@@ -98,6 +107,22 @@ public class SpaceshipController : MonoBehaviour
     }
     #endregion
 
+    #region Collisions
+    private void OnCollisionEnter(Collision collision)
+    {
+        //test
+        Debug.Log("OnCollisionEnter " + collision.gameObject.name);
+        Debug.Log("OnCollisionEnter " + collision.collider.tag);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //test
+        Debug.Log("OnTriggerEnter " + other.gameObject.name);
+        Debug.Log("OnTriggerEnter " + other.tag);
+    }
+    #endregion
+
     #region Public methods
     public void InitializeSpaceship()
     {
@@ -128,7 +153,8 @@ public class SpaceshipController : MonoBehaviour
     public void SetTargetMovePoint(Transform _target)
     {
         targetType = EnumTargetType.ToPoint;
-
+        minDistance = GetDistanceMinimum(targetType);
+        brakingDistance = GetDistanceBraking(minDistance, meta.GetSpeedResultNormalize());
         target = _target;
     }
 
@@ -143,6 +169,8 @@ public class SpaceshipController : MonoBehaviour
             StopCoroutine(speedCoroutine);
 
         speedCoroutine = StartCoroutine(meta.StartChangeSpeed(_normalizeValue));
+
+        brakingDistance = GetDistanceBraking(minDistance, _normalizeValue);
     }
 
     public void AddSpeedNormalize(float _additionalNormalizeValue)
@@ -152,6 +180,8 @@ public class SpaceshipController : MonoBehaviour
 
         var normalizeValue = meta.GetSpeedCurrentNormalize() + _additionalNormalizeValue;
         speedCoroutine = StartCoroutine(meta.StartChangeSpeed(normalizeValue));
+
+        brakingDistance = GetDistanceBraking(minDistance, normalizeValue);
     }
 
     public float GetSpeed()
@@ -167,6 +197,24 @@ public class SpaceshipController : MonoBehaviour
     public float GetShield()
     {
         return meta.GetParameter(EnumParameters.shield);
+    }
+
+    public void ApplyDamage(Damage _damage)
+    {
+        var shieldDmg = CalculateDamageShield(_damage);
+        var armorDmg = CalculateDamageArmor(_damage);
+
+        if (shieldDmg != 0.0f)
+            meta.SetDeltaParameter(EnumParameters.shield, shieldDmg);
+
+        //TODO: Условие получения урона брони
+        //Варианты: малый заряд щитов или его отсутствие; атака противника игнорирует щиты и т.д.
+        var needCheckDamageArmor = GetShield() > 0.0f;
+
+        if (needCheckDamageArmor && armorDmg != 0.0f)
+            meta.SetDeltaParameter(EnumParameters.armor, armorDmg);
+
+        CheckDestruction();
     }
     #endregion
 
@@ -186,25 +234,43 @@ public class SpaceshipController : MonoBehaviour
     
         if (targetRot != Vector3.zero && Vector3.Angle(transform.forward, targetRot) > 0.25)
         {
-            var step = meta.GetParameter(EnumParameters.maneuver) * Time.fixedDeltaTime;  //В радианах (маневренность будем испоьзовать как скорость поворота в радианах)
+            var step = meta.GetParameter(EnumParameters.maneuver) * ConstantsGameSettings.MANEUVER_MOD_ROTATE * Time.fixedDeltaTime;
             var newRot = Vector3.RotateTowards(transform.forward, targetRot, step, 0.0f);
 
-            //transform.rotation = Quaternion.LookRotation(newRot);
             rb.rotation = Quaternion.LookRotation(newRot);
         }
     }
 
     private void FixedUpdatePosition()
     {
-        //if (targetType != EnumTargetType.None && target == null)
-        //return;
+        if (targetType == EnumTargetType.None)
+            return;
+
+        var speed = GetSpeed();
 
         if (target != null)
         {
             //TODO: добавить проверку на дистанцию. В случае необходимости останавливаем корабль
+            var distance = Vector3.Distance(transform.position, target.position);
+
+            //Если не достигли конечной точки
+            if (distance > minDistance)
+            {
+                if (speed > 0.0f)
+                {
+                    //Пора включать торможение
+                    if (distance <= brakingDistance && meta.GetSpeedResultNormalize() > 0.0f)
+                        SetSpeedNormalize(0.0f);
+                }
+                else
+                {
+                    //Добавляем скорость
+                    SetSpeedNormalize(ConstantsSpaceshipSettings.SPEED_COMMON);
+                }
+            }
         }
 
-        rb.MovePosition(transform.position + transform.forward * GetSpeed() * Time.fixedDeltaTime);
+        rb.MovePosition(transform.position + transform.forward * speed * Time.fixedDeltaTime);
     }
 
     /*private void LoadedMainMesh()
@@ -228,7 +294,7 @@ public class SpaceshipController : MonoBehaviour
                 break;
 
             case EnumTargetType.ToPoint:
-                //result = length / 0.5f;
+                result = length / 0.5f;
                 break;
 
             case EnumTargetType.ToFollow:
@@ -248,8 +314,57 @@ public class SpaceshipController : MonoBehaviour
 
         return result;
     }
+
+    private float GetDistanceBraking(float _min, float _speedNormalize)
+    {
+        var resultSpeed = meta.GetSpeedValue(_speedNormalize);
+        var brakingTime = resultSpeed / ( meta.GetParameter(EnumParameters.maneuver) * ConstantsGameSettings.MANEUVER_MOD_SPEED);
+        var result = _min + ( (resultSpeed * brakingTime) / 2.0f );             //Производная формулы свободного падения, в данном случае подходит
+
+        return result;
+    }
+
+    private float CalculateDamageShield(Damage _damage)
+    {
+        var result = 0.0f;
+
+        var shield = GetShield();
+        
+        //TODO:
+
+        return result;
+    }
+
+    private float CalculateDamageArmor(Damage _damage)
+    {
+        var result = 0.0f;
+
+        var armor = GetArmor();
+
+        //TODO:
+
+        return result;
+    }
+
+    private void CheckDestruction()
+    {
+        var armor = GetArmor();
+
+        if (armor <= 0.0f)
+        {
+            //TODO:
+        }
+    }
     #endregion
 
     #region Coroutines    
+    #endregion
+
+    #region Menu
+    [ContextMenu("Set Target")]
+    private void MenuSetTarget()
+    {
+        SetTargetMovePoint(target);
+    }
     #endregion
 }

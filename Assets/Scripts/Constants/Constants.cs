@@ -14,8 +14,8 @@
     //public const float GAMEPLAY_GENERATION_TIMER = 2.5f;   //1.0
     //public static Vector2 GAMEPLAY_GENERATION_ROTATION = new Vector2(-25.0f, 25.0f);
 
-    public const float MANEUVER_MOD = 1.0f / 2.0f;
-
+    public const float MANEUVER_MOD_SPEED = 0.5f;       //1.0f / 2.0f;
+    public const float MANEUVER_MOD_ROTATE = 0.25f;     //1.0f / 4.0f;
 }
 
 public static class ConstantsTag
@@ -24,6 +24,8 @@ public static class ConstantsTag
     public const string TAG_DIALOGS_CANVAS = "DialogsCanvas";
 
     public const string TAG_SPACESHIP = "Spaceship";
+    public const string TAG_MAIN_COLLIDER = "MainCollider";
+    public const string TAG_SHIELD_COLLIDER = "ShieldCollider";
 
 
     //public const string TAG_VOID = "Void";
@@ -125,9 +127,9 @@ public static class ConstantsSpaceshipSettings
     //Скорость (нормализованная 0.0-1.0)
     public const float SPEED_STOP = 0.0f;
     public const float SPEED_DOCK = 0.1f;               //Стыковочная скорость
-    public const float SPEED_TURN = 0.3f;               //Поворот
+    //public const float SPEED_TURN = 0.3f;               //Поворот
     public const float SPEED_HALF = 0.5f;
-    public const float SPEED_ARMS = 0.6f;               //Активное вооружение    
+    public const float SPEED_COMMON = 0.6f;             //Активное вооружение    
     public const float SPEED_FULL = 1.0f;
     //public const float SPEED_BURN = 1.25f;
 

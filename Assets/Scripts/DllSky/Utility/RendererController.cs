@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-using Utility;
 
 namespace DllSky.Utility
 {
@@ -38,26 +36,6 @@ namespace DllSky.Utility
         public bool GetVisibleToCamera()
         {
             return visibleToCamera;
-        }
-        #endregion
-
-        #region Context menu
-        [ContextMenu("Create Convex Mesh")]
-        private void CreateConvexMesh()
-        {
-            var tStart = DateTime.Now;
-
-            var mesh = GetComponent<MeshFilter>().sharedMesh;
-            var name = mesh.name;
-
-            List<Vector2> uv = new List<Vector2>();
-            mesh.GetUVs(0, uv);
-
-            var convexMesh = MeshUtility.CreateMesh(mesh);
-
-            UnityEditor.AssetDatabase.CreateAsset(convexMesh, string.Format(@"Assets/{0}_convex.asset", name));
-
-            Debug.Log("Convexing: " + (DateTime.Now - tStart).TotalSeconds);
         }
         #endregion
     }

@@ -27,6 +27,8 @@ public class SpaceshipMetadata
     private int mkIndex;
     private SpaceshipData data;
     private SpaceshipsConfig config;
+
+    private float speedResultNormalize;                                         //Нормализованная скорость, к которой стремимся
     #endregion
 
     #region Public methods
@@ -101,6 +103,11 @@ public class SpaceshipMetadata
     {
         return GetSpeedNormalize(GetParameter(EnumParameters.speed));
     }
+
+    public float GetSpeedResultNormalize()
+    {
+        return speedResultNormalize;
+    }
     #endregion
 
     #region Private methods
@@ -147,7 +154,9 @@ public class SpaceshipMetadata
 
     #region Coroutines
     public IEnumerator StartChangeSpeed(float _normalizeValue)
-    {     
+    {
+        speedResultNormalize = _normalizeValue;
+
         var speedResult = GetSpeedValue(_normalizeValue);
         if (speedResult == GetParameter(EnumParameters.speed))
             yield break;
@@ -157,7 +166,7 @@ public class SpaceshipMetadata
 
         while (true)
         {
-            var delta = modifier * GetParameter(EnumParameters.maneuver) * ConstantsGameSettings.MANEUVER_MOD * Time.deltaTime;
+            var delta = modifier * GetParameter(EnumParameters.maneuver) * ConstantsGameSettings.MANEUVER_MOD_SPEED * Time.deltaTime;
             SetDeltaParameter(EnumParameters.speed, delta);
 
             //Проверка
