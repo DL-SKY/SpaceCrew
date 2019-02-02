@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpaceshipCameraPlace : LeanCameraZoom
+public class SpaceshipCameraController : LeanCameraZoom
 {
     #region Variables
     [Space(10.0f)]
@@ -22,6 +22,8 @@ public class SpaceshipCameraPlace : LeanCameraZoom
     public bool YawClamp = false;
     public float YawMin = -45.0f;
     public float YawMax = 45.0f;
+
+    private Transform target;
     #endregion
 
     #region Properties
@@ -92,10 +94,23 @@ public class SpaceshipCameraPlace : LeanCameraZoom
             //Поворот
             SetRotation();
         }
+
+        ApplyTargetPosition();
     }
     #endregion
 
     #region Public Metods
+    public void SetTarget(Transform _transform)
+    {
+        target = _transform;
+
+        transform.position = target.position;
+
+        Pitch = -target.localEulerAngles.x;
+        Yaw = -target.localEulerAngles.y;
+
+        SetRotation();
+    }
     #endregion
 
     #region Private Metods
@@ -122,6 +137,14 @@ public class SpaceshipCameraPlace : LeanCameraZoom
         }
 
         return 1.0f;
+    }
+
+    private void ApplyTargetPosition()
+    {
+        if (target == null)
+            return;
+
+        transform.position = target.position;
     }
     #endregion
 

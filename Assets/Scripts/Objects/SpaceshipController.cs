@@ -37,8 +37,8 @@ public class SpaceshipController : MonoBehaviour
     public Collider mainCollider;
     public Collider shieldCollider;
 
-    [Header("Camera")]
-    public SpaceshipCameraPlace cameraPlace;
+    [Header("Camera Point")]
+    public Transform cameraPoint;
 
     private Rigidbody rb;
     private RendererController rendererController;
@@ -77,6 +77,8 @@ public class SpaceshipController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rendererController = mainRenderer.GetComponent<RendererController>();
+
+        SetCameraTarget();
     }
 
     private void Start()
@@ -219,6 +221,14 @@ public class SpaceshipController : MonoBehaviour
     #endregion
 
     #region Private methods
+    private void SetCameraTarget()
+    {
+        var cameraController = Camera.main.GetComponentInParent<SpaceshipCameraController>();
+
+        if (cameraController)
+            cameraController.SetTarget(cameraPoint);
+    }
+
     private void SetVisibleToCamera(bool _isVisible)
     {
         VisibleToCamera = _isVisible;
@@ -361,6 +371,12 @@ public class SpaceshipController : MonoBehaviour
     #endregion
 
     #region Menu
+    [ContextMenu("Set Camera Target")]
+    private void MenuSetCameraTarget()
+    {
+        SetCameraTarget();
+    }
+
     [ContextMenu("Set Target")]
     private void MenuSetTarget()
     {
