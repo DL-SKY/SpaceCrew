@@ -119,9 +119,7 @@ public class SpaceshipController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //test
-        Debug.Log("OnTriggerEnter " + other.gameObject.name);
-        Debug.Log("OnTriggerEnter " + other.tag);
+        ShowShieldDamage(other.ClosestPoint(transform.position));
     }
     #endregion
 
@@ -365,6 +363,11 @@ public class SpaceshipController : MonoBehaviour
             //TODO:
         }
     }
+
+    private void ShowShieldDamage(Vector3 _position)
+    {
+        shieldController.ShowDamageParticles(_position);
+    }
     #endregion
 
     #region Coroutines    
@@ -381,6 +384,12 @@ public class SpaceshipController : MonoBehaviour
     private void MenuSetTarget()
     {
         SetTargetMovePoint(target);
+    }
+
+    [ContextMenu("Show Shield Damage")]
+    private void MenuShowShieldDamage()
+    {
+        ShowShieldDamage(transform.position + new Vector3(0.0f, 0.0f, 0.5f));
     }
     #endregion
 }

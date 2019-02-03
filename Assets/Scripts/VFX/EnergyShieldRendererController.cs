@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class EnergyShieldRendererController : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class EnergyShieldRendererController : MonoBehaviour
     public Color color;
     public Vector2 speedWaveAnimationRange = new Vector2(1.0f, 10.0f);
     public Vector2 alphaModRange = new Vector2(0.3f, 1.0f);
+
+    [Header("VFX")]
+    public ParticleSystem particlesDamage;
 
     private new MeshRenderer renderer;
     private Material material;
@@ -37,6 +41,15 @@ public class EnergyShieldRendererController : MonoBehaviour
 
         var speed = Mathf.Lerp(speedWaveAnimationRange.x, speedWaveAnimationRange.y, _shieldNormalize);
         material.SetFloat(SPEED, speed);
+    }
+
+    public void ShowDamageParticles(Vector3 _position, int _count = 30)
+    {
+        EmitParams eParams = new EmitParams();
+        eParams.position = _position;
+        eParams.applyShapeToPosition = true;
+
+        particlesDamage.Emit(eParams, _count);
     }
     #endregion
 
