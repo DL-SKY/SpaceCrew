@@ -119,7 +119,8 @@ public class SpaceshipController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ShowShieldDamage(other.ClosestPoint(transform.position));
+        //ShowShieldDamage(other.ClosestPoint(transform.position));
+        ShowShieldDamage(shieldCollider.ClosestPoint(other.transform.position));
     }
     #endregion
 
@@ -199,17 +200,22 @@ public class SpaceshipController : MonoBehaviour
         return meta.GetParameter(EnumParameters.shield);
     }
 
-    public void ApplyDamage(Damage _damage)
+    public void ApplyDamage(Damage _damage, Vector3 _weaponPos)
     {
         var shieldDmg = CalculateDamageShield(_damage);
         var armorDmg = CalculateDamageArmor(_damage);
 
         if (shieldDmg != 0.0f)
+        {
             meta.SetDeltaParameter(EnumParameters.shield, shieldDmg);
+
+            if (shieldDmg > 0.0f)
+                ShowShieldDamage(shieldCollider.ClosestPoint(_weaponPos));
+        }
 
         //TODO: Условие получения урона брони
         //Варианты: малый заряд щитов или его отсутствие; атака противника игнорирует щиты и т.д.
-        var needCheckDamageArmor = GetShield() > 0.0f;
+        var needCheckDamageArmor = GetShield() <= 0.0f;
 
         if (needCheckDamageArmor && armorDmg != 0.0f)
             meta.SetDeltaParameter(EnumParameters.armor, armorDmg);
@@ -251,14 +257,14 @@ public class SpaceshipController : MonoBehaviour
 
     private void FixedUpdatePosition()
     {
-        if (targetType == EnumTargetType.None)
-            return;
+        //if (targetType == EnumTargetType.None)
+            //return;
 
         var speed = GetSpeed();
 
         if (target != null)
         {
-            //TODO: добавить проверку на дистанцию. В случае необходимости останавливаем корабль
+            //Проверка на дистанцию. В случае необходимости останавливаем корабль
             var distance = Vector3.Distance(transform.position, target.position);
 
             //Если не достигли конечной точки
