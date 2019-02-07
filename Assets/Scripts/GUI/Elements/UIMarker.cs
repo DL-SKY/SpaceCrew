@@ -50,60 +50,13 @@ public class UIMarker : MonoBehaviour
         {
             DeleteMarker();
             return;
-        }        
-
-        //Отображаемая часть Маркера
-        selfTransformVisible.gameObject.SetActive(pointController.VisibleToCamera);
-        selfTransformInvisible.gameObject.SetActive(!pointController.VisibleToCamera);
-
-        //Вычисляем положение
-        var newPos = camera.WorldToScreenPoint(targetTransform.position);
-
-        float halfSizeX, halfSizeY;
-        if (pointController.VisibleToCamera)
-        {
-            halfSizeX = halfVisibleSizeX;
-            halfSizeY = halfVisibleSizeY;
-
-            newPos.x = Mathf.Clamp(newPos.x, halfSizeX, Screen.width - halfSizeX);
-            newPos.y = Mathf.Clamp(newPos.y, halfSizeY, Screen.height - halfSizeY);
         }
-        else
-        {
-            halfSizeX = halfInvisibleSizeX;
-            halfSizeY = halfInvisibleSizeY;
 
-            var maxPosX = Screen.width - halfSizeX;
-            var maxPosY = Screen.height - halfSizeY;
-            
-            newPos.x = Mathf.Clamp(newPos.x, halfSizeX, maxPosX); 
-            newPos.y = Mathf.Clamp(newPos.y, halfSizeY, maxPosY);
-
-            //Маркер на объект за камерой прижимаем к бокам экрана
-            //Если не верхняя/нижняя границы
-            if (newPos.y > halfSizeY && newPos.y < maxPosY)
-            {
-                var targetRot = targetTransform.position - camera.transform.position;
-                var angleForward = Vector3.Angle(camera.transform.forward, targetRot);
-
-                if (angleForward < 90.0f)
-                {
-                    newPos.x = newPos.x < ((maxPosX + halfSizeX) / 2) ? halfSizeX : maxPosX;
-                }
-                else
-                {
-                    var angleRight = Vector3.Angle(camera.transform.right, targetRot);
-
-                    if (angleRight < 90.0f)
-                        newPos.x = maxPosX;
-                    else
-                        newPos.x = halfSizeX;
-                }
-            }
-        }        
-
-        //Новое расположение
-        transform.position = new Vector3(newPos.x, newPos.y, 0);
+        
+        if (alwaysVisible)          //Если Маркер отображается всегда
+            UpdateAlwaysVisibleMarker();
+        else                        //Иначе
+            UpdateMarker(alwaysVisible);        
     }
     #endregion
 
@@ -146,6 +99,78 @@ public class UIMarker : MonoBehaviour
     private void DeleteMarker()
     {
         Destroy(gameObject);
+    }
+
+    private void UpdateAlwaysVisibleMarker()
+    {
+        UpdateMarker(alwaysVisible);
+
+        //Вычисляем положение
+        var newPos = camera.WorldToScreenPoint(targetTransform.position);
+
+        float halfSizeX, halfSizeY;
+
+        halfSizeX = halfInvisibleSizeX;
+        halfSizeY = halfInvisibleSizeY;
+
+        var maxPosX = Screen.width - halfSizeX;
+        var maxPosY = Screen.height - halfSizeY;
+
+        newPos.x = Mathf.Clamp(newPos.x, halfSizeX, maxPosX);
+        newPos.y = Mathf.Clamp(newPos.y, halfSizeY, maxPosY);
+
+        //Маркер на объект за камерой прижимаем к бокам экрана
+        //Если не верхняя/нижняя границы
+        if (newPos.y > halfSizeY && newPos.y < maxPosY)
+        {
+            var targetRot = targetTransform.position - camera.transform.position;
+            var angleForward = Vector3.Angle(camera.transform.forward, targetRot);
+
+            if (angleForward < 90.0f)
+            {
+                newPos.x = newPos.x < ((maxPosX + halfSizeX) / 2) ? halfSizeX : maxPosX;
+            }
+            else
+            {
+                var angleRight = Vector3.Angle(camera.transform.right, targetRot);
+
+                if (angleRight < 90.0f)
+                    newPos.x = maxPosX;
+                else
+                    newPos.x = halfSizeX;
+            }
+        }
+
+        //Новое расположение
+        transform.position = new Vector3(newPos.x, newPos.y, 0);
+    }
+
+    private void UpdateMarker(bool _alwaysVisible)
+    {
+        //Отображаемая часть Маркера
+        selfTransformVisible.gameObject.SetActive(pointController.VisibleToCamera);        
+
+        if (_alwaysVisible)
+            selfTransformInvisible.gameObject.SetActive(!pointController.VisibleToCamera);
+        else
+            selfTransformInvisible.gameObject.SetActive(false);
+
+        if (!pointController.VisibleToCamera)
+            return;
+
+        //Вычисляем положение
+        var newPos = camera.WorldToScreenPoint(targetTransform.position);
+
+        float halfSizeX, halfSizeY;
+
+        halfSizeX = halfVisibleSizeX;
+        halfSizeY = halfVisibleSizeY;
+
+        newPos.x = Mathf.Clamp(newPos.x, halfSizeX, Screen.width - halfSizeX);
+        newPos.y = Mathf.Clamp(newPos.y, halfSizeY, Screen.height - halfSizeY);        
+
+        //Новое расположение
+        transform.position = new Vector3(newPos.x, newPos.y, 0);
     }
     #endregion
 }

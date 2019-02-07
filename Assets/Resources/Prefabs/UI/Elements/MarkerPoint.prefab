@@ -132,10 +132,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInit: 0
-  alwaysVisible: 1
+  alwaysVisible: 0
   targetTransform: {fileID: 0}
   selfTransformVisible: {fileID: 224607993323801586}
+  halfVisibleSizeX: 0
+  halfVisibleSizeY: 0
   selfTransformInvisible: {fileID: 224512135385687296}
+  halfInvisibleSizeX: 0
+  halfInvisibleSizeY: 0
 --- !u!114 &114732019290818188
 MonoBehaviour:
   m_ObjectHideFlags: 1

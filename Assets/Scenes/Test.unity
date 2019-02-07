@@ -1571,7 +1571,7 @@ Skybox:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1325814735}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CustomSkybox: {fileID: 2100000, guid: d330444468a69504ea073ea14b284b34, type: 2}
 --- !u!4 &1325814740
 Transform:
