@@ -2090,6 +2090,57 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1001 &1704167855
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 6.011
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1720292019388588, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+      propertyPath: m_Name
+      value: mk6 (Enemy)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114006682496321048, guid: 0a2a901b04f66744d9dce5469910af2f,
+        type: 2}
+      propertyPath: isPlayer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0a2a901b04f66744d9dce5469910af2f, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &1857802472 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1767323073620646, guid: 8b1b03b1195b8bb43b9dd908fde3e636,

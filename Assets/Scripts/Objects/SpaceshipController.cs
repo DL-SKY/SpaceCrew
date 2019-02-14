@@ -30,6 +30,7 @@ public class SpaceshipController : MonoBehaviour
     public MeshFilter mainFilter;
     public MeshRenderer mainRenderer;
 
+
     [Header("Energy shield Renderer")]
     public EnergyShieldRendererController shieldController;
 
@@ -78,7 +79,9 @@ public class SpaceshipController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rendererController = mainRenderer.GetComponent<RendererController>();
 
-        SetCameraTarget();
+        //TODO, test
+        if (isPlayer)
+            SetCameraTarget();
     }
 
     private void Start()
