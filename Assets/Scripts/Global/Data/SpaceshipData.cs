@@ -13,7 +13,7 @@ public class SpaceshipData
     public string material;                                                     //Используемый материал
     public int mk;                                                              //Mark/Модель №/Уровень
 
-    //public List<string> subsystems = new List<string>();                        //Список подсистем (каждая подсистема содержит перки/скиллы)
+    //public List<string> subsystems = new List<string>();                      //Список подсистем (каждая подсистема содержит перки/скиллы)
     public List<string> weapons = new List<string>();                           //Список установленного вооружения
     public List<string> slots = new List<string>();                             //Список установленного оборудования
     public List<string> items = new List<string>();                             //Список используемых предметов
@@ -50,6 +50,11 @@ public class SpaceshipData
     {
 
     }*/
+
+    public void ApplyDefault()
+    {
+        weapons.Add("laser_simple");
+    }
 
     public int GetMkIndex()
     {

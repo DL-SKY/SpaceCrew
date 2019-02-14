@@ -1,4 +1,4 @@
-﻿interface IUpdateRenderer
+﻿public interface IUpdateRenderer
 {
-    void UpdateRenderer();
+    void UpdateRenderer(SpaceshipMetadata _meta);
 }

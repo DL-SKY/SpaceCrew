@@ -29,7 +29,7 @@ public class SpaceshipController : MonoBehaviour
     [Header("Main Renderer")]
     public MeshFilter mainFilter;
     public MeshRenderer mainRenderer;
-
+    public MainEnginesRendererController mainEnginesRenderer;
 
     [Header("Energy shield Renderer")]
     public EnergyShieldRendererController shieldController;
@@ -108,7 +108,14 @@ public class SpaceshipController : MonoBehaviour
         FixedUpdateRotation();
 
         //Перемещение
-        FixedUpdatePosition();        
+        FixedUpdatePosition();
+    }
+
+    private void Update()
+    {
+        //Обновление визуальных эффектов
+        //Следы двигателя
+        UpdateMainEnginesRenderer();
     }
     #endregion
 
@@ -141,6 +148,10 @@ public class SpaceshipController : MonoBehaviour
             //return;
 
             data = new SpaceshipData();
+
+            //TODO: TEST
+            data.ApplyDefault();
+
             Global.Instance.PROFILE.spaceships.Add(data);
         }
 
@@ -376,6 +387,11 @@ public class SpaceshipController : MonoBehaviour
     private void ShowShieldDamage(Vector3 _position)
     {
         shieldController.ShowDamageParticles(_position);
+    }
+
+    private void UpdateMainEnginesRenderer()
+    {
+        (mainEnginesRenderer as IUpdateRenderer).UpdateRenderer(meta);
     }
     #endregion
 

@@ -1,7 +1,9 @@
 ﻿using DllSky.Components;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIMarker : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class UIMarker : MonoBehaviour
 
     [Header("Visible")]    
     public RectTransform selfTransformVisible;
+    public Text distanceText;
     [SerializeField]
     private float halfVisibleSizeX;
     [SerializeField]
@@ -148,13 +151,14 @@ public class UIMarker : MonoBehaviour
     private void UpdateMarker(bool _alwaysVisible)
     {
         //Отображаемая часть Маркера
-        selfTransformVisible.gameObject.SetActive(pointController.VisibleToCamera);        
+        selfTransformVisible.gameObject.SetActive(pointController.VisibleToCamera);
 
         if (_alwaysVisible)
             selfTransformInvisible.gameObject.SetActive(!pointController.VisibleToCamera);
         else
             selfTransformInvisible.gameObject.SetActive(false);
 
+        //Проверка на необходимость дальнейших вычислений
         if (!pointController.VisibleToCamera)
             return;
 
@@ -171,6 +175,10 @@ public class UIMarker : MonoBehaviour
 
         //Новое расположение
         transform.position = new Vector3(newPos.x, newPos.y, 0);
+
+        //Дистанция до цели
+        var dist = Math.Round(Vector3.Distance(pointController.transform.position, PlayerController.Instance.player.transform.position), 2);
+        distanceText.text = dist.ToString();
     }
     #endregion
 }

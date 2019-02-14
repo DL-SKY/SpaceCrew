@@ -163,6 +163,9 @@ public class Configs
     public List<SubsystemsConfig> subsystems = new List<SubsystemsConfig>();
     public List<ParametersConfig> parameters = new List<ParametersConfig>();
 
+    public List<ResourcesConfig> resources = new List<ResourcesConfig>();
+    public List<ItemsConfig> items = new List<ItemsConfig>();
+
 
     //public List<SpaceshipConfig> spaceships = new List<SpaceshipConfig>();
     //public List<EquipmentConfig> equipments = new List<EquipmentConfig>();
@@ -225,6 +228,24 @@ public class ParametersConfig
 {
     public string id;
     public string subsystem;
+}
+
+[Serializable]
+public class ResourcesConfig
+{
+    public string id;
+    public string type;
+}
+
+[Serializable]
+public class ItemsConfig
+{
+    public string id;
+    public string type;
+
+    public string[] selfParameters;
+    public string[] shipParameters;
+    public string[] skills;
 }
 
 /*

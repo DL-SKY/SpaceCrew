@@ -41,6 +41,9 @@ public class SpaceshipMetadata
         mkIndex = data.GetMkIndex();
 
         ApplySubsystems();
+        ApplyWeapons();
+        ApplySlots();
+        ApplyItems();
 
         ApplyMaxParameters();
         ApplyParameters();
@@ -121,6 +124,34 @@ public class SpaceshipMetadata
             var newSubsystem = new SubsystemData((EnumSubsystems)Enum.Parse(typeof(EnumSubsystems), item.id), config, mkIndex);
             subsystems.Add(newSubsystem);
         }
+    }
+
+    private void ApplyWeapons()
+    {
+        weapons.Clear();
+
+        var configs = Global.Instance.CONFIGS.items;
+        foreach (var weapon in data.weapons)
+        {
+            var config = configs.Find(x => x.id == weapon);
+            var newWeapon = new ItemData(config);
+
+            weapons.Add(newWeapon);
+        }
+    }
+
+    private void ApplySlots()
+    {
+        slots.Clear();
+
+
+    }
+
+    private void ApplyItems()
+    {
+        items.Clear();
+
+
     }
 
     private void ApplyMaxParameters()

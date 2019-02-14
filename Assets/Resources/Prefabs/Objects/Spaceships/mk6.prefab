@@ -71,6 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4760800366982196}
+  - component: {fileID: 114281460892441622}
   m_Layer: 0
   m_Name: MainEngines
   m_TagString: Untagged
@@ -1310,6 +1311,7 @@ MonoBehaviour:
   target: {fileID: 0}
   mainFilter: {fileID: 33338975699840710}
   mainRenderer: {fileID: 23525421186841426}
+  mainEnginesRenderer: {fileID: 114281460892441622}
   shieldController: {fileID: 114166251952766010}
   mainCollider: {fileID: 64010215660234034}
   shieldCollider: {fileID: 64199902334745528}
@@ -1372,6 +1374,23 @@ MonoBehaviour:
   speedWaveAnimationRange: {x: 1, y: 10}
   alphaModRange: {x: 0.3, y: 1}
   particlesDamage: {fileID: 198149771918241234}
+--- !u!114 &114281460892441622
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1198320298576442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf614d8ad7c79547b439bbc5e7e1d3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTime: 0.15
+  trails:
+  - {fileID: 96105937994998952}
+  - {fileID: 96322426898753402}
+  - {fileID: 96066799397603638}
+  - {fileID: 96219541678365006}
 --- !u!114 &114841332492034484
 MonoBehaviour:
   m_ObjectHideFlags: 1
