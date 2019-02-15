@@ -16,6 +16,8 @@ namespace DllSky.Managers
 
         public static Action eventOnChangeLanguage;
         public static Action eventOnApplyLanguage;
+
+        public static Action<PointController> eventOnInitPointController;
         #endregion
 
         #region Public methods
@@ -41,7 +43,13 @@ namespace DllSky.Managers
         {
             if (eventOnApplyLanguage != null)
                 eventOnApplyLanguage.Invoke();
-        }        
+        }
+
+        public static void CallOnInitPointController(PointController _controller)
+        {
+            if (eventOnInitPointController != null)
+                eventOnInitPointController.Invoke(_controller);
+        }
         #endregion
     }
 }

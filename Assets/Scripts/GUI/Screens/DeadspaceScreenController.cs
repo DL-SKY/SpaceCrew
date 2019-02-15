@@ -12,16 +12,26 @@ public class DeadspaceScreenController : ScreenController
     [Header("Markers")]
     public Transform markersPlace;
     private List<UIMarker> markers = new List<UIMarker>();
+    private RectTransform markersParent;
+    private float screenCoef;
     //TODO: на время теста
-    private List<PointController> points = new List<PointController>();
+    //private List<PointController> points = new List<PointController>();
 
 
     #endregion
 
     #region Unity methods
+    private void Awake()
+    {
+        markersParent = markersPlace.GetComponent<RectTransform>();
+        var scaler = ScreenManager.Instance.GetComponent<CanvasScaler>();
+        screenCoef = Screen.height / scaler.referenceResolution.y;
+    }
+
     private void OnEnable()
     {
         //EventManager.eventOnClickEsc += OnClickEsc;
+        EventManager.eventOnInitPointController += OnInitPointController;
 
         if (IsInit)
             StartCoroutine(Show());
@@ -30,6 +40,7 @@ public class DeadspaceScreenController : ScreenController
     private void OnDisable()
     {
         //EventManager.eventOnClickEsc -= OnClickEsc;
+        EventManager.eventOnInitPointController -= OnInitPointController;
     }
     #endregion
 
@@ -41,7 +52,15 @@ public class DeadspaceScreenController : ScreenController
     #endregion
 
     #region Private methods
-    private void CreateUIMarkers()
+    private void OnInitPointController(PointController _controller)
+    {
+        var markerObj = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, ConstantsPrefabName.MARKER_POINT), markersPlace);
+        var markerScr = markerObj.GetComponent<UIMarker>();
+        markers.Add(markerScr);
+        markerScr.Initialize(_controller, markersParent, screenCoef);
+    }
+
+    /*private void CreateUIMarkers()
     {
         ClearAllMarkers();
 
@@ -63,9 +82,9 @@ public class DeadspaceScreenController : ScreenController
             var markerObj = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, "MarkerPoint"), markersPlace);
             var markerScr = markerObj.GetComponent<UIMarker>();
             markers.Add(markerScr);
-            markerScr.Initialize(point, parent, screenCoef/*screenWidthCoef, screenHeightCoef*/);
+            markerScr.Initialize(point, parent, screenCoef);
         }
-    }
+    }*/
 
     private void ClearAllMarkers()
     {
@@ -88,7 +107,7 @@ public class DeadspaceScreenController : ScreenController
         }*/
 
         yield return new WaitForSeconds(2.5f);
-        CreateUIMarkers();
+        //CreateUIMarkers();
 
         IsInit = true;
 

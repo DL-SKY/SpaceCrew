@@ -272,6 +272,14 @@
     {
       "id": "energyRecovery",
       "subsystem": "energy"
+    },
+    {
+      "id": "shieldDamage",
+      "subsystem": ""
+    },
+    {
+      "id": "armorDamage",
+      "subsystem": ""
     }
   ],
   "resources": [
@@ -282,10 +290,6 @@
     {
       "id": "token",
       "type": "currency"
-    },
-    {
-      "id": "laser_simple",
-      "type": "weapon"
     }
   ],
   "items": [
@@ -294,8 +298,8 @@
       "type": "weapon",
       "subType": "",
       "selfParameters": [
-        "armor:1.5",
-        "shield:1.5"
+        "armorDamage:1.5",
+        "shieldDamage:1.5"
       ],
       "shipParameters": [],
       "skills": []

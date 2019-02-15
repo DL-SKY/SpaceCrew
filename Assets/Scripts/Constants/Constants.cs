@@ -74,6 +74,12 @@ public static class ConstantsResourcesPath
     public const string FILE_PROFILE = "Profile";
 }
 
+public static class ConstantsPrefabName
+{
+    //Markers
+    public static string MARKER_POINT = "MarkerPoint";
+}
+
 public static class ConstantsScene
 {
     public const string MAIN_SCENE = "Main";
@@ -207,6 +213,15 @@ public enum EnumParameters
     critical,
     energy,
     energyRecovery,
+
+    shieldDamage,
+    armorDamage,
+}
+
+public enum EnumPointType
+{
+    point,
+    enemy,
 }
 
 //Тип объекта

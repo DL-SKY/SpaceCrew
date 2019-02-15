@@ -569,6 +569,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 008c282a03f3af14cb1eea169eb5a69d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoInitializing: 1
+  type: 0
   visibleToCamera: 0
 --- !u!4 &563281161
 Transform:
@@ -1123,6 +1125,11 @@ Prefab:
     - target: {fileID: 4641242867597860, guid: 8b1b03b1195b8bb43b9dd908fde3e636, type: 2}
       propertyPath: m_RootOrder
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114124943630838012, guid: 8b1b03b1195b8bb43b9dd908fde3e636,
+        type: 2}
+      propertyPath: autoInitializing
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b1b03b1195b8bb43b9dd908fde3e636, type: 2}
@@ -2198,6 +2205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 008c282a03f3af14cb1eea169eb5a69d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoInitializing: 1
+  type: 0
   visibleToCamera: 0
 --- !u!4 &1869650593
 Transform:
@@ -2253,6 +2262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 008c282a03f3af14cb1eea169eb5a69d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoInitializing: 1
+  type: 0
   visibleToCamera: 0
 --- !u!4 &1916831126
 Transform:

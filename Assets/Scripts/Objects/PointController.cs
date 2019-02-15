@@ -1,4 +1,5 @@
-﻿using DllSky.Utility;
+﻿using DllSky.Managers;
+using DllSky.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ using UnityEngine;
 public class PointController : MonoBehaviour
 {
     #region Variables
+    public bool autoInitializing = false;
+    public EnumPointType type;
+
     [SerializeField]
     private bool visibleToCamera;
     public bool VisibleToCamera
@@ -21,6 +25,12 @@ public class PointController : MonoBehaviour
     private void Awake()
     {
         rendererController = GetComponentInChildren<RendererController>();
+    }
+
+    private void Start()
+    {
+        if (autoInitializing)
+            Initialize(type);
     }
 
     private void OnEnable()
@@ -44,6 +54,13 @@ public class PointController : MonoBehaviour
     #endregion
 
     #region Public methods
+    public void Initialize(EnumPointType _type)
+    {
+        type = _type;
+
+        EventManager.CallOnInitPointController(this);
+    }
+
     public void OnClick()
     {
         PlayerController.Instance.SetPoint(this);
