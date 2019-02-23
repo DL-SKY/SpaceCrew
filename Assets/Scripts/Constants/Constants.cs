@@ -203,19 +203,22 @@ public enum EnumSubsystems
 
 public enum EnumParameters
 {
+    //Параметры подсистем корабля
     armor,
     cargo,
     shield,
     shieldRecovery,
     speed,
     maneuver,
-    accuracy,
-    critical,
+    targets,
     energy,
-    energyRecovery,
 
+    //Параметры оснащения
     shieldDamage,
     armorDamage,
+    optimalDistance,
+    accuracy,
+    critical,
 }
 
 public enum EnumPointType

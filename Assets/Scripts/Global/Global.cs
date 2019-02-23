@@ -209,10 +209,8 @@ public class SpaceshipsConfig
     public float[] shieldRecovery;
     public float[] speed;
     public float[] maneuver;
-    public float[] accuracy;
-    public float[] critical;
+    public float[] targets;
     public float[] energy;
-    public float[] energyRecovery;
 
     public string[] skills;
 }

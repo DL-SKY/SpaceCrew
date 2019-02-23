@@ -159,10 +159,13 @@ public class SpaceshipController : MonoBehaviour
 
         meta = new SpaceshipMetadata(data, config);
 
-        material = data.material;
+        ApplyWeapons();
 
+        material = data.material;
         //LoadedMainMesh();
         LoadedMainMaterial();
+
+        CreateMarker();
     }
 
     public void SetTargetMovePoint(Transform _target)
@@ -352,6 +355,19 @@ public class SpaceshipController : MonoBehaviour
         return result;
     }
 
+    private void ApplyWeapons()
+    {
+        //TODO
+
+        //Создаем на Корабле установленное в нем вооружение
+        foreach (var weaponData in meta.weapons)
+        {
+            var newWeapon = new GameObject(weaponData.id, typeof(WeaponController)).GetComponent<WeaponController>();
+            newWeapon.transform.SetParent(transform);
+            newWeapon.Initialize(weaponData);
+        }
+    }
+
     private float CalculateDamageShield(Damage _damage)
     {
         var result = 0.0f;
@@ -392,6 +408,18 @@ public class SpaceshipController : MonoBehaviour
     private void UpdateMainEnginesRenderer()
     {
         (mainEnginesRenderer as IUpdateRenderer).UpdateRenderer(meta);
+    }
+
+    private void CreateMarker()
+    {
+        if (isPlayer)
+            return;
+
+        var pointController = GetComponent<PointController>();
+        if (!pointController)
+            pointController = gameObject.AddComponent<PointController>();
+
+        pointController.Initialize(EnumPointType.enemy);
     }
     #endregion
 

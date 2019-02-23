@@ -67,20 +67,12 @@ public class SubsystemData
                 result = _config.maneuver[mkIndex];
                 break;
 
-            case EnumParameters.accuracy:
-                result = _config.accuracy[mkIndex];
-                break;
-
-            case EnumParameters.critical:
-                result = _config.critical[mkIndex];
+            case EnumParameters.targets:
+                result = _config.targets[mkIndex];
                 break;
 
             case EnumParameters.energy:
                 result = _config.energy[mkIndex];
-                break;
-
-            case EnumParameters.energyRecovery:
-                result = _config.energyRecovery[mkIndex];
                 break;
         }
 
