@@ -78,6 +78,10 @@ public static class ConstantsPrefabName
 {
     //Markers
     public static string MARKER_POINT = "MarkerPoint";
+
+    //Radar
+    public const string RADAR_SPACESHIP = "RadarSpaceship";
+    public const string RADAR_POINT = "RadarPoint";
 }
 
 public static class ConstantsScene
