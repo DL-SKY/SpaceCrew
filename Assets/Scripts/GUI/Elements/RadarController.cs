@@ -14,6 +14,7 @@ public class RadarController : MonoBehaviour
     #region Variables
     public Transform direction;
     public Transform markersParent;
+    public Transform playerMarker;
 
     private Camera cam;
     private List<RadarMarker> markers = new List<RadarMarker>();
@@ -89,6 +90,8 @@ public class RadarController : MonoBehaviour
 
     private void UpdateMarkers()
     {
+        playerMarker.localEulerAngles = -transform.localEulerAngles;
+
         foreach (var marker in markers)
         {
             if (marker.controller == null)
@@ -113,13 +116,15 @@ public class RadarController : MonoBehaviour
                 var c = Vector2.Distance(Vector2.zero, new Vector2(RADIUS, 0.0f));
 
                 var cosA = (b * b + c * c - a * a) / (2 * b * c);
+                var mod = y > 0 ? 1.0f : -1.0f;
                 var A = Mathf.Acos(cosA); //В радианах
 
-                x = RADIUS * Mathf.Cos(A);
-                y = RADIUS * Mathf.Sin(A);
+                x = RADIUS * Mathf.Cos(A * mod);
+                y = RADIUS * Mathf.Sin(A * mod);
             }        
 
             marker.marker.localPosition = new Vector3(x, y, 0.0f);
+            marker.marker.localEulerAngles = -transform.localEulerAngles;
         }
     }
     #endregion

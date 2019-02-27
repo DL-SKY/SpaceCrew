@@ -3,6 +3,7 @@ using DllSky.Managers;
 using DllSky.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,6 +42,14 @@ public class DeadspaceScreenController : ScreenController
     {
         //EventManager.eventOnClickEsc -= OnClickEsc;
         EventManager.eventOnInitPointController -= OnInitPointController;
+    }
+
+    private void LateUpdate()
+    {
+        markers = markers.OrderByDescending(x => x.distance).ToList();
+
+        for (int i = 0; i < markers.Count; i++)
+            markers[i].transform.SetSiblingIndex(i);
     }
     #endregion
 

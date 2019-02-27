@@ -10,6 +10,7 @@ public class UIMarker : MonoBehaviour
     #region Variables
     public bool isInit = false;
     public bool alwaysVisible = true;
+    public float distance;
 
     [Space(5)]
     public Transform targetTransform;
@@ -177,8 +178,8 @@ public class UIMarker : MonoBehaviour
         transform.position = new Vector3(newPos.x, newPos.y, 0);
 
         //Дистанция до цели
-        var dist = Math.Round(Vector3.Distance(pointController.transform.position, PlayerController.Instance.player.transform.position), 2);
-        distanceText.text = dist.ToString();
+        distance = (float)Math.Round(Vector3.Distance(pointController.transform.position, PlayerController.Instance.player.transform.position), 2);
+        distanceText.text = distance.ToString();
     }
     #endregion
 }
