@@ -49,7 +49,8 @@ public class DeadspaceScreenController : ScreenController
         markers = markers.OrderByDescending(x => x.distance).ToList();
 
         for (int i = 0; i < markers.Count; i++)
-            markers[i].transform.SetSiblingIndex(i);
+            if (markers[i])
+                markers[i].transform.SetSiblingIndex(i);
     }
     #endregion
 
@@ -63,7 +64,18 @@ public class DeadspaceScreenController : ScreenController
     #region Private methods
     private void OnInitPointController(PointController _controller)
     {
-        var markerObj = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, ConstantsPrefabName.MARKER_POINT), markersPlace);
+        var prefName = "";
+        switch (_controller.type)
+        {
+            case EnumPointType.Point:
+                prefName = ConstantsPrefabName.MARKER_POINT;
+                break;
+            case EnumPointType.Enemy:
+                prefName = ConstantsPrefabName.MARKER_ENEMY;
+                break;
+        }
+
+        var markerObj = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.ELEMENTS_UI, prefName), markersPlace);
         var markerScr = markerObj.GetComponent<UIMarker>();
         markers.Add(markerScr);
         markerScr.Initialize(_controller, markersParent, screenCoef);

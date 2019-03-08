@@ -1,14 +1,18 @@
 ﻿using DllSky.Extensions;
+using DllSky.Managers;
 using DllSky.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SpaceshipController : MonoBehaviour
+public class SpaceshipController : MonoBehaviour, IDestructible
 {
     #region Variables
     public bool isPlayer = false;
+
+    [Header("Input Controller")]
+    public InputSpaceshipBase input;
 
     [Header("Base")]
     [SerializeField]
@@ -23,13 +27,18 @@ public class SpaceshipController : MonoBehaviour
     public float length;
 
     [Header("Targets")]
-    public EnumTargetType targetType;
-    public Transform target;
+    private PointController selfPointController;
+    public EnumSpeedType maxSpeedType;
+    public EnumTargetType pointType;
+    public Transform point;
+    public List<PointController> targets;
 
     [Header("Main Renderer")]
     public MeshFilter mainFilter;
     public MeshRenderer mainRenderer;
     public MainEnginesRendererController mainEnginesRenderer;
+    public Transform weaponsParent;
+    public List<Transform> weaponSlots = new List<Transform>();
 
     [Header("Energy shield Renderer")]
     public EnergyShieldRendererController shieldController;
@@ -137,8 +146,13 @@ public class SpaceshipController : MonoBehaviour
     #region Public methods
     public void InitializeSpaceship()
     {
+        //Input
+        ApplyInpytComponent();
+
         //coroutine = null;
         speedCoroutine = null;
+        point = null;
+        targets.Clear();
 
         data = Global.Instance.PROFILE.spaceships.Find(x => x.model == model);
         if (data == null)
@@ -168,17 +182,9 @@ public class SpaceshipController : MonoBehaviour
         CreateMarker();
     }
 
-    public void SetTargetMovePoint(Transform _target)
+    public void ClearPoint()
     {
-        targetType = EnumTargetType.ToPoint;
-        minDistance = GetDistanceMinimum(targetType);
-        brakingDistance = GetDistanceBraking(minDistance, meta.GetSpeedResultNormalize());
-        target = _target;
-    }
-
-    public void ClearTarget()
-    {
-        target = null;
+        point = null;
     }
 
     public void SetSpeedNormalize(float _normalizeValue)
@@ -186,6 +192,7 @@ public class SpaceshipController : MonoBehaviour
         if (speedCoroutine != null)
             StopCoroutine(speedCoroutine);
 
+        _normalizeValue = _normalizeValue > GetMaxSpeedForCurrentSpeedType() ? GetMaxSpeedForCurrentSpeedType() : _normalizeValue;
         speedCoroutine = StartCoroutine(meta.StartChangeSpeed(_normalizeValue));
 
         brakingDistance = GetDistanceBraking(minDistance, _normalizeValue);
@@ -197,6 +204,7 @@ public class SpaceshipController : MonoBehaviour
             StopCoroutine(speedCoroutine);
 
         var normalizeValue = meta.GetSpeedCurrentNormalize() + _additionalNormalizeValue;
+        normalizeValue = normalizeValue > GetMaxSpeedForCurrentSpeedType() ? GetMaxSpeedForCurrentSpeedType() : normalizeValue;
         speedCoroutine = StartCoroutine(meta.StartChangeSpeed(normalizeValue));
 
         brakingDistance = GetDistanceBraking(minDistance, normalizeValue);
@@ -215,6 +223,46 @@ public class SpaceshipController : MonoBehaviour
     public float GetShield()
     {
         return meta.GetParameter(EnumParameters.shield);
+    }
+
+    public void SetPoint(PointController _controller, bool _selected)
+    {
+        if (_selected)
+        {
+            if (point)
+                EventManager.CallOnSetActiveTarget(point.GetComponent<PointController>(), false);
+
+            pointType = EnumTargetType.ToPoint;
+            minDistance = GetDistanceMinimum(pointType);
+            brakingDistance = GetDistanceBraking(minDistance, meta.GetSpeedResultNormalize());
+            point = _controller.transform;
+
+            EventManager.CallOnSetActiveTarget(_controller, true);
+        }
+        else
+        {
+            pointType = EnumTargetType.None;
+            point = null;
+
+            EventManager.CallOnSetActiveTarget(_controller, false);
+        }
+    }
+
+    public void SetTarget(PointController _controller, bool _selected)
+    {
+        if (_selected && targets.Count < meta.GetParameter(EnumParameters.targets))
+        {
+            if (!targets.Contains(_controller))
+            {
+                targets.Add(_controller);
+                EventManager.CallOnSetActiveTarget(_controller, true);
+            }
+        }
+        else if (!_selected)
+        {
+            targets.Remove(_controller);
+            EventManager.CallOnSetActiveTarget(_controller, false);
+        }
     }
 
     public void ApplyDamage(Damage _damage, Vector3 _weaponPos)
@@ -237,11 +285,45 @@ public class SpaceshipController : MonoBehaviour
         if (needCheckDamageArmor && armorDmg != 0.0f)
             meta.SetDeltaParameter(EnumParameters.armor, armorDmg);
 
+        EventManager.CallOnUpdateHitPoints(selfPointController);
+
         CheckDestruction();
+    }    
+
+    public float GetShieldNormalize()
+    {
+        return meta.GetCurrentParameterNormalize(EnumParameters.shield);
+    }
+
+    public float GetArmorNormalize()
+    {
+        return meta.GetCurrentParameterNormalize(EnumParameters.armor);
+    }
+
+    public void SetMaxSpeedType(EnumSpeedType _type)
+    {
+        maxSpeedType = _type;
+        SetSpeedNormalize(GetMaxSpeedForCurrentSpeedType());
     }
     #endregion
 
     #region Private methods
+    private void ApplyInpytComponent()
+    {
+        var _input = GetComponent<InputSpaceshipBase>();
+
+        if (_input == null)
+        {
+            if (isPlayer)
+                _input = gameObject.AddComponent<InputSpaceshipPlayer>();
+            else
+                _input = gameObject.AddComponent<InputSpaceshipBase>();
+        }
+
+        input = _input;
+        input.Initialize(this);
+    }
+
     private void SetCameraTarget()
     {
         var cameraController = Camera.main.GetComponentInParent<SpaceshipCameraController>();
@@ -257,12 +339,12 @@ public class SpaceshipController : MonoBehaviour
 
     private void FixedUpdateRotation()
     {
-        if (target == null)
+        if (point == null)
             return;
 
         //Вычисляем точку для поворота
-        var targetRot = target.position - transform.position;
-    
+        var targetRot = point.position - transform.position;
+
         if (targetRot != Vector3.zero && Vector3.Angle(transform.forward, targetRot) > 0.25)
         {
             var step = meta.GetParameter(EnumParameters.maneuver) * ConstantsGameSettings.MANEUVER_MOD_ROTATE * Time.fixedDeltaTime;
@@ -275,14 +357,14 @@ public class SpaceshipController : MonoBehaviour
     private void FixedUpdatePosition()
     {
         //if (targetType == EnumTargetType.None)
-            //return;
+        //return;
 
         var speed = GetSpeed();
 
-        if (target != null)
+        if (point != null)
         {
             //Проверка на дистанцию. В случае необходимости останавливаем корабль
-            var distance = Vector3.Distance(transform.position, target.position);
+            var distance = Vector3.Distance(transform.position, point.position);
 
             //Если не достигли конечной точки
             if (distance > minDistance)
@@ -296,7 +378,7 @@ public class SpaceshipController : MonoBehaviour
                 else
                 {
                     //Добавляем скорость
-                    SetSpeedNormalize(ConstantsSpaceshipSettings.SPEED_COMMON);
+                    SetSpeedNormalize(GetMaxSpeedForCurrentSpeedType());
                 }
             }
         }
@@ -349,8 +431,8 @@ public class SpaceshipController : MonoBehaviour
     private float GetDistanceBraking(float _min, float _speedNormalize)
     {
         var resultSpeed = meta.GetSpeedValue(_speedNormalize);
-        var brakingTime = resultSpeed / ( meta.GetParameter(EnumParameters.maneuver) * ConstantsGameSettings.MANEUVER_MOD_SPEED);
-        var result = _min + ( (resultSpeed * brakingTime) / 2.0f );             //Производная формулы свободного падения, в данном случае подходит
+        var brakingTime = resultSpeed / (meta.GetParameter(EnumParameters.maneuver) * ConstantsGameSettings.MANEUVER_MOD_SPEED);
+        var result = _min + ((resultSpeed * brakingTime) / 2.0f);             //Производная формулы свободного падения, в данном случае подходит
 
         return result;
     }
@@ -358,22 +440,23 @@ public class SpaceshipController : MonoBehaviour
     private void ApplyWeapons()
     {
         //TODO
+        //Сделать инстанцирование вооружения в соответствующие слоты
 
         //Создаем на Корабле установленное в нем вооружение
         foreach (var weaponData in meta.weapons)
         {
             var newWeapon = new GameObject(weaponData.id, typeof(WeaponController)).GetComponent<WeaponController>();
-            newWeapon.transform.SetParent(transform);
-            newWeapon.Initialize(weaponData);
+            newWeapon.transform.SetParent(weaponsParent);
+            newWeapon.Initialize(weaponData, this);
         }
     }
 
     private float CalculateDamageShield(Damage _damage)
     {
-        var result = 0.0f;
+        var result = -_damage.ShieldDmg;
 
         var shield = GetShield();
-        
+
         //TODO:
 
         return result;
@@ -381,7 +464,7 @@ public class SpaceshipController : MonoBehaviour
 
     private float CalculateDamageArmor(Damage _damage)
     {
-        var result = 0.0f;
+        var result = -_damage.ArmorDmg;
 
         var armor = GetArmor();
 
@@ -419,7 +502,32 @@ public class SpaceshipController : MonoBehaviour
         if (!pointController)
             pointController = gameObject.AddComponent<PointController>();
 
-        pointController.Initialize(EnumPointType.enemy);
+        pointController.Initialize(EnumPointType.Enemy, this);
+
+        selfPointController = pointController;
+    }
+
+    private float GetMaxSpeedForCurrentSpeedType()
+    {
+        var result = 0.0f;
+
+        switch (maxSpeedType)
+        {
+            case EnumSpeedType.Stop:
+                result = ConstantsSpaceshipSettings.SPEED_STOP;
+                break;
+            case EnumSpeedType.Dock:
+                result = ConstantsSpaceshipSettings.SPEED_DOCK;
+                break;
+            case EnumSpeedType.Cruising:
+                result = ConstantsSpaceshipSettings.SPEED_CRUISING;
+                break;
+            case EnumSpeedType.Full:
+                result = ConstantsSpaceshipSettings.SPEED_FULL;
+                break;
+        }
+
+        return result;
     }
     #endregion
 
@@ -436,13 +544,23 @@ public class SpaceshipController : MonoBehaviour
     [ContextMenu("Set Target")]
     private void MenuSetTarget()
     {
-        SetTargetMovePoint(target);
+        //SetTargetMovePoint(point);
     }
 
     [ContextMenu("Show Shield Damage")]
     private void MenuShowShieldDamage()
     {
-        ShowShieldDamage(transform.position + new Vector3(0.0f, 0.0f, 0.5f));
+        //ShowShieldDamage(transform.position + new Vector3(0.0f, 0.0f, 0.5f));
+        ShowShieldDamage(transform.InverseTransformPoint(transform.position + new Vector3(0.0f, 0.0f, 0.5f)));
+        ShowShieldDamage(transform.InverseTransformPoint(transform.position + new Vector3(0.0f, 0.0f, -0.5f)));
+        ShowShieldDamage(transform.InverseTransformPoint(transform.position + new Vector3(0.0f, 0.5f, 0.0f)));
+    }
+
+    [ContextMenu("Apply Damage")]
+    private void MenuApplyDamage()
+    {
+        var dmg = new Damage(0.5f, 0.5f);
+        ApplyDamage(dmg, Vector3.zero);
     }
     #endregion
 }

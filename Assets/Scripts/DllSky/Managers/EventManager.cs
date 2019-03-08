@@ -18,6 +18,10 @@ namespace DllSky.Managers
         public static Action eventOnApplyLanguage;
 
         public static Action<PointController> eventOnInitPointController;
+        public static Action<PointController, bool> eventOnSetActiveTarget;
+        public static Action<PointController, bool> eventOnPoint;
+        public static Action<PointController, bool> eventOnTargeting;
+        public static Action<PointController> eventOnUpdateHitPoints;
         #endregion
 
         #region Public methods
@@ -49,6 +53,30 @@ namespace DllSky.Managers
         {
             if (eventOnInitPointController != null)
                 eventOnInitPointController.Invoke(_controller);
+        }
+
+        public static void CallOnPoint(PointController _controller, bool _selected)
+        {
+            if (eventOnPoint != null)
+                eventOnPoint.Invoke(_controller, _selected);
+        }
+
+        public static void CallOnTargeting(PointController _controller, bool _selected)
+        {
+            if (eventOnTargeting != null)
+                eventOnTargeting.Invoke(_controller, _selected);
+        }
+
+        public static void CallOnSetActiveTarget(PointController _controller, bool _selected)
+        {
+            if (eventOnSetActiveTarget != null)
+                eventOnSetActiveTarget.Invoke(_controller, _selected);
+        }
+
+        public static void CallOnUpdateHitPoints(PointController _controller)
+        {
+            if (eventOnUpdateHitPoints != null)
+                eventOnUpdateHitPoints.Invoke(_controller);
         }
         #endregion
     }

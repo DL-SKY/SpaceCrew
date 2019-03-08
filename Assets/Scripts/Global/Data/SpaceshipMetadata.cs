@@ -92,8 +92,8 @@ public class SpaceshipMetadata
 
     public float GetSpeedNormalize(float _speed)
     {
-        return _speed / GetMaxParameter(EnumParameters.speed);
-    }
+        return Mathf.InverseLerp(0.0f, GetMaxParameter(EnumParameters.speed), _speed);
+    }    
 
     public float GetSpeedValue(float _normalizeValue)
     {
@@ -105,6 +105,11 @@ public class SpaceshipMetadata
     public float GetSpeedCurrentNormalize()
     {
         return GetSpeedNormalize(GetParameter(EnumParameters.speed));
+    }
+
+    public float GetCurrentParameterNormalize(EnumParameters _param)
+    {
+        return Mathf.InverseLerp(0.0f, GetMaxParameter(_param), GetParameter(_param));
     }
 
     public float GetSpeedResultNormalize()

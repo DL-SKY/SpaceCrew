@@ -46,8 +46,10 @@ public class EnergyShieldRendererController : MonoBehaviour
     public void ShowDamageParticles(Vector3 _position, int _count = 30)
     {
         EmitParams eParams = new EmitParams();
-        eParams.position = _position;
+
+        eParams.ResetPosition();        
         eParams.applyShapeToPosition = true;
+        eParams.position = _position;        
 
         particlesDamage.Emit(eParams, _count);
     }

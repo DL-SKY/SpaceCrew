@@ -182,6 +182,7 @@ public class SettingsConfig
 public class LocalizationConfig
 {
     public string id;
+
     public string rus;
     public string eng;
 }
@@ -196,7 +197,10 @@ public class ColorsConfig
 [Serializable]
 public class SpaceshipsConfig
 {
-    public string model;
+    public string id;
+
+    public string blueprint;
+
     public int[] mks;
 
     public int[] weapons;
@@ -232,18 +236,39 @@ public class ParametersConfig
 public class ResourcesConfig
 {
     public string id;
+
     public string type;
+
+    public string rarity;
+    public float chance;
+
+    public string image;
+    public string icon;
 }
 
 [Serializable]
 public class ItemsConfig
 {
     public string id;
+
+    public string blueprint;
+
     public string type;
+    public string subType;
+
+    public float energy;
 
     public string[] selfParameters;
     public string[] shipParameters;
     public string[] skills;
+}
+
+[Serializable]
+public class BlueprintsConfig
+{
+    public string id;
+
+    public string[] recipe;
 }
 
 /*

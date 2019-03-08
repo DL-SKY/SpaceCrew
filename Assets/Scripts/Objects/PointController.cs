@@ -9,6 +9,7 @@ public class PointController : MonoBehaviour
     #region Variables
     public bool autoInitializing = false;
     public EnumPointType type;
+    public IDestructible destructible;
 
     [SerializeField]
     private bool visibleToCamera;
@@ -36,7 +37,7 @@ public class PointController : MonoBehaviour
     private void OnEnable()
     {
         if (rendererController)
-            rendererController.OnVisibleToCamera += SetVisibleToCamera;
+            rendererController.OnVisibleToCamera += SetVisibleToCamera;        
     }
 
     private void OnDisable()
@@ -45,25 +46,34 @@ public class PointController : MonoBehaviour
             rendererController.OnVisibleToCamera -= SetVisibleToCamera;
     }
 
-    private void OnMouseUpAsButton()
+    /*private void OnMouseUpAsButton()
     {
-        Debug.Log("OnMouseUpAsButton to Point");
+        //Debug.Log("OnMouseUpAsButton to Point");
 
-        OnClick();
-    }
+        //OnClick();
+    }*/
     #endregion
 
     #region Public methods
-    public void Initialize(EnumPointType _type)
+    public void Initialize(EnumPointType _type, IDestructible _destr = null)
     {
         type = _type;
+        destructible = _destr;
 
         EventManager.CallOnInitPointController(this);
     }
 
     public void OnClick()
     {
-        PlayerController.Instance.SetPoint(this);
+        switch (type)
+        {
+            case EnumPointType.Point:
+                EventManager.CallOnPoint(this, true);
+                break;
+            case EnumPointType.Enemy:
+                EventManager.CallOnTargeting(this, true);
+                break;
+        }        
     }
     #endregion
 
@@ -71,7 +81,7 @@ public class PointController : MonoBehaviour
     private void SetVisibleToCamera(bool _isVisible)
     {
         VisibleToCamera = _isVisible;
-    }
+    }    
     #endregion
 
     #region Coroutines

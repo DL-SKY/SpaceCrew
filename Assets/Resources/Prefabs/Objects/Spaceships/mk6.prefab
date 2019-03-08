@@ -261,7 +261,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4724310540263400}
-  - component: {fileID: 114841332492034484}
   - component: {fileID: 114006682496321048}
   - component: {fileID: 54344955347333374}
   m_Layer: 0
@@ -395,13 +394,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1364739689719458}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.401, z: -0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4983461416360312}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4310592580678958
 Transform:
   m_ObjectHideFlags: 1
@@ -1303,15 +1302,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 1
+  input: {fileID: 0}
   visibleToCamera: 0
   model: mk6
   material: Default
   length: 0.65
-  targetType: 0
-  target: {fileID: 0}
+  maxSpeedType: 0
+  pointType: 0
+  point: {fileID: 0}
+  targets: []
   mainFilter: {fileID: 33338975699840710}
   mainRenderer: {fileID: 23525421186841426}
   mainEnginesRenderer: {fileID: 114281460892441622}
+  weaponsParent: {fileID: 4806475873531150}
+  weaponSlots: []
   shieldController: {fileID: 114166251952766010}
   mainCollider: {fileID: 64010215660234034}
   shieldCollider: {fileID: 64199902334745528}
@@ -1325,7 +1329,8 @@ MonoBehaviour:
     slots: []
     items: []
   config:
-    model: 
+    id: 
+    blueprint: 
     mks: 
     weapons: 
     slots: 
@@ -1336,10 +1341,8 @@ MonoBehaviour:
     shieldRecovery: []
     speed: []
     maneuver: []
-    accuracy: []
-    critical: []
+    targets: []
     energy: []
-    energyRecovery: []
     skills: []
   meta:
     subsystems: []
@@ -1391,20 +1394,6 @@ MonoBehaviour:
   - {fileID: 96322426898753402}
   - {fileID: 96066799397603638}
   - {fileID: 96219541678365006}
---- !u!114 &114841332492034484
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1720292019388588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c979c67ad3af3e248aeda6f74fe437a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Armor: 0
-  Shield: 0
-  Speed: 0
 --- !u!198 &198149771918241234
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -1474,8 +1463,8 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
-  moveWithCustomTransform: {fileID: 0}
+  moveWithTransform: 2
+  moveWithCustomTransform: {fileID: 4265356887178858}
   scalingMode: 1
   randomSeed: 0
   InitialModule:

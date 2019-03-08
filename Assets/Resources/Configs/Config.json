@@ -43,6 +43,10 @@
     {
       "id": "particles",
       "value": "3"
+    },
+    {
+      "id": "email",
+      "value": "alex.dllsky@gmail.com"
     }
   ],
   "localization": [
@@ -65,11 +69,6 @@
       "id": "common",
       "rus": "ОБЫЧНАЯ",
       "eng": "COMMON"
-    },
-    {
-      "id": "uncommon",
-      "rus": "НЕОБЫЧНАЯ",
-      "eng": "UNCOMMON"
     },
     {
       "id": "rare",
@@ -115,7 +114,8 @@
   ],
   "spaceships": [
     {
-      "model": "mk6",
+      "id": "mk6",
+      "blueprint": "blueprint_mk6",
       "mks": [
         10,
         15,
@@ -166,11 +166,11 @@
         7
       ],
       "shieldRecovery": [
-        0.5,
-        0.5,
-        0.5,
-        0.5,
-        0.5
+        5,
+        6,
+        6,
+        6,
+        7
       ],
       "speed": [
         3,
@@ -274,32 +274,81 @@
     {
       "id": "optimalDistance",
       "subsystem": ""
+    },
+    {
+      "id": "rate",
+      "subsystem": ""
     }
   ],
   "resources": [
     {
       "id": "credits",
-      "type": "currency"
+      "type": "currency",
+      "rarity": "common",
+      "chance": "",
+      "image": "",
+      "icon": ""
     },
     {
       "id": "token",
-      "type": "currency"
+      "type": "currency",
+      "rarity": "elite",
+      "chance": "",
+      "image": "",
+      "icon": ""
+    },
+    {
+      "id": "laser_simple",
+      "type": "weapon",
+      "rarity": "common",
+      "chance": "",
+      "image": "",
+      "icon": ""
+    },
+    {
+      "id": "blueprint_mk6",
+      "type": "blueprint",
+      "rarity": "elite",
+      "chance": "",
+      "image": "",
+      "icon": ""
+    },
+    {
+      "id": "blueprint_laser",
+      "type": "blueprint",
+      "rarity": "rare",
+      "chance": "",
+      "image": "",
+      "icon": ""
     }
   ],
   "items": [
     {
       "id": "laser_simple",
+      "blueprint": "blueprint_laser",
       "type": "weapon",
       "subType": "",
+      "energy": "0.5",
       "selfParameters": [
         "armorDamage:1.5",
         "shieldDamage:1.5",
         "optimalDistance:4",
         "accuracy:7.5",
-        "critical:1"
+        "critical:1",
+        "rate:1"
       ],
       "shipParameters": [],
       "skills": []
+    }
+  ],
+  "blueprints": [
+    {
+      "id": "blueprint_mk6",
+      "recipe": []
+    },
+    {
+      "id": "blueprint_laser",
+      "recipe": []
     }
   ]
 }

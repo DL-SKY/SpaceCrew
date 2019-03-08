@@ -22,6 +22,16 @@ public class ItemData
         ApplyShipParameters(_config.shipParameters);
         ApplySkills(_config.skills);
     }
+
+    public float GetSelfParameter(EnumParameters _id)
+    {
+        var param = selfParameters.Find(x => x.id == _id);
+
+        if (param != null)
+            return param.value;
+        else
+            return 0.0f;
+    }
     #endregion
 
     #region Private methods

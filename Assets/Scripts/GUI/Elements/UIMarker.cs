@@ -1,4 +1,5 @@
 ﻿using DllSky.Components;
+using DllSky.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,11 +14,26 @@ public class UIMarker : MonoBehaviour
     public float distance;
 
     [Space(5)]
+    [SerializeField]
+    private bool isActive;
+    public bool IsActive
+    {
+        get { return isActive; }
+        set {isActive = value; ApplyActive(); }
+    }
+
+    [Space(5)]
     public Transform targetTransform;
     private float screenCoef = 1.0f;
 
+    [Header("ProgressBars")]
+    public ProgressBar shieldProgress;
+    public ProgressBar armorProgress;    
+
     [Header("Visible")]    
     public RectTransform selfTransformVisible;
+    public RectTransform activeTarget;
+    public RectTransform disableTarget;
     public Text distanceText;
     [SerializeField]
     private float halfVisibleSizeX;
@@ -44,6 +60,18 @@ public class UIMarker : MonoBehaviour
         camera = Camera.main;
     }
 
+    private void OnEnable()
+    {
+        EventManager.eventOnSetActiveTarget += HandlerOnSetActiveTarget;
+        EventManager.eventOnUpdateHitPoints += HandleOnUpdateHitPoints;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.eventOnSetActiveTarget -= HandlerOnSetActiveTarget;
+        EventManager.eventOnUpdateHitPoints -= HandleOnUpdateHitPoints;
+    }
+
     private void LateUpdate()
     {
         if (!isInit)
@@ -55,7 +83,6 @@ public class UIMarker : MonoBehaviour
             DeleteMarker();
             return;
         }
-
         
         if (alwaysVisible)          //Если Маркер отображается всегда
             UpdateAlwaysVisibleMarker();
@@ -86,6 +113,10 @@ public class UIMarker : MonoBehaviour
         halfInvisibleSizeY = sizeInvisible * screenCoef;
 
         isInit = true;
+
+        IsActive = false;
+
+        UpdateHitPoints();
     }
 
     public void OnClickVisible()
@@ -180,6 +211,39 @@ public class UIMarker : MonoBehaviour
         //Дистанция до цели
         distance = (float)Math.Round(Vector3.Distance(pointController.transform.position, PlayerController.Instance.player.transform.position), 2);
         distanceText.text = distance.ToString();
+    }
+
+    private void HandlerOnSetActiveTarget(PointController _controller, bool _selected)
+    {
+        if (_controller == pointController)
+            IsActive = _selected;
+    }
+
+    private void HandleOnUpdateHitPoints(PointController _controller)
+    {
+        if (_controller == pointController)
+            UpdateHitPoints();
+    }
+
+    private void UpdateHitPoints()
+    {
+        if (shieldProgress)
+        {
+            shieldProgress.FillAmount = pointController.destructible.GetShieldNormalize();
+        }
+
+        if (armorProgress)
+        {
+            armorProgress.FillAmount = pointController.destructible.GetArmorNormalize();
+        }        
+    }
+
+    private void ApplyActive()
+    {
+        if (activeTarget)
+            activeTarget.gameObject.SetActive(IsActive);
+        if (disableTarget)
+            disableTarget.gameObject.SetActive(!IsActive);
     }
     #endregion
 }

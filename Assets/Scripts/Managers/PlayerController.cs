@@ -13,12 +13,12 @@ public class PlayerController : Singleton<PlayerController>
     #endregion
 
     #region Public methods
-    public void SetPoint(PointController _point)
+    /*public void SetPoint(PointController _point)
     {
         player.SetTargetMovePoint(_point.transform);
         //player.SetTargetFollow(_point.transform);
         //player.SetTargetOrbit(_point.transform);
-    }
+    }*/
     #endregion
 
     #region Private methods

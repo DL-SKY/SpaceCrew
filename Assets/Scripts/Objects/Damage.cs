@@ -1,17 +1,15 @@
 ﻿public class Damage
 {
     #region Variables
-    public float Value { get; }
-    public float ModShield { get; }
-    public float ModArmor { get; }
+    public float ArmorDmg { get; }
+    public float ShieldDmg { get; }
     #endregion
 
     #region Constructors
-    public Damage(float _damage, float _modShield, float _modArmor)
+    public Damage(float _armorDmg, float _shieldDmg)
     {
-        Value = _damage;
-        ModShield = _modShield;
-        ModArmor = _modArmor;
+        ArmorDmg = _armorDmg;
+        ShieldDmg = _shieldDmg;
     }
     #endregion
 

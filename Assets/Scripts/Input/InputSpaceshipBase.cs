@@ -10,15 +10,14 @@ public class InputSpaceshipBase : MonoBehaviour
     public float Shield;
     public float Speed;    
 #endif
-    private SpaceshipController spaceship;
+    protected SpaceshipController spaceship;
     #endregion
 
     #region Unity methods
 #if UNITY_EDITOR
-    private void Update()
+    protected virtual void Update()
     {
         UpdateShowedParameters();
-
         UpdateInput();
     }
 #endif
@@ -32,6 +31,21 @@ public class InputSpaceshipBase : MonoBehaviour
         else
             spaceship = FindSpaceshipController();
     }
+
+    public virtual void SetMaxSpeedType(EnumSpeedType _type)
+    {
+        spaceship.SetMaxSpeedType(_type);
+    }
+
+    public virtual void SetPoint(PointController _controller, bool _selected)
+    {
+        spaceship.SetPoint(_controller, _selected);
+    }
+
+    public virtual void SetTarget(PointController _controller, bool _selected)
+    {
+        spaceship.SetTarget(_controller, _selected);
+    }
     #endregion
 
     #region Protected methods
@@ -42,20 +56,13 @@ public class InputSpaceshipBase : MonoBehaviour
 
     protected virtual void UpdateInput()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-            SpeedUp();
 
-        if (Input.GetKeyDown(KeyCode.S))
-            SpeedDown();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            Stop();
     }
     #endregion
 
     //------------------------------------------------------------------
     #region TEST
-    private void UpdateShowedParameters()
+    protected virtual void UpdateShowedParameters()
     {
 #if UNITY_EDITOR
         if (!spaceship)
@@ -65,43 +72,7 @@ public class InputSpaceshipBase : MonoBehaviour
         Shield = spaceship.GetShield();
         Speed = spaceship.GetSpeed();
 #endif
-    }
-
-    [ContextMenu("Speed Up +10%")]
-    private void SpeedUp()
-    {
-        spaceship.AddSpeedNormalize(0.1f);
-    }
-
-    [ContextMenu("Speed Down -10%")]
-    private void SpeedDown()
-    {
-        spaceship.AddSpeedNormalize(-0.1f);
-    }
-
-    [ContextMenu("Speed Full")]
-    private void SpeedFull()
-    {
-        spaceship.SetSpeedNormalize(1.0f);
-    }
-
-    [ContextMenu("Stop")]
-    private void Stop()
-    {
-        spaceship.SetSpeedNormalize(0.0f);
-    }
-
-    [ContextMenu("Rotate to Left")]
-    private void RotateToLeft()
-    {
-
-    }
-
-    [ContextMenu("Rotate to Right")]
-    private void RotateToRight()
-    {
-
-    }
+    }    
     #endregion
     //------------------------------------------------------------------
 }

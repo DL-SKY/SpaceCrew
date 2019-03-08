@@ -78,6 +78,7 @@ public static class ConstantsPrefabName
 {
     //Markers
     public static string MARKER_POINT = "MarkerPoint";
+    public static string MARKER_ENEMY = "MarkerEnemy";
 
     //Radar
     public const string RADAR_SPACESHIP = "RadarSpaceship";
@@ -138,8 +139,8 @@ public static class ConstantsSpaceshipSettings
     public const float SPEED_STOP = 0.0f;
     public const float SPEED_DOCK = 0.1f;               //Стыковочная скорость
     //public const float SPEED_TURN = 0.3f;               //Поворот
-    public const float SPEED_HALF = 0.5f;
-    public const float SPEED_COMMON = 0.6f;             //Активное вооружение    
+    //public const float SPEED_HALF = 0.5f;
+    public const float SPEED_CRUISING = 0.6f;             //Активное вооружение / Крейсерская скорость
     public const float SPEED_FULL = 1.0f;
     //public const float SPEED_BURN = 1.25f;
 
@@ -186,6 +187,14 @@ public static class ConstantsParameters
 }*/
 
 #region ENUM
+public enum EnumSpeedType
+{
+    Stop,
+    Dock,
+    Cruising,
+    Full,
+}
+
 public enum EnumTargetType
 {
     None,
@@ -223,12 +232,15 @@ public enum EnumParameters
     optimalDistance,
     accuracy,
     critical,
+    rate,
 }
 
 public enum EnumPointType
 {
-    point,
-    enemy,
+    NA,
+    Player,
+    Point,
+    Enemy,
 }
 
 //Тип объекта

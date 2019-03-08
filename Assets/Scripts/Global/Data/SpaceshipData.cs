@@ -40,7 +40,7 @@ public class SpaceshipData
             return;
         }
 
-        model = config.model;
+        model = config.id;
         id = UtilityBase.GetMD5(model + DateTime.UtcNow.ToString());
         material = "Default";
         mk = 1;
@@ -68,7 +68,7 @@ public class SpaceshipData
     public SpaceshipsConfig GetConfig()
     {
         if (config == null)
-            config = Global.Instance.CONFIGS.spaceships.Find(x => x.model == model);
+            config = Global.Instance.CONFIGS.spaceships.Find(x => x.id == model);
 
         if (config == null)
             Debug.LogWarning("<color=#FF0000>[SpaceshipData] \"config\" is null!</color>");

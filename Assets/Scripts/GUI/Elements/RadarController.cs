@@ -65,11 +65,11 @@ public class RadarController : MonoBehaviour
 
         switch (_controller.type)
         {
-            case EnumPointType.point:
+            case EnumPointType.Point:
                 name = ConstantsPrefabName.RADAR_POINT;
                 break;
 
-            case EnumPointType.enemy:
+            case EnumPointType.Enemy:
                 name = ConstantsPrefabName.RADAR_SPACESHIP;
                 break;
         }
@@ -92,8 +92,10 @@ public class RadarController : MonoBehaviour
     {
         playerMarker.localEulerAngles = -transform.localEulerAngles;
 
-        foreach (var marker in markers)
+        for (int i = 0; i < markers.Count; i++)
         {
+            var marker = markers[i];
+
             if (marker.controller == null)
             {
                 Destroy(marker.marker.gameObject);
