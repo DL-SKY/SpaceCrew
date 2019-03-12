@@ -227,6 +227,7 @@ public enum EnumParameters
     energy,
 
     //Параметры оснащения
+    optimalSizeType,
     shieldDamage,
     armorDamage,
     optimalDistance,
@@ -241,6 +242,21 @@ public enum EnumPointType
     Player,
     Point,
     Enemy,
+}
+
+public enum EnumSizeType
+{
+    NA = 0,
+    //_1 = 1,
+    //_2 = 2,
+    //_3 = 3,
+    //_4 = 4,
+    Small = 5,
+    Medium = 6,
+    Large = 7,
+    //_8 = 8,
+    //_9 = 9,
+    //_10 = 10,
 }
 
 //Тип объекта

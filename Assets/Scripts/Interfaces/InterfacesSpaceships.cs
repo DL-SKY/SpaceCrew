@@ -7,6 +7,8 @@ public interface IUpdateRenderer
 
 public interface IDestructible
 {
+    EnumSizeType SizeType { get; set; }
+
     void ApplyDamage(Damage _damage, Vector3 _weaponPos);
     float GetShieldNormalize();
     float GetArmorNormalize();

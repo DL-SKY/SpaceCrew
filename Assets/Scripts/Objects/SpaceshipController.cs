@@ -23,6 +23,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         set { visibleToCamera = value; }
     }
     public string model;
+    public EnumSizeType SizeType { get; set; }
     public string material;
     public float length;
 
@@ -172,6 +173,8 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         config = data.GetConfig();
 
         meta = new SpaceshipMetadata(data, config);
+
+        SizeType = (EnumSizeType)config.sizeType;
 
         ApplyWeapons();
 
@@ -559,7 +562,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     [ContextMenu("Apply Damage")]
     private void MenuApplyDamage()
     {
-        var dmg = new Damage(0.5f, 0.5f);
+        var dmg = new Damage(0.5f, 0.5f, 0.0f);
         ApplyDamage(dmg, Vector3.zero);
     }
     #endregion

@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 public class WeaponController : MonoBehaviour
 {
     #region Variables
+    [SerializeField]
+    protected bool isActive;
+    [Space()]
     [SerializeField]
     protected ItemData data;
     [SerializeField]
@@ -13,6 +17,8 @@ public class WeaponController : MonoBehaviour
     [SerializeField]
     protected PointController target;
 
+    [SerializeField]
+    protected EnumSizeType sizeType;
     [SerializeField]
     protected float armorDamage;
     [SerializeField]
@@ -41,11 +47,13 @@ public class WeaponController : MonoBehaviour
 
     public virtual void ActivateWeapon()
     {
+        isActive = true;
         StartCoroutine(TargetTracking());
     }
 
     public virtual void DisableWeapon()
     {
+        isActive = false;
         target = null;
         StopAllCoroutines();
     }
@@ -54,6 +62,7 @@ public class WeaponController : MonoBehaviour
     #region protected methods
     protected virtual void ApplySelfParameters()
     {
+        sizeType = (EnumSizeType)data.GetSelfParameter(EnumParameters.optimalSizeType);
         armorDamage = data.GetSelfParameter(EnumParameters.armorDamage);
         shieldDamage = data.GetSelfParameter(EnumParameters.shieldDamage);
         optimalDistance = data.GetSelfParameter(EnumParameters.optimalDistance);
@@ -74,6 +83,8 @@ public class WeaponController : MonoBehaviour
             target = spaceship.targets[0];
         }
     }
+
+
     #endregion
 
     #region Coroutines
@@ -89,16 +100,32 @@ public class WeaponController : MonoBehaviour
     {
         GetTarget();
 
-        if (target.type == EnumPointType.Enemy)
+        //Попадание
+        if (DamageUtility.GetHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
         {
-            var enemy = target.GetComponent<SpaceshipController>();
-
-            var damage = new Damage(armorDamage, shieldDamage);
-
-            enemy.ApplyDamage(damage, transform.position);
+            switch (target.type)
+            {
+                case EnumPointType.Enemy:
+                    var enemy = target.GetComponent<SpaceshipController>();
+                    var damage = new Damage(armorDamage, shieldDamage, critical);
+                    enemy.ApplyDamage(damage, transform.position);
+                    break;
+            }
+        }
+        else
+        {
+            //TODO: выстрел мимо
         }
 
         yield return new WaitForSeconds(rate);
+    }
+    #endregion
+
+    #region Menu
+    [ContextMenu("Activated")]
+    private void MenuSetCameraTarget()
+    {
+        ActivateWeapon();
     }
     #endregion
 }

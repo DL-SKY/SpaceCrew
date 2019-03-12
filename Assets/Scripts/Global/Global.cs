@@ -199,6 +199,8 @@ public class SpaceshipsConfig
 {
     public string id;
 
+    public int sizeType;
+
     public string blueprint;
 
     public int[] mks;

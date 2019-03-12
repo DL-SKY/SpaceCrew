@@ -46,7 +46,7 @@
     },
     {
       "id": "email",
-      "value": "studio.dllsky@gmail.com"
+      "value": "alex.dllsky@gmail.com"
     }
   ],
   "localization": [
@@ -115,7 +115,6 @@
   "spaceships": [
     {
       "id": "mk6",
-      "sizeType": 1,
       "blueprint": "blueprint_mk6",
       "mks": [
         10,
@@ -257,10 +256,6 @@
       "subsystem": "energy"
     },
     {
-      "id": "optimalSizeType",
-      "subsystem": ""
-    },
-    {
       "id": "shieldDamage",
       "subsystem": ""
     },
@@ -335,7 +330,6 @@
       "subType": "",
       "energy": "0.5",
       "selfParameters": [
-        "optimalSizeType:5",
         "armorDamage:1.5",
         "shieldDamage:1.5",
         "optimalDistance:4",
