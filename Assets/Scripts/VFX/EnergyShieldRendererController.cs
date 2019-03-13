@@ -49,7 +49,8 @@ public class EnergyShieldRendererController : MonoBehaviour
 
         eParams.ResetPosition();        
         eParams.applyShapeToPosition = true;
-        eParams.position = _position;        
+        //eParams.position = _position;  
+        eParams.position = transform.InverseTransformPoint(_position);
 
         particlesDamage.Emit(eParams, _count);
     }
