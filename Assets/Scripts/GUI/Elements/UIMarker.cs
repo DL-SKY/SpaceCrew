@@ -121,6 +121,12 @@ public class UIMarker : MonoBehaviour
 
     public void OnClickVisible()
     {
+        if (pointController.type == EnumPointType.Player)
+        {
+            OnClickPlayer();
+            return;
+        }
+
         pointController.OnClick();
     }
 
@@ -244,6 +250,11 @@ public class UIMarker : MonoBehaviour
             activeTarget.gameObject.SetActive(IsActive);
         if (disableTarget)
             disableTarget.gameObject.SetActive(!IsActive);
+    }
+
+    private void OnClickPlayer()
+    {
+        IsActive = !IsActive;
     }
     #endregion
 }

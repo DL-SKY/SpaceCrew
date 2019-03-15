@@ -77,6 +77,7 @@ public static class ConstantsResourcesPath
 public static class ConstantsPrefabName
 {
     //Markers
+    public static string MARKER_PLAYER = "MarkerPlayer";
     public static string MARKER_POINT = "MarkerPoint";
     public static string MARKER_ENEMY = "MarkerEnemy";
 

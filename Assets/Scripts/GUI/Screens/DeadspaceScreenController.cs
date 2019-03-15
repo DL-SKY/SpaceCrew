@@ -31,7 +31,7 @@ public class DeadspaceScreenController : ScreenController
 
     private void OnEnable()
     {
-        //EventManager.eventOnClickEsc += OnClickEsc;
+        EventManager.eventOnClickEsc += OnClickMenu;
         EventManager.eventOnInitPointController += OnInitPointController;
 
         if (IsInit)
@@ -40,7 +40,7 @@ public class DeadspaceScreenController : ScreenController
 
     private void OnDisable()
     {
-        //EventManager.eventOnClickEsc -= OnClickEsc;
+        EventManager.eventOnClickEsc -= OnClickMenu;
         EventManager.eventOnInitPointController -= OnInitPointController;
     }
 
@@ -59,6 +59,12 @@ public class DeadspaceScreenController : ScreenController
     {
         StartCoroutine(Initializing());
     }
+
+    public void OnClickMenu()
+    {
+        if (!SplashScreenManager.Instance.IsOpenSplashscreen())
+            StartCoroutine(CloseCoroutine());
+    }
     #endregion
 
     #region Private methods
@@ -67,9 +73,14 @@ public class DeadspaceScreenController : ScreenController
         var prefName = "";
         switch (_controller.type)
         {
+            case EnumPointType.Player:
+                prefName = ConstantsPrefabName.MARKER_PLAYER;
+                break;
+
             case EnumPointType.Point:
                 prefName = ConstantsPrefabName.MARKER_POINT;
                 break;
+
             case EnumPointType.Enemy:
                 prefName = ConstantsPrefabName.MARKER_ENEMY;
                 break;

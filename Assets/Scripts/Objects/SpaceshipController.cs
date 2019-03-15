@@ -281,6 +281,8 @@ public class SpaceshipController : MonoBehaviour, IDestructible
                 ShowShieldDamage(shieldCollider.ClosestPoint(_weaponPos));
         }
 
+        //ShowShieldDamage(shieldCollider.ClosestPoint(_weaponPos));
+
         //TODO: Условие получения урона брони
         //Варианты: малый заряд щитов или его отсутствие; атака противника игнорирует щиты и т.д.
         var needCheckDamageArmor = GetShield() <= 0.0f;
@@ -449,7 +451,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         foreach (var weaponData in meta.weapons)
         {
             var newWeapon = new GameObject(weaponData.id, typeof(WeaponController)).GetComponent<WeaponController>();
-            newWeapon.transform.SetParent(weaponsParent);
+            newWeapon.transform.SetParent(weaponsParent, false);
             newWeapon.Initialize(weaponData, this);
         }
     }
@@ -498,14 +500,17 @@ public class SpaceshipController : MonoBehaviour, IDestructible
 
     private void CreateMarker()
     {
-        if (isPlayer)
-            return;
+        //if (isPlayer)
+            //return;
 
         var pointController = GetComponent<PointController>();
         if (!pointController)
             pointController = gameObject.AddComponent<PointController>();
 
-        pointController.Initialize(EnumPointType.Enemy, this);
+        if (isPlayer)
+            pointController.Initialize(EnumPointType.Player, this);
+        else
+            pointController.Initialize(EnumPointType.Enemy, this);
 
         selfPointController = pointController;
     }

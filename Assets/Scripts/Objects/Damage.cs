@@ -11,6 +11,7 @@
     {
         ArmorDmg = _armorDmg;
         ShieldDmg = _shieldDmg;
+        Critical = _critical;
     }
     #endregion
 

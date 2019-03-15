@@ -100,14 +100,20 @@ public class WeaponController : MonoBehaviour
     {
         GetTarget();
 
+        var damage = new Damage(armorDamage, shieldDamage, critical);
+
         //Попадание
         if (DamageUtility.GetHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
         {
             switch (target.type)
             {
+                case EnumPointType.Player:
+                    var player = target.GetComponent<SpaceshipController>();                    
+                    player.ApplyDamage(damage, transform.position);
+                    break;
+
                 case EnumPointType.Enemy:
                     var enemy = target.GetComponent<SpaceshipController>();
-                    var damage = new Damage(armorDamage, shieldDamage, critical);
                     enemy.ApplyDamage(damage, transform.position);
                     break;
             }

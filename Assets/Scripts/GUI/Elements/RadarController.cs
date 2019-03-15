@@ -7,11 +7,14 @@ using UnityEngine;
 public class RadarController : MonoBehaviour
 {
     #region Constants
+    [SerializeField]
     private float RADAR_SCALER = 1.5f;
+    [SerializeField]
     private float RADIUS = 128.0f;
     #endregion
 
     #region Variables
+    [Space()]
     public Transform direction;
     public Transform markersParent;
     public Transform playerMarker;
@@ -65,6 +68,9 @@ public class RadarController : MonoBehaviour
 
         switch (_controller.type)
         {
+            case EnumPointType.Player:
+                return;
+
             case EnumPointType.Point:
                 name = ConstantsPrefabName.RADAR_POINT;
                 break;
