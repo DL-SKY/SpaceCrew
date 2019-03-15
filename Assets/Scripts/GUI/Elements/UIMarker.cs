@@ -47,6 +47,9 @@ public class UIMarker : MonoBehaviour
     [SerializeField]
     private float halfInvisibleSizeY;
 
+    [Header("Sybitems")]
+    public List<UIMarkerSubitem> subitems;
+
     private RectTransform parent;
     private RectTransform selfTransform;
     private PointController pointController;
@@ -115,6 +118,9 @@ public class UIMarker : MonoBehaviour
         isInit = true;
 
         IsActive = false;
+
+        foreach (var item in subitems)
+            item.HideImediatly();
 
         UpdateHitPoints();
     }
@@ -255,6 +261,13 @@ public class UIMarker : MonoBehaviour
     private void OnClickPlayer()
     {
         IsActive = !IsActive;
+
+        if (IsActive)
+            foreach (var item in subitems)
+                item.Show();
+        else
+            foreach (var item in subitems)
+                item.Hide();
     }
     #endregion
 }

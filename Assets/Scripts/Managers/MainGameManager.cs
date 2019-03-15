@@ -1,4 +1,5 @@
-﻿using DllSky.Managers;
+﻿using DllSky.Analytics;
+using DllSky.Managers;
 using DllSky.Patterns;
 using System;
 using System.Collections;
@@ -10,12 +11,22 @@ public class MainGameManager : Singleton<MainGameManager>
 {
     #region Variables
     private string currentScene = null;
+
+    private DateTime startSession;
     #endregion    
 
     #region Unity methods
     private void Start()
     {
         StartCoroutine(StartGame());
+    }
+
+    private void OnApplicationQuit()
+    {
+        //Метрики
+        var session = DateTime.UtcNow - startSession;
+        var gameOverData = new AnaliticsGameOverData(string.Format("{0} min.", (int)session.TotalMinutes));
+        AnalyticsManager.Instance.SendEvent(EnumAnalyticsEventType.GameOver, gameOverData);
     }
     #endregion
 
@@ -41,6 +52,11 @@ public class MainGameManager : Singleton<MainGameManager>
     {
         //Стартовый прелоадер
         yield return SplashScreenManager.Instance.ShowStartingGame();
+
+        //Метрики
+        startSession = DateTime.UtcNow;
+        AnalyticsManager.Instance.SendEvent(EnumAnalyticsEventType.GameStart, null);
+
         //Версия
         Debug.Log("<color=#FFD800>[VERSION] " + Application.version + "</color>");
         //Инициализация конфига
