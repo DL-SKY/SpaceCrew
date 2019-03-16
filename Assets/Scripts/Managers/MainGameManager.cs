@@ -25,7 +25,7 @@ public class MainGameManager : Singleton<MainGameManager>
     {
         //Метрики
         var session = DateTime.UtcNow - startSession;
-        var gameOverData = new AnaliticsGameOverData(string.Format("{0} min.", (int)session.TotalMinutes));
+        var gameOverData = new AnaliticsGameOverData((int)session.TotalMinutes);
         AnalyticsManager.Instance.SendEvent(EnumAnalyticsEventType.GameOver, gameOverData);
     }
     #endregion

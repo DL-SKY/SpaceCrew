@@ -45,11 +45,13 @@ namespace DllSky.Analytics
 
                 case EnumAnalyticsEventType.GameStart:
                     AnalyticsEvent.GameStart();
+                    //AnalyticsEvent.Custom("GameStart");
                     break;
 
                 case EnumAnalyticsEventType.GameOver:
                     var gameOverData = (AnaliticsGameOverData)_data;
                     AnalyticsEvent.GameOver(gameOverData.name, gameOverData.eventData);
+                    //AnalyticsEvent.Custom("GameOver", gameOverData.eventData);
                     break;
 
 
@@ -101,10 +103,23 @@ namespace DllSky.Analytics
         public string name;
         public Dictionary<string, object> eventData;
 
-        public AnaliticsGameOverData(string _sessionTime, string _name = null)
+        public AnaliticsGameOverData(int _sessionTime, string _name = null)
         {
             name = _name;
-            eventData = new Dictionary<string, object> { { "session_time", _sessionTime } };
+            var value = "";
+
+            if (_sessionTime < 1)
+                value = "< 1 min";
+            else if (_sessionTime < 5)
+                value = "< 5 min";
+            else if (_sessionTime < 10)
+                value = "< 10 min";
+            else if (_sessionTime < 20)
+                value = "< 20 min";
+            else
+                value = "> 20 min";
+
+            eventData = new Dictionary<string, object> { { "session_time", value } };
         }
     }
 

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+#pragma warning disable 0649
+
 namespace DllSky.Components
 {
     public class ProgressBar : MonoBehaviour

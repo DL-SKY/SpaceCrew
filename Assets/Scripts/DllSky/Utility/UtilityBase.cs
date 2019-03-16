@@ -17,6 +17,7 @@ using System.Collections;
 using System.Security.Cryptography;							//MD5
 using System.Text;                                          //Encoding
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace DllSky.Utility
 {
@@ -146,8 +147,8 @@ namespace DllSky.Utility
 
             if (_escapeURL)
             {
-                _subject = WWW.EscapeURL(_subject);
-                _body = WWW.EscapeURL(_body);
+                _subject = UnityWebRequest.EscapeURL(_subject);
+                _body = UnityWebRequest.EscapeURL(_body);
             }
 
             string url = string.Format("mailto:{0}?subject={1}&body={2}", _address, _subject, _body);
