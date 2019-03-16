@@ -54,6 +54,11 @@ namespace DllSky.Analytics
                     //AnalyticsEvent.Custom("GameOver", gameOverData.eventData);
                     break;
 
+                case EnumAnalyticsEventType.GamePause:
+                    var gamePauseData = (AnaliticsGameOverData)_data;
+                    AnalyticsEvent.Custom("game_pause", gamePauseData.eventData);
+                    break;
+
 
 
                 case EnumAnalyticsEventType.ScreenVisit:
@@ -82,8 +87,9 @@ namespace DllSky.Analytics
         Warning,
         Error,
 
-        GameStart,
-        GameOver,
+        GameStart,              //game_start
+        GameOver,               //game_over 
+        GamePause,              //game_pause
 
         //Настройки
 

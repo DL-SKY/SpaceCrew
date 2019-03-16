@@ -28,7 +28,8 @@ public class UIMarker : MonoBehaviour
 
     [Header("ProgressBars")]
     public ProgressBar shieldProgress;
-    public ProgressBar armorProgress;    
+    public ProgressBar armorProgress;
+    public ProgressBar speedProgress;
 
     [Header("Visible")]    
     public RectTransform selfTransformVisible;

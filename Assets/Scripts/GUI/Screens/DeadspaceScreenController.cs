@@ -138,7 +138,7 @@ public class DeadspaceScreenController : ScreenController
             yield return null;
         }*/
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.0f);
         //CreateUIMarkers();
 
         IsInit = true;

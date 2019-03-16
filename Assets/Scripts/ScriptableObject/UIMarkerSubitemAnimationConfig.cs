@@ -9,9 +9,15 @@ using UnityEditor;
 public class UIMarkerSubitemAnimationConfig : ScriptableObject
 {
     #region Variables
-    public float time = 0.5f;
+    [Header("Main animation")]
+    public float time = 0.25f;    
     public AnimationCurve alpha = new AnimationCurve();
     public AnimationCurve size = new AnimationCurve();
+
+    [Header("Text animation")]
+    public float timeText = 0.25f;
+    public AnimationCurve alphaText = new AnimationCurve();
+    public AnimationCurve deltaTextPosition = new AnimationCurve();
     #endregion
 }
 

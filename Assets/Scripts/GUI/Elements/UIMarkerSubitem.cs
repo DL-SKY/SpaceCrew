@@ -10,6 +10,10 @@ public class UIMarkerSubitem : MonoBehaviour
     public Transform center;
     public Transform content;
     public CanvasGroup canvas;
+
+    [Space()]
+    public RectTransform text;
+    public CanvasGroup canvasText;
     #endregion
 
     #region Unity methods
@@ -47,6 +51,9 @@ public class UIMarkerSubitem : MonoBehaviour
         var timer = 0.0f;
         var T = 0.0f;
 
+        canvasText.alpha = 0.0f;
+
+        //Основная кнопка
         while (T < 1.0)
         {
             T = Mathf.InverseLerp(0.0f, config.time, timer);
@@ -59,7 +66,22 @@ public class UIMarkerSubitem : MonoBehaviour
             yield return null;
 
             timer += Time.deltaTime;
-        }       
+        }
+
+        //Текст
+        timer = 0.0f;
+        T = 0.0f;
+        while (T < 1.0f)
+        {
+            T = Mathf.InverseLerp(0.0f, config.timeText, timer);
+
+            text.anchoredPosition = new Vector2(config.deltaTextPosition.Evaluate(T), 0.0f);
+            canvasText.alpha = config.alphaText.Evaluate(T);
+
+            yield return null;
+
+            timer += Time.deltaTime;
+        }
     }
 
     private IEnumerator HideAnimation()
@@ -67,6 +89,10 @@ public class UIMarkerSubitem : MonoBehaviour
         var timer = 0.0f;
         var T = 0.0f;
 
+        //Текст
+        canvasText.alpha = 0.0f;
+
+        //Кнопка
         while (T < 1.0)
         {
             T = Mathf.InverseLerp(0.0f, config.time, timer);

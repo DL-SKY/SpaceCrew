@@ -13,12 +13,36 @@ public class MainGameManager : Singleton<MainGameManager>
     private string currentScene = null;
 
     private DateTime startSession;
+    private DateTime stopPause;
     #endregion    
 
     #region Unity methods
     private void Start()
     {
+        //Метрики
+        startSession = DateTime.UtcNow;
+        stopPause = DateTime.UtcNow;
+        AnalyticsManager.Instance.SendEvent(EnumAnalyticsEventType.GameStart, null);
+
         StartCoroutine(StartGame());
+    }
+
+    private void OnApplicationPause(bool _pause)
+    {
+        //Метрики
+        if (!_pause)
+        {
+            stopPause = DateTime.UtcNow;
+        }
+        else
+        {
+            var session = (int)(DateTime.UtcNow - stopPause).TotalMinutes;
+            if (session > 0)
+            {
+                var gamePauseData = new AnaliticsGameOverData(session);
+                AnalyticsManager.Instance.SendEvent(EnumAnalyticsEventType.GamePause, gamePauseData);
+            }
+        }
     }
 
     private void OnApplicationQuit()
@@ -51,11 +75,7 @@ public class MainGameManager : Singleton<MainGameManager>
     private IEnumerator StartGame()
     {
         //Стартовый прелоадер
-        yield return SplashScreenManager.Instance.ShowStartingGame();
-
-        //Метрики
-        startSession = DateTime.UtcNow;
-        AnalyticsManager.Instance.SendEvent(EnumAnalyticsEventType.GameStart, null);
+        yield return SplashScreenManager.Instance.ShowStartingGame();        
 
         //Версия
         Debug.Log("<color=#FFD800>[VERSION] " + Application.version + "</color>");
