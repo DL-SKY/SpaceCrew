@@ -15,6 +15,13 @@ public class UIMarker : MonoBehaviour
 
     [Space(5)]
     [SerializeField]
+    private bool isSelected;
+    public bool IsSelected
+    {
+        get { return isSelected; }
+        set { isSelected = value; ApplySelect(); }
+    }
+
     private bool isActive;
     public bool IsActive
     {
@@ -33,6 +40,7 @@ public class UIMarker : MonoBehaviour
 
     [Header("Visible")]    
     public RectTransform selfTransformVisible;
+    public RectTransform selectedTarget;
     public RectTransform activeTarget;
     public RectTransform disableTarget;
     public Text distanceText;
@@ -118,6 +126,7 @@ public class UIMarker : MonoBehaviour
 
         isInit = true;
 
+        IsSelected = false;
         IsActive = false;
 
         foreach (var item in subitems)
@@ -128,18 +137,21 @@ public class UIMarker : MonoBehaviour
 
     public void OnClickVisible()
     {
-        if (pointController.type == EnumPointType.Player)
-        {
-            OnClickPlayer();
-            return;
-        }
+        IsSelected = !IsSelected;
 
-        pointController.OnClick();
+        if (IsSelected)
+            foreach (var item in subitems)
+                item.Show();
+        else
+            foreach (var item in subitems)
+                item.Hide();
+
+        //pointController.OnClick();
     }
 
     public void OnClickInvisible()
     {
-        pointController.OnClick();
+        //pointController.OnClick();
     }
     #endregion
 
@@ -251,24 +263,18 @@ public class UIMarker : MonoBehaviour
         }        
     }
 
+    private void ApplySelect()
+    {
+        if (selectedTarget)
+            selectedTarget.gameObject.SetActive(IsSelected);
+    }
+
     private void ApplyActive()
     {
         if (activeTarget)
             activeTarget.gameObject.SetActive(IsActive);
         if (disableTarget)
             disableTarget.gameObject.SetActive(!IsActive);
-    }
-
-    private void OnClickPlayer()
-    {
-        IsActive = !IsActive;
-
-        if (IsActive)
-            foreach (var item in subitems)
-                item.Show();
-        else
-            foreach (var item in subitems)
-                item.Hide();
     }
     #endregion
 }
