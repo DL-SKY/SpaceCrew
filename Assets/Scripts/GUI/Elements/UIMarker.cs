@@ -150,18 +150,41 @@ public class UIMarker : MonoBehaviour
         }
         else
         {
-            foreach (var item in subitems)
-                item.Hide();
+            HideSubitems();
 
             StartSubitemsTimer();
         }
-
-        //pointController.OnClick();
     }
 
     public void OnClickInvisible()
     {
-        //pointController.OnClick();
+        //reserved
+    }
+
+    public void OnClickMoveTo()
+    {
+        pointController.OnClickMoveTo();
+
+        HideSubitemsAndDeselect();
+    }
+
+    public void OnClickTargeting()
+    {
+        pointController.OnClickTargeting();
+
+        HideSubitemsAndDeselect();
+    }
+
+    public void OnClickTargetingOff()
+    {
+        pointController.OnClickTargetingOff();
+
+        HideSubitemsAndDeselect();
+    }
+
+    public void OnClickInfo()
+    {
+
     }
 
     public void StartSubitemsTimer()
@@ -183,6 +206,19 @@ public class UIMarker : MonoBehaviour
     private void DeleteMarker()
     {
         Destroy(gameObject);
+    }
+
+    private void HideSubitems()
+    {
+        foreach (var item in subitems)
+            item.Hide();
+    }
+
+    private void HideSubitemsAndDeselect()
+    {
+        IsSelected = false;
+
+        HideSubitems();        
     }
 
     private void UpdateAlwaysVisibleMarker()
@@ -265,7 +301,27 @@ public class UIMarker : MonoBehaviour
     private void HandlerOnSetActiveTarget(PointController _controller, bool _selected)
     {
         if (_controller == pointController)
-            IsActive = _selected;
+        {
+            //Проверка на нахождение в списке активных целей Игрока
+            if (pointController.type == EnumPointType.Enemy)
+            {
+                //Запрет снятия выделения, если в активных целях (н-р, если цель была точкой маршрута)
+                if (!_selected)
+                {
+                    var targets = PlayerController.Instance.player.targets;
+                    if (!targets.Contains(pointController))
+                        IsActive = _selected;
+                }
+                else
+                {
+                    IsActive = _selected;
+                }                
+            }
+            else
+            {
+                IsActive = _selected;
+            }
+        }
     }
 
     private void HandleOnUpdateHitPoints(PointController _controller)
@@ -318,8 +374,7 @@ public class UIMarker : MonoBehaviour
 
         IsSelected = false;
 
-        foreach (var item in subitems)
-            item.Hide();
+        HideSubitems();
 
         SubitemsTimer = null;
     }

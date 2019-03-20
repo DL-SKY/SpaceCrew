@@ -75,6 +75,21 @@ public class PointController : MonoBehaviour
                 break;
         }        
     }
+
+    public void OnClickMoveTo()
+    {
+        EventManager.CallOnPoint(this, true);
+    }
+
+    public void OnClickTargeting()
+    {
+        EventManager.CallOnTargeting(this, true);
+    }
+
+    public void OnClickTargetingOff()
+    {
+        EventManager.CallOnTargeting(this, false);
+    }
     #endregion
 
     #region Private methods
