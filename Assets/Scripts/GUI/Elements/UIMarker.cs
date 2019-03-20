@@ -77,13 +77,15 @@ public class UIMarker : MonoBehaviour
     private void OnEnable()
     {
         EventManager.eventOnSetActiveTarget += HandlerOnSetActiveTarget;
-        EventManager.eventOnUpdateHitPoints += HandleOnUpdateHitPoints;    
+        EventManager.eventOnUpdateHitPoints += HandleOnUpdateHitPoints;
+        EventManager.eventOnShowMarkerSubtems += HandlerOnShowMarkerSubtems;
     }
     
     private void OnDisable()
     {
         EventManager.eventOnSetActiveTarget -= HandlerOnSetActiveTarget;
-        EventManager.eventOnUpdateHitPoints -= HandleOnUpdateHitPoints;        
+        EventManager.eventOnUpdateHitPoints -= HandleOnUpdateHitPoints;
+        EventManager.eventOnShowMarkerSubtems -= HandlerOnShowMarkerSubtems;
     }
 
     private void LateUpdate()
@@ -147,12 +149,15 @@ public class UIMarker : MonoBehaviour
                 item.Show();
 
             StartSubitemsTimer();
+
+            //Сообщаем другим Маркерам спрятать свои подэлементы
+            EventManager.CallOnShowMarkerSubtems(pointController);
         }
         else
         {
             HideSubitems();
 
-            StartSubitemsTimer();
+            StopSubitemsTimer();
         }
     }
 
@@ -328,6 +333,12 @@ public class UIMarker : MonoBehaviour
     {
         if (_controller == pointController)
             UpdateHitPoints();
+    }
+
+    private void HandlerOnShowMarkerSubtems(PointController _controller)
+    {
+        if (_controller != pointController)
+            HideSubitemsAndDeselect();
     }
 
     private void UpdateHitPoints()

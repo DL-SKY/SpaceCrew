@@ -18,6 +18,7 @@ namespace DllSky.Managers
         public static Action eventOnApplyLanguage;
 
         public static Action<PointController> eventOnInitPointController;
+        public static Action<PointController> eventOnShowMarkerSubtems;
         public static Action<PointController, bool> eventOnSetActiveTarget;
         public static Action<PointController, bool> eventOnPoint;
         public static Action<PointController, bool> eventOnTargeting;
@@ -53,6 +54,12 @@ namespace DllSky.Managers
         {
             if (eventOnInitPointController != null)
                 eventOnInitPointController.Invoke(_controller);
+        }
+
+        public static void CallOnShowMarkerSubtems(PointController _controller)
+        {
+            if (eventOnShowMarkerSubtems != null)
+                eventOnShowMarkerSubtems.Invoke(_controller);
         }
 
         public static void CallOnPoint(PointController _controller, bool _selected)

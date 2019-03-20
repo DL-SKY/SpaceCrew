@@ -78,7 +78,7 @@ public class PointController : MonoBehaviour
 
     public void OnClickMoveTo()
     {
-        EventManager.CallOnPoint(this, true);
+        EventManager.CallOnPoint(this, true);        
     }
 
     public void OnClickTargeting()
