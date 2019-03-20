@@ -16,6 +16,7 @@ public class LocalizationManager : Singleton<LocalizationManager>
     #region Unity methods
     private void Start()
     {
+        //Этот блок переехал в ExtensionGlobal GetCurrentSystemLanguage()
         /*var lang = Application.systemLanguage;
 
         switch (lang)

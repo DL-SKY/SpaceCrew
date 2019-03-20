@@ -46,6 +46,7 @@ public class InternetManager : Singleton<InternetManager>
     #region Public methods
     public void Ping()
     {
+        StopAllCoroutines();
         StartCoroutine(RequestPing());
     }
     #endregion

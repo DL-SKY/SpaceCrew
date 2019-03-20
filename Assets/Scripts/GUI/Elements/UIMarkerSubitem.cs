@@ -23,12 +23,13 @@ public class UIMarkerSubitem : MonoBehaviour
     }
     #endregion
 
-    #region Public methods
+    #region Public methods  
     public void Show()
     {
         gameObject.SetActive(true);
         StopAllCoroutines();
-        StartCoroutine(ShowAnimation());
+        if (gameObject.activeInHierarchy)
+            StartCoroutine(ShowAnimation());
     }
 
     public void HideImediatly()
@@ -38,7 +39,8 @@ public class UIMarkerSubitem : MonoBehaviour
 
     public void Hide()
     {
-        StartCoroutine(HideAnimation());
+        if (gameObject.activeInHierarchy)
+            StartCoroutine(HideAnimation());
     }
     #endregion
 

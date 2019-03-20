@@ -28,20 +28,24 @@ public class MainGameManager : Singleton<MainGameManager>
     }
 
     private void OnApplicationPause(bool _pause)
-    {
-        //Метрики
+    {        
         if (!_pause)
         {
             stopPause = DateTime.UtcNow;
         }
         else
         {
+            //Метрики
             var session = (int)(DateTime.UtcNow - stopPause).TotalMinutes;
             if (session > 0)
             {
                 var gamePauseData = new AnaliticsGameOverData(session);
                 AnalyticsManager.Instance.SendEvent(EnumAnalyticsEventType.GamePause, gamePauseData);
             }
+
+            //Сохранение
+            Global.Instance.SaveSettings();
+            Global.Instance.SaveProfile();
         }
     }
 
@@ -51,6 +55,10 @@ public class MainGameManager : Singleton<MainGameManager>
         var session = DateTime.UtcNow - startSession;
         var gameOverData = new AnaliticsGameOverData((int)session.TotalMinutes);
         AnalyticsManager.Instance.SendEvent(EnumAnalyticsEventType.GameOver, gameOverData);
+
+        //Сохранение
+        Global.Instance.SaveSettings();
+        Global.Instance.SaveProfile();
     }
     #endregion
 

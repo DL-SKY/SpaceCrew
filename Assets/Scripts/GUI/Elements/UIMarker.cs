@@ -57,7 +57,9 @@ public class UIMarker : MonoBehaviour
     private float halfInvisibleSizeY;
 
     [Header("Sybitems")]
+    public float timeAutoHideSubitems = 3.0f;
     public List<UIMarkerSubitem> subitems;
+    private Coroutine SubitemsTimer;
 
     private RectTransform parent;
     private RectTransform selfTransform;
@@ -75,13 +77,13 @@ public class UIMarker : MonoBehaviour
     private void OnEnable()
     {
         EventManager.eventOnSetActiveTarget += HandlerOnSetActiveTarget;
-        EventManager.eventOnUpdateHitPoints += HandleOnUpdateHitPoints;
+        EventManager.eventOnUpdateHitPoints += HandleOnUpdateHitPoints;    
     }
-
+    
     private void OnDisable()
     {
         EventManager.eventOnSetActiveTarget -= HandlerOnSetActiveTarget;
-        EventManager.eventOnUpdateHitPoints -= HandleOnUpdateHitPoints;
+        EventManager.eventOnUpdateHitPoints -= HandleOnUpdateHitPoints;        
     }
 
     private void LateUpdate()
@@ -140,11 +142,19 @@ public class UIMarker : MonoBehaviour
         IsSelected = !IsSelected;
 
         if (IsSelected)
+        {
             foreach (var item in subitems)
                 item.Show();
+
+            StartSubitemsTimer();
+        }
         else
+        {
             foreach (var item in subitems)
                 item.Hide();
+
+            StartSubitemsTimer();
+        }
 
         //pointController.OnClick();
     }
@@ -152,6 +162,20 @@ public class UIMarker : MonoBehaviour
     public void OnClickInvisible()
     {
         //pointController.OnClick();
+    }
+
+    public void StartSubitemsTimer()
+    {
+        if (SubitemsTimer != null)
+            StopCoroutine(SubitemsTimer);
+
+        SubitemsTimer = StartCoroutine(SubitemsTimerCoroutine());
+    }
+
+    public void StopSubitemsTimer()
+    {
+        if (SubitemsTimer != null)
+            StopCoroutine(SubitemsTimer);
     }
     #endregion
 
@@ -267,6 +291,15 @@ public class UIMarker : MonoBehaviour
     {
         if (selectedTarget)
             selectedTarget.gameObject.SetActive(IsSelected);
+        
+        if (!pointController.VisibleToCamera)
+        {
+            if (SubitemsTimer != null)
+                StopCoroutine(SubitemsTimer);
+
+            foreach (var item in subitems)
+                item.HideImediatly();
+        }
     }
 
     private void ApplyActive()
@@ -275,6 +308,20 @@ public class UIMarker : MonoBehaviour
             activeTarget.gameObject.SetActive(IsActive);
         if (disableTarget)
             disableTarget.gameObject.SetActive(!IsActive);
+    }
+    #endregion
+
+    #region Coroutines
+    private IEnumerator SubitemsTimerCoroutine()
+    {
+        yield return new WaitForSeconds(timeAutoHideSubitems);
+
+        IsSelected = false;
+
+        foreach (var item in subitems)
+            item.Hide();
+
+        SubitemsTimer = null;
     }
     #endregion
 }
