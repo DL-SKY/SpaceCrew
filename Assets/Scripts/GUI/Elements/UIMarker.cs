@@ -313,8 +313,8 @@ public class UIMarker : MonoBehaviour
                 //Запрет снятия выделения, если в активных целях (н-р, если цель была точкой маршрута)
                 if (!_selected)
                 {
-                    var targets = PlayerController.Instance.player.targets;
-                    if (!targets.Contains(pointController))
+                    var player = PlayerController.Instance.player;
+                    if (!player.targets.Contains(pointController) && player.point != pointController.transform)
                         IsActive = _selected;
                 }
                 else
