@@ -479,7 +479,7 @@ PrefabInstance:
     - target: {fileID: 114191242708229706, guid: 64786ba65eaa6ff4cad81c90afe4bef1,
         type: 3}
       propertyPath: usingEncryption
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64786ba65eaa6ff4cad81c90afe4bef1, type: 3}

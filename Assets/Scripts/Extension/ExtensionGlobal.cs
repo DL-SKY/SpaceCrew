@@ -1,4 +1,5 @@
-﻿using DllSky.Protection;
+﻿using DllSky.Managers;
+using DllSky.Protection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -109,7 +110,7 @@ public static class ExtensionGlobal
         _pr.Tokens = 10;
 
         _pr.spaceships = new List<SpaceshipData>();
-        _pr.items = new List<ProfileItem>();
+        _pr.resources = new List<ProfileItem>();
     }
 
     public static Profile LoadProfile()
@@ -194,9 +195,15 @@ public static class ExtensionGlobal
     {
         int result = 0;
 
-        var item = _pr.items.Find(x => x.id == _id);
+        var item = _pr.resources.Find(x => x.id == _id);
         if (item != null)
             result = item.amount;
+
+        //Исключительная ситуация для Валюты
+        if (_id == ConstantsResourcesID.CREDITS)
+            result = _pr.Credits;
+        else if (_id == ConstantsResourcesID.TOKENS)
+            result = _pr.Tokens;
 
         return result;
     }
@@ -205,11 +212,24 @@ public static class ExtensionGlobal
     {
         Debug.Log("[GLOBAL.PROFILE] <color=#FF8800>Add Item:</color> " + _id + " (" + _amount + ")");
 
-        var item = _pr.items.Find(x => x.id == _id);
+        var item = _pr.resources.Find(x => x.id == _id);
         if (item != null)
             item.amount += _amount;
         else
-            _pr.items.Add(new ProfileItem(_id, _amount));
+            _pr.resources.Add(new ProfileItem(_id, _amount));
+
+        //Исключительная ситуация для Валюты
+        if (_id == ConstantsResourcesID.CREDITS)
+            _pr.Credits += _amount;
+        else if (_id == ConstantsResourcesID.TOKENS)
+            _pr.Tokens += _amount;
+
+        //Проверка на отрицательное значение
+        var currValue = _pr.GetItem(_id);
+        if (currValue < 0)
+            _pr.AddItem(_id, -currValue);
+        else        
+            EventManager.CallOnResourceUpdate(_id); //Событие на изменение ресурсов
     }
     #endregion
 

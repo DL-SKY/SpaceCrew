@@ -119,9 +119,15 @@ public static class ConstantsColor
     public const string LIGHT_KRAOLA = "light_kraola";
 }
 
+public static class ConstantsResourcesID
+{
+    public const string CREDITS = "credits";
+    public const string TOKENS = "tokens";
+}
+
 public static class ConstantsResourcesType
 {
-
+    public const string CURRENCY = "currency";
 }
 
 public static class ConstantsResourcesSubtype

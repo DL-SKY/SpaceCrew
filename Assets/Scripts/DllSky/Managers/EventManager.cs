@@ -17,6 +17,8 @@ namespace DllSky.Managers
         public static Action eventOnChangeLanguage;
         public static Action eventOnApplyLanguage;
 
+        public static Action<string> eventOnResourceUpdate;
+
         public static Action<PointController> eventOnInitPointController;
         public static Action<PointController> eventOnShowMarkerSubtems;
         public static Action<PointController, bool> eventOnSetActiveTarget;
@@ -48,6 +50,12 @@ namespace DllSky.Managers
         {
             if (eventOnApplyLanguage != null)
                 eventOnApplyLanguage.Invoke();
+        }
+
+        public static void CallOnResourceUpdate(string _resID)
+        {
+            if (eventOnResourceUpdate != null)
+                eventOnResourceUpdate.Invoke(_resID);
         }
 
         public static void CallOnInitPointController(PointController _controller)

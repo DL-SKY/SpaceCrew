@@ -149,7 +149,7 @@ public class Profile
     }
 
     public List<SpaceshipData> spaceships = new List<SpaceshipData>();
-    public List<ProfileItem> items = new List<ProfileItem>();
+    public List<ProfileItem> resources = new List<ProfileItem>();
 }
 
 [Serializable]
