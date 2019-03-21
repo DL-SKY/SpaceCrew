@@ -10,6 +10,9 @@ using UnityEngine.SceneManagement;
 public class MainGameManager : Singleton<MainGameManager>
 {
     #region Variables
+    [Header("Settings")]
+    public bool usingEncryption = false;
+
     private string currentScene = null;
 
     private DateTime startSession;

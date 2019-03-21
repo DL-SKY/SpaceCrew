@@ -1,5 +1,6 @@
 ﻿using DllSky.Managers;
 using DllSky.Patterns;
+using DllSky.Protection;
 using DllSky.Utility;
 using System;
 using System.Collections.Generic;
@@ -131,6 +132,22 @@ public class Profile
 {
     public string currentShip;
 
+    [SerializeField]
+    private string credits;
+    public int Credits
+    {
+        get { return int.Parse(SimpleEncrypting.Decode(credits)); }
+        set { credits = SimpleEncrypting.Encode(value.ToString()); }
+    }
+
+    [SerializeField]
+    private string tokens;
+    public int Tokens
+    {
+        get { return int.Parse(SimpleEncrypting.Decode(tokens)); }
+        set { tokens = SimpleEncrypting.Encode(value.ToString()); }
+    }
+
     public List<SpaceshipData> spaceships = new List<SpaceshipData>();
     public List<ProfileItem> items = new List<ProfileItem>();
 }
@@ -165,7 +182,6 @@ public class Configs
 
     public List<ResourcesConfig> resources = new List<ResourcesConfig>();
     public List<ItemsConfig> items = new List<ItemsConfig>();
-
 
     //public List<SpaceshipConfig> spaceships = new List<SpaceshipConfig>();
     //public List<EquipmentConfig> equipments = new List<EquipmentConfig>();

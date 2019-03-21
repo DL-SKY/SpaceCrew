@@ -48,9 +48,18 @@ public class DeadspaceScreenController : ScreenController
     {
         markers = markers.OrderByDescending(x => x.distance).ToList();
 
+        UIMarker selectedMarker = null;
+
         for (int i = 0; i < markers.Count; i++)
             if (markers[i])
+            {
                 markers[i].transform.SetSiblingIndex(i);
+                if (markers[i].IsSelected)
+                    selectedMarker = markers[i];
+            }
+
+        if (selectedMarker != null)
+            selectedMarker.transform.SetAsLastSibling();
     }
     #endregion
 

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using DllSky.Protection;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 public static class ExtensionGlobal
@@ -103,14 +103,19 @@ public static class ExtensionGlobal
     #endregion
 
     #region Profile
-    /*public static void ApplyDefaultSettings(this Profile _pr)
+    public static void ApplyDefaultSettings(this Profile _pr)
     {
+        _pr.Credits = 1000;
+        _pr.Tokens = 10;
+
         _pr.spaceships = new List<SpaceshipData>();
         _pr.items = new List<ProfileItem>();
-    }*/
+    }
 
     public static Profile LoadProfile()
     {
+        var encrypting = MainGameManager.Instance.usingEncryption;
+
         var startTime = DateTime.UtcNow;
         string profilePath = Path.Combine(Application.persistentDataPath, ConstantsResourcesPath.FILE_PROFILE);
         Debug.Log("[GLOBAL.PROFILE] Starting load profile: " + profilePath);        
@@ -119,15 +124,29 @@ public static class ExtensionGlobal
         {
             string json = File.ReadAllText(profilePath + ".json");
 
-            Debug.Log("[GLOBAL.PROFILE] Load profile complete");
-            Debug.Log("[GLOBAL.PROFILE] TOTAL TIME (ms): " + (DateTime.UtcNow - startTime).TotalMilliseconds);
+            try
+            {
+                //Дешифруем
+                if (encrypting)
+                json = SimpleEncrypting.Decode(json);
 
-            return JsonUtility.FromJson<Profile>(json);
+                Debug.Log("[GLOBAL.PROFILE] Load profile complete");
+                Debug.Log("[GLOBAL.PROFILE] TOTAL TIME (ms): " + (DateTime.UtcNow - startTime).TotalMilliseconds);
+            
+                return JsonUtility.FromJson<Profile>(json);
+            }
+            catch
+            {
+                Debug.LogError("<color=#FF0000>[GLOBAL.PROFILE] File failed to decrypt! Profile is delete</color>");
+
+                File.Delete(profilePath + ".json");
+                return LoadProfile();
+            }            
         }
         else
         {
             Profile profile = new Profile();
-            //profile.ApplyDefaultSettings();
+            profile.ApplyDefaultSettings();
 
             Debug.LogWarning("<color=#FF0000>[GLOBAL.PROFILE] File not found. Apply default profile</color>");
             Debug.Log("[GLOBAL.PROFILE] TOTAL TIME (ms): " + (DateTime.UtcNow - startTime).TotalMilliseconds);
@@ -138,6 +157,8 @@ public static class ExtensionGlobal
 
     public static void SaveProfile(this Profile _pr)
     {
+        var encrypting = MainGameManager.Instance.usingEncryption;
+
         var startTime = DateTime.UtcNow;
         string profilePath = Path.Combine(Application.persistentDataPath, ConstantsResourcesPath.FILE_PROFILE);
         Debug.Log("[GLOBAL.PROFILE] Starting save profile: " + profilePath);
@@ -146,6 +167,10 @@ public static class ExtensionGlobal
 
         if (!File.Exists(profilePath + ".json"))
             File.Create(profilePath + ".json").Dispose();
+
+        //Шифруем
+        if (encrypting)
+            json = SimpleEncrypting.Encode(json);
 
         File.WriteAllText(profilePath + ".json", json);
 
