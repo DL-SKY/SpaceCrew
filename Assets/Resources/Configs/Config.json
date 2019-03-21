@@ -84,6 +84,51 @@
       "id": "legendary",
       "rus": "ЛЕГЕНДАРНАЯ",
       "eng": "LEGENDARY"
+    },
+    {
+      "id": "main_subsystem",
+      "rus": "КОРПУС",
+      "eng": "SHIP HULL"
+    },
+    {
+      "id": "shield_subsystem",
+      "rus": "ЩИТЫ",
+      "eng": "SHIELDS"
+    },
+    {
+      "id": "navigation_subsystem",
+      "rus": "НАВИГАЦИЯ",
+      "eng": "NAVIGATION"
+    },
+    {
+      "id": "weapon_subsystem",
+      "rus": "ВООРУЖЕНИЕ",
+      "eng": "WEAPONS"
+    },
+    {
+      "id": "energy_subsystem",
+      "rus": "ЭНЕРГИЯ",
+      "eng": "ENERGY"
+    },
+    {
+      "id": "attack_subitem",
+      "rus": "АТАКОВАТЬ",
+      "eng": "ATTACK"
+    },
+    {
+      "id": "moveto_subitem",
+      "rus": "ПРИБЛИЗИТЬСЯ",
+      "eng": "APPROACH"
+    },
+    {
+      "id": "targetingoff_subitem",
+      "rus": "ПРЕКРАТИТЬ АТАКУ",
+      "eng": "STOP ATTACK"
+    },
+    {
+      "id": "info_subitem",
+      "rus": "ИНФОРМАЦИЯ",
+      "eng": "INFORMATION"
     }
   ],
   "colors": [
@@ -295,7 +340,7 @@
       "icon": ""
     },
     {
-      "id": "token",
+      "id": "tokens",
       "type": "currency",
       "rarity": "elite",
       "chance": "",
