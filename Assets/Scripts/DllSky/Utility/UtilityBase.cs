@@ -42,7 +42,6 @@ namespace DllSky.Utility
                 yield return new WaitForSeconds(_pause);
             }            
 #endif
-            yield return null;
         }
         //------------------------------------------------
         //MD5 текста

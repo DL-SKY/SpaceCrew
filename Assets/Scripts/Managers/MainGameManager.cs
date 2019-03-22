@@ -35,6 +35,8 @@ public class MainGameManager : Singleton<MainGameManager>
         if (!_pause)
         {
             stopPause = DateTime.UtcNow;
+
+            Debug.Log("<color=#FFD800>[MainGameManager]</color> Pause OFF: " + stopPause);            
         }
         else
         {
@@ -44,6 +46,8 @@ public class MainGameManager : Singleton<MainGameManager>
             {
                 var gamePauseData = new AnaliticsGameOverData(session);
                 AnalyticsManager.Instance.SendEvent(EnumAnalyticsEventType.GamePause, gamePauseData);
+
+                Debug.Log("<color=#FFD800>[MainGameManager]</color> Pause ON: " + DateTime.UtcNow);
             }
 
             //Сохранение
@@ -144,7 +148,11 @@ public class MainGameManager : Singleton<MainGameManager>
         {
             var oldScene = SceneManager.GetSceneAt(SceneManager.sceneCount-1);
             var oldName = oldScene.name;
-            yield return SceneManager.UnloadSceneAsync(oldScene);
+
+            var unloading = SceneManager.UnloadSceneAsync(oldScene);
+            while (!unloading.isDone)
+                yield return null;
+
             Debug.Log("<color=#FFD800>[MainGameManager] Scene unloaded: " + oldName + "</color>");
         }
 
@@ -153,7 +161,11 @@ public class MainGameManager : Singleton<MainGameManager>
 
         //Загружаем новую сцену
         currentScene = _scene;
-        yield return SceneManager.LoadSceneAsync(currentScene, _mode);
+
+        var loading = SceneManager.LoadSceneAsync(currentScene, _mode);
+        while (!loading.isDone)
+            yield return null;
+
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentScene));
         Debug.Log("<color=#FFD800>[MainGameManager] Scene loaded: " + currentScene + "</color>");
     }

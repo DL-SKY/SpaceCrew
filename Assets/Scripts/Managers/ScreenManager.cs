@@ -107,9 +107,9 @@ public class ScreenManager : Singleton<ScreenManager>
         screens[screens.Count - 1].gameObject.SetActive(true);
     }
 
-    public DialogController ShowDialog(string _name)
+    public T ShowDialog<T>(string _name) where T : DialogController
     {
-        var dialog = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.DIALOGS, _name), parentDialogs).GetComponent<DialogController>();
+        var dialog = Instantiate(ResourcesManager.LoadPrefab(ConstantsResourcesPath.DIALOGS, _name), parentDialogs).GetComponent<T>();
         dialog.transform.SetAsLastSibling();
         dialog.dialogName = _name;
 
@@ -117,6 +117,11 @@ public class ScreenManager : Singleton<ScreenManager>
         Debug.Log("<color=#FFD800>[ScreenManager] Dialog loaded: " + _name + "</color>");
 
         return dialog;
+    }
+
+    public DialogController ShowDialog(string _name)
+    {
+        return ShowDialog<DialogController>(_name);
     }
 
     public void CloseDialog(DialogController _dialog)

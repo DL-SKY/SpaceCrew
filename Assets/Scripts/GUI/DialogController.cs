@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,8 +9,11 @@ public class DialogController : MonoBehaviour
     public string dialogName = "";
     public bool result = true;
 
-    private bool isOpened = true;
-    private bool isInit = false;
+    public Action<bool> Callback;
+
+    protected bool isInit = false;
+
+    private bool isOpened = true;    
     #endregion
 
     #region Unity methods
@@ -22,6 +26,8 @@ public class DialogController : MonoBehaviour
         isOpened = false;
 
         ScreenManager.Instance.CloseDialog(this);
+
+        Callback?.Invoke(result);
 
         Destroy(gameObject);
     }

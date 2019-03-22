@@ -189,7 +189,14 @@ public class UIMarker : MonoBehaviour
 
     public void OnClickInfo()
     {
+        var dialog = ScreenManager.Instance.ShowDialog<MarkerInfoDialogController>(ConstantsDialog.MARKER_SUBSYSTEM);
+        dialog.Initialize(HandlerDialogCallback);
+    }
 
+    public void OnClickSubsystem(EnumSubsystems _sbs)
+    {
+        var dialog = ScreenManager.Instance.ShowDialog<MarkerSubsystemDialogController>(ConstantsDialog.MARKER_SUBSYSTEM);
+        dialog.Initialize(_sbs, HandlerDialogCallback);
     }
 
     public void StartSubitemsTimer()
@@ -375,6 +382,11 @@ public class UIMarker : MonoBehaviour
             activeTarget.gameObject.SetActive(IsActive);
         if (disableTarget)
             disableTarget.gameObject.SetActive(!IsActive);
+    }
+
+    private void HandlerDialogCallback(bool _result)
+    {
+
     }
     #endregion
 

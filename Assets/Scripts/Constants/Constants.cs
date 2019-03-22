@@ -107,6 +107,9 @@ public static class ConstantsDialog
 {
     public const string SETTINGS = "SettingsDialog";
     public const string LOGS = "LogsDialog";
+
+    public const string MARKER_INFO = "MarkerInfoDialog";
+    public const string MARKER_SUBSYSTEM = "MarkerSubsystemDialog";
 }
 
 public static class ConstantsColor
@@ -144,10 +147,10 @@ public static class ConstantsSpaceshipSettings
 {
     //Скорость (нормализованная 0.0-1.0)
     public const float SPEED_STOP = 0.0f;
-    public const float SPEED_DOCK = 0.1f;               //Стыковочная скорость
-    //public const float SPEED_TURN = 0.3f;               //Поворот
+    public const float SPEED_DOCK = 0.1f;                   //Стыковочная скорость
+    //public const float SPEED_TURN = 0.3f;                 //Поворот
     //public const float SPEED_HALF = 0.5f;
-    public const float SPEED_CRUISING = 0.6f;             //Активное вооружение / Крейсерская скорость
+    public const float SPEED_CRUISING = 0.6f;               //Активное вооружение / Крейсерская скорость
     public const float SPEED_FULL = 1.0f;
     //public const float SPEED_BURN = 1.25f;
 
@@ -162,8 +165,8 @@ public static class ConstantsLanguage
 
 public static class ConstantsEmail
 {
-    public const string ADDRESS = "alex.dllsky@gmail.com";
-    public const string SUBJECT_LOGS = "Game Logs";
+    public const string ADDRESS = "studio.dllsky@gmail.com";
+    public const string SUBJECT_LOGS = "Game Logs (Space Crew)";
 }
 
 /*public static class ConstantsSubsystems

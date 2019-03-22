@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class LogsDialogController : DialogController
 {
     #region Variables
-    public bool isInit = false;
     public ScrollRect scroller;    
 
     private LogManager logManager;

@@ -30,68 +30,57 @@ namespace DllSky.Managers
         #region Public methods
         public static void CallOnDefault()
         {
-            if (eventOnDefault != null)
-                eventOnDefault.Invoke();
+            eventOnDefault?.Invoke();
         }
 
         public static void CallOnClickEsc()
         {
-            if (eventOnClickEsc != null)
-                eventOnClickEsc.Invoke();
+            eventOnClickEsc?.Invoke();
         }
 
         public static void CallOnChangeLanguage()
         {
-            if (eventOnChangeLanguage != null)
-                eventOnChangeLanguage.Invoke();
+            eventOnChangeLanguage?.Invoke();
         }
 
         public static void CallOnApplyLanguage()
         {
-            if (eventOnApplyLanguage != null)
-                eventOnApplyLanguage.Invoke();
+            eventOnApplyLanguage?.Invoke();
         }
 
         public static void CallOnResourceUpdate(string _resID)
         {
-            if (eventOnResourceUpdate != null)
-                eventOnResourceUpdate.Invoke(_resID);
+            eventOnResourceUpdate?.Invoke(_resID);
         }
 
         public static void CallOnInitPointController(PointController _controller)
         {
-            if (eventOnInitPointController != null)
-                eventOnInitPointController.Invoke(_controller);
+            eventOnInitPointController?.Invoke(_controller);
         }
 
         public static void CallOnShowMarkerSubtems(PointController _controller)
         {
-            if (eventOnShowMarkerSubtems != null)
-                eventOnShowMarkerSubtems.Invoke(_controller);
+            eventOnShowMarkerSubtems?.Invoke(_controller);
         }
 
         public static void CallOnPoint(PointController _controller, bool _selected)
         {
-            if (eventOnPoint != null)
-                eventOnPoint.Invoke(_controller, _selected);
+            eventOnPoint?.Invoke(_controller, _selected);
         }
 
         public static void CallOnTargeting(PointController _controller, bool _selected)
         {
-            if (eventOnTargeting != null)
-                eventOnTargeting.Invoke(_controller, _selected);
+            eventOnTargeting?.Invoke(_controller, _selected);
         }
 
         public static void CallOnSetActiveTarget(PointController _controller, bool _selected)
         {
-            if (eventOnSetActiveTarget != null)
-                eventOnSetActiveTarget.Invoke(_controller, _selected);
+            eventOnSetActiveTarget?.Invoke(_controller, _selected);
         }
 
         public static void CallOnUpdateHitPoints(PointController _controller)
         {
-            if (eventOnUpdateHitPoints != null)
-                eventOnUpdateHitPoints.Invoke(_controller);
+            eventOnUpdateHitPoints?.Invoke(_controller);
         }
         #endregion
     }
