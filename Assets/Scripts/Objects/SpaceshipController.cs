@@ -233,7 +233,11 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         if (_selected)
         {
             if (point)
-                EventManager.CallOnSetActiveTarget(point.GetComponent<PointController>(), false);
+            {
+                var oldPoint = point;
+                point = null;
+                EventManager.CallOnSetActiveTarget(oldPoint.GetComponent<PointController>(), false);
+            }
 
             pointType = EnumTargetType.ToPoint;
             minDistance = GetDistanceMinimum(pointType);

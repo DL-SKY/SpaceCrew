@@ -54,6 +54,7 @@ public static class ConstantsResourcesPath
     public const string SCREENS = "Prefabs/UI/Screens/";
     public const string DIALOGS = "Prefabs/UI/Dialogs/";
     public const string ELEMENTS_UI = "Prefabs/UI/Elements/";
+    public const string PANELS = "Prefabs/UI/Panels/";
 
     public const string PREF_OBJECTS = "Prefabs/Objects/";
 
@@ -80,10 +81,17 @@ public static class ConstantsPrefabName
     public static string MARKER_PLAYER = "MarkerPlayer";
     public static string MARKER_POINT = "MarkerPoint";
     public static string MARKER_ENEMY = "MarkerEnemy";
+    public static string MARKER_SUBSYSTEM_MAIN = "MarkerSubsystemDialogPanelMain";
+    public static string MARKER_SUBSYSTEM_SHIELD = "MarkerSubsystemDialogPanelShield";
+    public static string MARKER_SUBSYSTEM_NAVIGATION = "MarkerSubsystemDialogPanelNavigation";
+    public static string MARKER_SUBSYSTEM_WEAPON = "MarkerSubsystemDialogPanelWeapon";
+    public static string MARKER_SUBSYSTEM_ENERGY = "MarkerSubsystemDialogPanelEnergy";
 
     //Radar
     public const string RADAR_SPACESHIP = "RadarSpaceship";
     public const string RADAR_POINT = "RadarPoint";
+
+
 }
 
 public static class ConstantsScene

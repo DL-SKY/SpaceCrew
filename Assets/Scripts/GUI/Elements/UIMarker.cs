@@ -189,12 +189,23 @@ public class UIMarker : MonoBehaviour
 
     public void OnClickInfo()
     {
-        var dialog = ScreenManager.Instance.ShowDialog<MarkerInfoDialogController>(ConstantsDialog.MARKER_SUBSYSTEM);
-        dialog.Initialize(HandlerDialogCallback);
+        StopSubitemsTimer();
+
+        var dialog = ScreenManager.Instance.ShowDialog<MarkerInfoDialogController>(ConstantsDialog.MARKER_INFO);
+        dialog.Initialize(pointController, HandlerDialogCallback);
+    }
+
+    public void OnClickSubsystem(int _sbsIndex)
+    {
+        StopSubitemsTimer();
+
+        OnClickSubsystem((EnumSubsystems)_sbsIndex);
     }
 
     public void OnClickSubsystem(EnumSubsystems _sbs)
     {
+        StopSubitemsTimer();
+
         var dialog = ScreenManager.Instance.ShowDialog<MarkerSubsystemDialogController>(ConstantsDialog.MARKER_SUBSYSTEM);
         dialog.Initialize(_sbs, HandlerDialogCallback);
     }
@@ -368,8 +379,7 @@ public class UIMarker : MonoBehaviour
         
         if (!pointController.VisibleToCamera)
         {
-            if (SubitemsTimer != null)
-                StopCoroutine(SubitemsTimer);
+            StopSubitemsTimer();
 
             foreach (var item in subitems)
                 item.HideImediatly();
@@ -386,7 +396,7 @@ public class UIMarker : MonoBehaviour
 
     private void HandlerDialogCallback(bool _result)
     {
-
+        StartSubitemsTimer();
     }
     #endregion
 
