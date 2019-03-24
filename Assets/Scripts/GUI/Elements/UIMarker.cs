@@ -79,6 +79,7 @@ public class UIMarker : MonoBehaviour
         EventManager.eventOnSetActiveTarget += HandlerOnSetActiveTarget;
         EventManager.eventOnUpdateHitPoints += HandleOnUpdateHitPoints;
         EventManager.eventOnShowMarkerSubtems += HandlerOnShowMarkerSubtems;
+        EventManager.eventOnPlayerChangeSpeed += HandlerOnPlayerChangeSpeed;
     }
     
     private void OnDisable()
@@ -86,6 +87,7 @@ public class UIMarker : MonoBehaviour
         EventManager.eventOnSetActiveTarget -= HandlerOnSetActiveTarget;
         EventManager.eventOnUpdateHitPoints -= HandleOnUpdateHitPoints;
         EventManager.eventOnShowMarkerSubtems -= HandlerOnShowMarkerSubtems;
+        EventManager.eventOnPlayerChangeSpeed -= HandlerOnPlayerChangeSpeed;
     }
 
     private void LateUpdate()
@@ -137,6 +139,7 @@ public class UIMarker : MonoBehaviour
             item.HideImediatly();
 
         UpdateHitPoints();
+        UpdateSpeed();
     }
 
     public void OnClickVisible()
@@ -357,6 +360,21 @@ public class UIMarker : MonoBehaviour
     {
         if (_controller != pointController)
             HideSubitemsAndDeselect();
+    }
+
+    private void HandlerOnPlayerChangeSpeed()
+    {
+        UpdateSpeed();
+    }
+
+    private void UpdateSpeed()
+    {
+        if (pointController.type == EnumPointType.Player)
+        {
+            var player = PlayerController.Instance.player;
+
+            speedProgress.FillAmount = player.GetSpeedNormalize();
+        }
     }
 
     private void UpdateHitPoints()

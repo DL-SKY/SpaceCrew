@@ -172,7 +172,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
 
         config = data.GetConfig();
 
-        meta = new SpaceshipMetadata(data, config);
+        meta = new SpaceshipMetadata(data, config, isPlayer);
 
         SizeType = (EnumSizeType)config.sizeType;
 
@@ -216,6 +216,11 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     public float GetSpeed()
     {
         return meta.GetParameter(EnumParameters.speed);
+    }
+
+    public float GetSpeedNormalize()
+    {
+        return meta.GetSpeedCurrentNormalize();
     }
 
     public float GetArmor()

@@ -25,6 +25,8 @@ namespace DllSky.Managers
         public static Action<PointController, bool> eventOnPoint;
         public static Action<PointController, bool> eventOnTargeting;
         public static Action<PointController> eventOnUpdateHitPoints;
+
+        public static Action eventOnPlayerChangeSpeed;
         #endregion
 
         #region Public methods
@@ -81,6 +83,11 @@ namespace DllSky.Managers
         public static void CallOnUpdateHitPoints(PointController _controller)
         {
             eventOnUpdateHitPoints?.Invoke(_controller);
+        }
+
+        public static void CallOnPlayerChangeSpeed()
+        {
+            eventOnPlayerChangeSpeed?.Invoke();
         }
         #endregion
     }

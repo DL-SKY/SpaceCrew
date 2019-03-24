@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DllSky.Managers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,15 +28,17 @@ public class SpaceshipMetadata
     private int mkIndex;
     private SpaceshipData data;
     private SpaceshipsConfig config;
+    private bool isPlayer;
 
     private float speedResultNormalize;                                         //Нормализованная скорость, к которой стремимся
     #endregion
 
     #region Public methods
-    public SpaceshipMetadata(SpaceshipData _data, SpaceshipsConfig _config)
+    public SpaceshipMetadata(SpaceshipData _data, SpaceshipsConfig _config, bool _isPlayer)
     {
         data = _data;
         config = _config;
+        isPlayer = _isPlayer;
 
         mk = data.mk;
         mkIndex = data.GetMkIndex();
@@ -75,6 +78,9 @@ public class SpaceshipMetadata
 
         if (GetParameter(_key) > max)
             parameters[_key] = max;
+
+        if (_key == EnumParameters.speed && isPlayer)
+            EventManager.CallOnPlayerChangeSpeed();
     }
 
     public void SetParameter(EnumParameters _key, float _value)
@@ -88,6 +94,9 @@ public class SpaceshipMetadata
 
         if (GetParameter(_key) > max)
             parameters[_key] = max;
+
+        if (_key == EnumParameters.speed && isPlayer)
+            EventManager.CallOnPlayerChangeSpeed();
     }
 
     public float GetSpeedNormalize(float _speed)
