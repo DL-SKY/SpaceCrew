@@ -31,8 +31,8 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     private PointController selfPointController;
     public EnumSpeedType maxSpeedType;
     public EnumTargetType pointType;
-    public Transform point;
-    public List<PointController> targets;
+    public Transform point;                         //Цель следования
+    public List<PointController> targets;           //Сопровождаемые цели для атаки
 
     [Header("Main Renderer")]
     public MeshFilter mainFilter;
@@ -40,6 +40,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     public MainEnginesRendererController mainEnginesRenderer;
     public Transform weaponsParent;
     public List<Transform> weaponSlots = new List<Transform>();
+    private List<WeaponController> weapons = new List<WeaponController>();
 
     [Header("Energy shield Renderer")]
     public EnergyShieldRendererController shieldController;
@@ -126,6 +127,11 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         //Обновление визуальных эффектов
         //Следы двигателя
         UpdateMainEnginesRenderer();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.CallOnTargeting(selfPointController, false);
     }
     #endregion
 
@@ -268,12 +274,17 @@ public class SpaceshipController : MonoBehaviour, IDestructible
             {
                 targets.Add(_controller);
                 EventManager.CallOnSetActiveTarget(_controller, true);
+
+                ActivateAllWeapons();
             }
         }
         else if (!_selected)
         {
             targets.Remove(_controller);
             EventManager.CallOnSetActiveTarget(_controller, false);
+
+            if (targets.Count < 1)
+                DisableAllWeapons();
         }
     }
 
@@ -282,12 +293,17 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         var shieldDmg = CalculateDamageShield(_damage);
         var armorDmg = CalculateDamageArmor(_damage);
 
-        if (shieldDmg != 0.0f)
+        //УРОН Щитам
+        if (shieldDmg != 0.0f && meta.GetParameter(EnumParameters.shield) > 0)
         {
             meta.SetDeltaParameter(EnumParameters.shield, shieldDmg);
 
             if (shieldDmg > 0.0f)
                 ShowShieldDamage(shieldCollider.ClosestPoint(_weaponPos));
+
+            //Не позволяем уйти в минус
+            if (meta.GetParameter(EnumParameters.shield) < 0)
+                meta.SetParameter(EnumParameters.shield, 0.0f);
         }
 
         //ShowShieldDamage(shieldCollider.ClosestPoint(_weaponPos));
@@ -296,8 +312,15 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         //Варианты: малый заряд щитов или его отсутствие; атака противника игнорирует щиты и т.д.
         var needCheckDamageArmor = GetShield() <= 0.0f;
 
+        //УРОН Корпусу
         if (needCheckDamageArmor && armorDmg != 0.0f)
+        {
             meta.SetDeltaParameter(EnumParameters.armor, armorDmg);
+
+            //Не позволяем уйти в минус
+            if (meta.GetParameter(EnumParameters.armor) < 0)
+                meta.SetParameter(EnumParameters.armor, 0.0f);
+        }
 
         EventManager.CallOnUpdateHitPoints(selfPointController);
 
@@ -462,6 +485,8 @@ public class SpaceshipController : MonoBehaviour, IDestructible
             var newWeapon = new GameObject(weaponData.id, typeof(WeaponController)).GetComponent<WeaponController>();
             newWeapon.transform.SetParent(weaponsParent, false);
             newWeapon.Initialize(weaponData, this);
+
+            weapons.Add(newWeapon);
         }
     }
 
@@ -493,7 +518,8 @@ public class SpaceshipController : MonoBehaviour, IDestructible
 
         if (armor <= 0.0f)
         {
-            //TODO:
+            if (!isPlayer)
+                Destroy(gameObject);
         }
     }
 
@@ -545,6 +571,18 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         }
 
         return result;
+    }
+
+    private void ActivateAllWeapons()
+    {
+        foreach (var weapon in weapons)
+            weapon.ActivateWeapon();
+    }
+
+    private void DisableAllWeapons()
+    {
+        foreach (var weapon in weapons)
+            weapon.DisableWeapon();
     }
     #endregion
 

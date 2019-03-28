@@ -8,6 +8,9 @@ public class WeaponController : MonoBehaviour
     #region Variables
     [SerializeField]
     protected bool isActive;
+    [SerializeField]
+    protected bool isShootPreparation;
+
     [Space()]
     [SerializeField]
     protected ItemData data;
@@ -43,23 +46,33 @@ public class WeaponController : MonoBehaviour
         spaceship = _spaceship;
 
         ApplySelfParameters();
+
+        isShootPreparation = false;
+
+        ActivateWeapon();
     }
 
     public virtual void ActivateWeapon()
     {
         isActive = true;
-        StartCoroutine(TargetTracking());
+
+        if (!isShootPreparation)
+        {
+            StopAllCoroutines();
+            StartCoroutine(TargetTracking());
+        }
     }
 
     public virtual void DisableWeapon()
     {
-        isActive = false;
         target = null;
         StopAllCoroutines();
+        isActive = false;
+        isShootPreparation = false;
     }
     #endregion
 
-    #region protected methods
+    #region Protected methods
     protected virtual void ApplySelfParameters()
     {
         sizeType = (EnumSizeType)data.GetSelfParameter(EnumParameters.optimalSizeType);
@@ -83,8 +96,6 @@ public class WeaponController : MonoBehaviour
             target = spaceship.targets[0];
         }
     }
-
-
     #endregion
 
     #region Coroutines
@@ -98,14 +109,22 @@ public class WeaponController : MonoBehaviour
 
     protected virtual IEnumerator Attack()
     {
+        //Подготовка к выстрелу
+        isShootPreparation = true;
+        yield return new WaitForSeconds(rate);
+        isShootPreparation = false;
+
         GetTarget();
+
+        if (target == null)
+            yield break;
 
         var damage = new Damage(armorDamage, shieldDamage, critical);
 
         //Попадание
         if (DamageUtility.GetHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
         {
-            switch (target.type)
+            /*switch (target.type)
             {
                 case EnumPointType.Player:
                     var player = target.GetComponent<SpaceshipController>();                    
@@ -116,14 +135,15 @@ public class WeaponController : MonoBehaviour
                     var enemy = target.GetComponent<SpaceshipController>();
                     enemy.ApplyDamage(damage, transform.position);
                     break;
-            }
+            }*/
+            var destructible = target.GetComponent<IDestructible>();
+            if (destructible != null)
+                destructible.ApplyDamage(damage, transform.position);
         }
         else
         {
             //TODO: выстрел мимо
-        }
-
-        yield return new WaitForSeconds(rate);
+        }        
     }
     #endregion
 
