@@ -11,6 +11,10 @@ public class WeaponController : MonoBehaviour
     [SerializeField]
     protected bool isShootPreparation;
 
+    //[Space()]
+    //[SerializeField]
+    //protected WeaponEffectsController effects;
+
     [Space()]
     [SerializeField]
     protected ItemData data;
@@ -103,16 +107,21 @@ public class WeaponController : MonoBehaviour
     {
         while (true)
         {
-            yield return StartCoroutine(Attack());
+            yield return Attack();
         }
+    }
+
+    protected virtual IEnumerator Preparation()
+    {
+        isShootPreparation = true;
+        yield return new WaitForSeconds(rate);
+        isShootPreparation = false;
     }
 
     protected virtual IEnumerator Attack()
     {
         //Подготовка к выстрелу
-        isShootPreparation = true;
-        yield return new WaitForSeconds(rate);
-        isShootPreparation = false;
+        yield return Preparation();
 
         GetTarget();
 

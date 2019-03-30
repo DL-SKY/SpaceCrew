@@ -102,12 +102,25 @@ public class RadarController : MonoBehaviour
         {
             var marker = markers[i];
 
+            //Если объекта больше не существует
             if (marker.controller == null)
             {
                 Destroy(marker.marker.gameObject);
                 markers.Remove(marker);
 
                 continue;
+            }
+            //Если объект скрыт/деактивирован
+            else if (!marker.controller.gameObject.activeSelf)
+            {
+                if (marker.marker.gameObject.activeSelf)
+                    marker.marker.gameObject.SetActive(false);
+            }
+            //Иначе
+            else
+            {
+                if (!marker.marker.gameObject.activeSelf)
+                    marker.marker.gameObject.SetActive(true);
             }
 
             var targetPos = marker.controller.transform.position;
