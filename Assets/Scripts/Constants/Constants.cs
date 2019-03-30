@@ -57,6 +57,8 @@ public static class ConstantsResourcesPath
     public const string PANELS = "Prefabs/UI/Panels/";
 
     public const string PREF_OBJECTS = "Prefabs/Objects/";
+    public const string PREF_SPACESHIPS = "Prefabs/Objects/Spaceships/";
+    public const string PREF_WEAPONS = "Prefabs/Objects/Weapons/";
 
     //Sprites
     public const string SPRITES = "Sprites/";

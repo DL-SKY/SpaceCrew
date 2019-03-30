@@ -129,22 +129,11 @@ public class WeaponController : MonoBehaviour
             yield break;
 
         var damage = new Damage(armorDamage, shieldDamage, critical);
+        //var damage = new Damage(0, 0, critical);
 
         //Попадание
-        if (DamageUtility.GetHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
+        if (DamageUtility.CheckHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
         {
-            /*switch (target.type)
-            {
-                case EnumPointType.Player:
-                    var player = target.GetComponent<SpaceshipController>();                    
-                    player.ApplyDamage(damage, transform.position);
-                    break;
-
-                case EnumPointType.Enemy:
-                    var enemy = target.GetComponent<SpaceshipController>();
-                    enemy.ApplyDamage(damage, transform.position);
-                    break;
-            }*/
             var destructible = target.GetComponent<IDestructible>();
             if (destructible != null)
                 destructible.ApplyDamage(damage, transform.position);

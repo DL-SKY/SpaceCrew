@@ -54,6 +54,11 @@ public class SpaceshipMetadata
         ApplyDefault();
     }
 
+    public int GetConfigWeapons()
+    {
+        return config.weapons[mkIndex];
+    }
+
     public float GetMaxParameter(EnumParameters _key)
     {
         if (parametersMax.ContainsKey(_key))

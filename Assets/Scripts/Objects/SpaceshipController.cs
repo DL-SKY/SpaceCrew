@@ -290,15 +290,15 @@ public class SpaceshipController : MonoBehaviour, IDestructible
 
     public void ApplyDamage(Damage _damage, Vector3 _weaponPos)
     {
-        var shieldDmg = CalculateDamageShield(_damage);
-        var armorDmg = CalculateDamageArmor(_damage);
+        var shieldDmg = CalculateDamageShield(_damage);     //отрицательное значение - урон, положительное - ремонт
+        var armorDmg = CalculateDamageArmor(_damage);       //отрицательное значение - урон, положительное - ремонт
 
         //УРОН Щитам
         if (shieldDmg != 0.0f && meta.GetParameter(EnumParameters.shield) > 0)
         {
             meta.SetDeltaParameter(EnumParameters.shield, shieldDmg);
 
-            if (shieldDmg > 0.0f)
+            if (shieldDmg < 0.0f)
                 ShowShieldDamage(shieldCollider.ClosestPoint(_weaponPos));
 
             //Не позволяем уйти в минус
@@ -325,7 +325,14 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         EventManager.CallOnUpdateHitPoints(selfPointController);
 
         CheckDestruction();
-    }    
+    }
+
+    public float GetLerpManeuver()
+    {
+        var speedNormalize = meta.GetSpeedCurrentNormalize();
+        var maneuver = meta.GetParameter(EnumParameters.maneuver);
+        return Mathf.Lerp(0, maneuver, speedNormalize);
+    }
 
     public float GetShieldNormalize()
     {
@@ -476,17 +483,35 @@ public class SpaceshipController : MonoBehaviour, IDestructible
 
     private void ApplyWeapons()
     {
-        //TODO
-        //Сделать инстанцирование вооружения в соответствующие слоты
-
-        //Создаем на Корабле установленное в нем вооружение
-        foreach (var weaponData in meta.weapons)
+        //Инстанцирование вооружения в соответствующие слоты
+        var weaponConfigSlots = meta.GetConfigWeapons();
+        var weaponsCount = meta.weapons.Count;
+        for (int i = 0; i < weaponConfigSlots; i++)
         {
-            var newWeapon = new GameObject(weaponData.id, typeof(WeaponController)).GetComponent<WeaponController>();
-            newWeapon.transform.SetParent(weaponsParent, false);
-            newWeapon.Initialize(weaponData, this);
+            if (i < weaponsCount)
+            {
+                var weaponPref = ResourcesManager.LoadPrefab(ConstantsResourcesPath.PREF_WEAPONS, meta.weapons[i].id);
+                GameObject newWeapon;
 
-            weapons.Add(newWeapon);
+                if (weaponPref == null)
+                {
+                    Debug.LogError("<color=#FF0000>[SpaceshipController] Prefab not found: "
+                        + ConstantsResourcesPath.PREF_WEAPONS
+                        + meta.weapons[i].id + "</color>");
+
+                    newWeapon = new GameObject(meta.weapons[i].id, typeof(WeaponController));
+                }
+                else
+                {
+                    newWeapon = Instantiate(weaponPref, transform);
+                }
+
+                newWeapon.transform.SetParent(weaponSlots[i], false);
+
+                var weaponController = newWeapon.GetComponent<WeaponController>();
+                weaponController.Initialize(meta.weapons[i], this);
+                weapons.Add(weaponController);
+            }
         }
     }
 
