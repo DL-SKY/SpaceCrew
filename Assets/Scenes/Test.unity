@@ -600,6 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 008c282a03f3af14cb1eea169eb5a69d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  title: point3
   autoInitializing: 1
   type: 2
   visibleToCamera: 0
@@ -616,7 +617,7 @@ Transform:
   m_Children:
   - {fileID: 569585591}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &569585590
 GameObject:
@@ -1198,6 +1199,11 @@ PrefabInstance:
       propertyPath: type
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114124943630838012, guid: 8b1b03b1195b8bb43b9dd908fde3e636,
+        type: 3}
+      propertyPath: title
+      value: point1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b1b03b1195b8bb43b9dd908fde3e636, type: 3}
 --- !u!1001 &1009184203
@@ -1329,7 +1335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2293,6 +2299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 008c282a03f3af14cb1eea169eb5a69d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  title: point2
   autoInitializing: 1
   type: 2
   visibleToCamera: 0
@@ -2354,6 +2361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 008c282a03f3af14cb1eea169eb5a69d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  title: 
   autoInitializing: 1
   type: 0
   visibleToCamera: 0
@@ -2479,7 +2487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4724310540263400, guid: 0a2a901b04f66744d9dce5469910af2f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2554,5 +2562,5 @@ Transform:
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

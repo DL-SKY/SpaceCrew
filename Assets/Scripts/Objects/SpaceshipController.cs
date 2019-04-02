@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Utility;
 
 public class SpaceshipController : MonoBehaviour, IDestructible
 {
@@ -23,6 +24,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         set { visibleToCamera = value; }
     }
     public string model;
+    public string Title { get; private set; }
     public EnumSizeType SizeType { get; set; }
     public string material;
     public float length;
@@ -168,7 +170,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
             //model = "ERROR";
             //return;
 
-            data = new SpaceshipData();
+            data = new SpaceshipData(model);
 
             //TODO: TEST
             data.ApplyDefault();
@@ -187,6 +189,8 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         material = data.material;
         //LoadedMainMesh();
         LoadedMainMaterial();
+
+        Title = string.Format("{0} MK-{1}", data.model.ToUpper(), data.mk);
 
         CreateMarker();
     }
@@ -305,8 +309,6 @@ public class SpaceshipController : MonoBehaviour, IDestructible
             if (meta.GetParameter(EnumParameters.shield) < 0)
                 meta.SetParameter(EnumParameters.shield, 0.0f);
         }
-
-        //ShowShieldDamage(shieldCollider.ClosestPoint(_weaponPos));
 
         //TODO: Условие получения урона брони
         //Варианты: малый заряд щитов или его отсутствие; атака противника игнорирует щиты и т.д.
@@ -515,23 +517,25 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         }
     }
 
+    //отрицательное значение - урон, положительное - ремонт
     private float CalculateDamageShield(Damage _damage)
     {
-        var result = -_damage.ShieldDmg;
+        //var result = -_damage.ShieldDmg;
+        var result = - DamageUtility.GetDamageValue(_damage, false);
 
-        var shield = GetShield();
-
+        //var shield = GetShield();
         //TODO:
 
         return result;
     }
 
+    //отрицательное значение - урон, положительное - ремонт
     private float CalculateDamageArmor(Damage _damage)
     {
-        var result = -_damage.ArmorDmg;
+        //var result = -_damage.ArmorDmg;
+        var result = - DamageUtility.GetDamageValue(_damage, true);
 
-        var armor = GetArmor();
-
+        //var armor = GetArmor();
         //TODO:
 
         return result;
@@ -639,7 +643,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     [ContextMenu("Apply Damage")]
     private void MenuApplyDamage()
     {
-        var dmg = new Damage(0.5f, 0.5f, 0.0f);
+        var dmg = new Damage(0.5f, 0.5f, 5.0f, 7.0f);
         ApplyDamage(dmg, Vector3.zero);
     }
     #endregion

@@ -33,6 +33,9 @@ public class UIMarker : MonoBehaviour
     public Transform targetTransform;
     private float screenCoef = 1.0f;
 
+    [Header("Title")]
+    public Text Title;
+
     [Header("ProgressBars")]
     public ProgressBar shieldProgress;
     public ProgressBar armorProgress;
@@ -121,6 +124,9 @@ public class UIMarker : MonoBehaviour
 
         //Коэффициент
         screenCoef = _coef;
+
+        //Название
+        ApplyTitle();
 
         var sizeVisible = selfTransformVisible.sizeDelta.x / 2;
         halfVisibleSizeX = sizeVisible * screenCoef;
@@ -229,6 +235,28 @@ public class UIMarker : MonoBehaviour
     #endregion
 
     #region Private methods
+    private void ApplyTitle()
+    {
+        switch (pointController.type)
+        {
+            case EnumPointType.Player:
+                Title.text = pointController.GetComponent<SpaceshipController>().Title;
+                break;
+
+            case EnumPointType.Point:
+                Title.text = LocalizationManager.Instance.Get(pointController.title).ToUpper();
+                break;
+
+            case EnumPointType.Enemy:
+                Title.text = pointController.GetComponent<SpaceshipController>().Title;
+                break;
+
+            default:
+                Title.text = LocalizationManager.Instance.Get("na").ToUpper();
+                break;
+        }
+    }
+
     private void DeleteMarker()
     {
         Destroy(gameObject);

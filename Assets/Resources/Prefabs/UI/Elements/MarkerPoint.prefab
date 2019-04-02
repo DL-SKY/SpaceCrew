@@ -564,6 +564,7 @@ MonoBehaviour:
   distance: 0
   isSelected: 0
   targetTransform: {fileID: 0}
+  Title: {fileID: 114748264456935700}
   shieldProgress: {fileID: 0}
   armorProgress: {fileID: 0}
   speedProgress: {fileID: 0}

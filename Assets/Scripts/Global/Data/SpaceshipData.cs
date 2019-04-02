@@ -25,8 +25,30 @@ public class SpaceshipData
     #region Public methods
     public SpaceshipData()
     {
-        var spaceships = Global.Instance.CONFIGS.spaceships;
+        /*var spaceships = Global.Instance.CONFIGS.spaceships;
         config = spaceships.Count > 0 ? spaceships[0] : null;
+
+        if (config == null)
+        {
+            Debug.LogError("[SpaceshipData] Config is NULL. Create default values.");
+
+            id = "";
+            model = "mk6";
+            material = "Default";
+            mk = 1;
+
+            return;
+        }
+
+        model = config.id;
+        id = UtilityBase.GetMD5(model + DateTime.UtcNow.ToString());
+        material = "Default";
+        mk = 1;*/
+    }
+
+    public SpaceshipData(string _model)
+    {
+        config = Global.Instance.CONFIGS.spaceships.Find(x => x.id == _model);
 
         if (config == null)
         {
@@ -45,11 +67,6 @@ public class SpaceshipData
         material = "Default";
         mk = 1;
     }
-
-    /*public SpaceshipData(string _model)
-    {
-
-    }*/
 
     public void ApplyDefault()
     {

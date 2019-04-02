@@ -7,6 +7,10 @@ using UnityEngine;
 public class PointController : MonoBehaviour
 {
     #region Variables
+    [Header("Title")]
+    public string title;
+
+    [Space(5)]
     public bool autoInitializing = false;
     public EnumPointType type;
     public IDestructible destructible;

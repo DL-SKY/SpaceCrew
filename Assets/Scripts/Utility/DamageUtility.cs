@@ -50,11 +50,25 @@ namespace Utility
             }
         }
 
-        /*public static float GetCritical(float _dmg)
+        public static float GetDamageValue(Damage _dmg, bool _isArmor)
         {
-            float result = 0.0f;
+            var baseValue = _isArmor ? _dmg.ArmorDmg : _dmg.ShieldDmg;
 
-            return result;
-        }*/
+            //Проверка на половинный урон ("касание")
+            var chance = Mathf.Clamp(10.0f - _dmg.Accuracy, 1.0f, 10.0f) * 10.0f;
+            if (Random.Range(0.0f, 100.0f) <= chance)
+            {
+                return baseValue * 0.5f;
+            }
+
+            //Проверка на критический урон
+            chance = _dmg.Critical * 10.0f;
+            if (Random.Range(0.0f, 100.0f) <= chance)
+            {
+                return baseValue * 2.0f;
+            }
+
+            return baseValue;
+        }
     }
 }

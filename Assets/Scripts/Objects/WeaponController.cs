@@ -128,8 +128,7 @@ public class WeaponController : MonoBehaviour
         if (target == null)
             yield break;
 
-        var damage = new Damage(armorDamage, shieldDamage, critical);
-        //var damage = new Damage(0, 0, critical);
+        var damage = new Damage(armorDamage, shieldDamage, critical, accuracy);
 
         //Попадание
         if (DamageUtility.CheckHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
