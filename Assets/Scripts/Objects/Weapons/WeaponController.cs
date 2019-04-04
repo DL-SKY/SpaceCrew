@@ -6,14 +6,16 @@ using Utility;
 public class WeaponController : MonoBehaviour
 {
     #region Variables
+    [Header("Settings")]
+    public Transform startPos;
+
+    [Space()]
     [SerializeField]
     protected bool isActive;
     [SerializeField]
     protected bool isShootPreparation;
 
-    //[Space()]
-    //[SerializeField]
-    //protected WeaponEffectsController effects;
+    protected IWeaponEffects effects;
 
     [Space()]
     [SerializeField]
@@ -41,6 +43,10 @@ public class WeaponController : MonoBehaviour
     #endregion
 
     #region Unity methods
+    private void Awake()
+    {
+        effects = GetComponent<IWeaponEffects>();
+    }
     #endregion
 
     #region Public methods
@@ -54,7 +60,7 @@ public class WeaponController : MonoBehaviour
         isShootPreparation = false;
 
         ActivateWeapon();
-    }
+    }    
 
     public virtual void ActivateWeapon()
     {
@@ -114,7 +120,17 @@ public class WeaponController : MonoBehaviour
     protected virtual IEnumerator Preparation()
     {
         isShootPreparation = true;
-        yield return new WaitForSeconds(rate);
+
+        if (target == null)
+        {
+            effects.HideVFX();
+            yield return new WaitForSeconds(rate);
+        }
+        else
+        {
+            yield return effects.PrepareVFX(rate * 0.75f);
+        }
+
         isShootPreparation = false;
     }
 
@@ -133,6 +149,8 @@ public class WeaponController : MonoBehaviour
         //Попадание
         if (DamageUtility.CheckHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
         {
+            yield return effects.AttackVFX(startPos, target.transform, rate * 0.25f);
+
             var destructible = target.GetComponent<IDestructible>();
             if (destructible != null)
                 destructible.ApplyDamage(damage, transform.position);
