@@ -32,7 +32,7 @@ public class RadarController : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.eventOnInitPointController += OnInitPointController;
+        EventManager.eventOnInitPointController -= OnInitPointController;
     }
 
     private void LateUpdate()

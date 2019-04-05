@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utility;
 
 public class WeaponEffectsLaser : MonoBehaviour, IWeaponEffects
 {
@@ -45,18 +46,22 @@ public class WeaponEffectsLaser : MonoBehaviour, IWeaponEffects
         yield return new WaitForSeconds(_time * 0.5f);
     }
 
-    public IEnumerator AttackVFX(Transform _start, IDestructible _end, float _time)
+    public IEnumerator AttackVFX(Transform _start, IDestructible _end, float _time, bool _miss = false)
     {
         var T = 0.0f;
 
         line.SetPosition(0, _start.position);
         line.SetPosition(1, _start.position);
 
+        var endPos = _miss ? DamageUtility.GetMissPosition(_start, _end.GetTransform(), _end.SizeType) : _start.position;
+
         while (T < _time)
         {
-            line.SetPosition(0, _start.position);
-            var end = Vector3.MoveTowards(line.GetPosition(1), _end.GetPointToAttack(_start.position), speed * Time.deltaTime);
-            line.SetPosition(1, end);
+            if (!_miss)
+                endPos = Vector3.MoveTowards(line.GetPosition(1), _end.GetPointToAttack(_start.position), speed * Time.deltaTime);
+
+            line.SetPosition(0, _start.position);            
+            line.SetPosition(1, endPos);
 
             yield return null;
 

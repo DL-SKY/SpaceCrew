@@ -12,6 +12,7 @@ public interface IDestructible
     Transform GetTransform();
     Vector3 GetPointToAttack(Vector3 _weaponPos);
     void ApplyDamage(Damage _damage, Vector3 _weaponPos);
+    void ApplyMiss(Vector3 _weaponPos);
     float GetLerpManeuver();
     float GetShieldNormalize();
     float GetArmorNormalize();

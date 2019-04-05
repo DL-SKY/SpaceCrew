@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Utility
 {
@@ -69,6 +67,36 @@ namespace Utility
             }
 
             return baseValue;
+        }
+
+        public static Vector3 GetMissPosition(Transform _weapon, Transform _target, EnumSizeType _targetSize)
+        {
+            //Базовый разброс
+            var scatter = 0.5f;
+
+            //Разброс зависит от размеров Цели
+            switch (_targetSize)
+            {
+                case EnumSizeType.Small:
+                    scatter = 0.3f;
+                    break;
+
+                case EnumSizeType.Medium:
+                    scatter = 1.0f;
+                    break;
+
+                case EnumSizeType.Large:
+                    scatter = 2.5f;
+                    break;
+            }
+
+            var vectorMod = Random.Range(-scatter, scatter);
+            var lerpMod = Random.Range(2.5f, 5.0f);
+
+            //Увеличиваем расстояние от орудия до точки промаха
+            var randomMissPoint = _target.position + vectorMod * Vector3.one;
+
+            return Vector3.LerpUnclamped(_weapon.position, randomMissPoint, lerpMod);
         }
     }
 }

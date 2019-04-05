@@ -272,7 +272,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
 
     public void SetTarget(PointController _controller, bool _selected)
     {
-        if (_selected && targets.Count < meta.GetParameter(EnumParameters.targets))
+        if (_selected && targets.Count < meta.GetParameter(EnumParameters.targets) && maxSpeedType != EnumSpeedType.Full)
         {
             if (!targets.Contains(_controller))
             {
@@ -339,6 +339,11 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         CheckDestruction();
     }
 
+    public void ApplyMiss(Vector3 _weaponPos)
+    {
+
+    }
+
     public float GetLerpManeuver()
     {
         var speedNormalize = meta.GetSpeedCurrentNormalize();
@@ -360,6 +365,17 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     {
         maxSpeedType = _type;
         SetSpeedNormalize(GetMaxSpeedForCurrentSpeedType());
+
+        //Если активирован режим максимальной скорости - деактивируем вооружение и сбрасываем сопровождаемые цели
+        if (maxSpeedType == EnumSpeedType.Full)
+        {
+            ClearAllTargets();
+            DisableAllWeapons();
+        }
+        else
+        {
+            ActivateAllWeapons();
+        }
     }
     #endregion
 
@@ -622,6 +638,12 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     {
         foreach (var weapon in weapons)
             weapon.DisableWeapon();
+    }
+
+    private void ClearAllTargets()
+    {
+        for (int i = targets.Count - 1; i >= 0; i--)
+            SetTarget(targets[i], false);
     }
     #endregion
 

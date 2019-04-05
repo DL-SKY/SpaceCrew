@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 
@@ -8,6 +7,8 @@ public class WeaponController : MonoBehaviour
     #region Variables
     [Header("Settings")]
     public Transform startPos;
+    public float timeLerpRateToPrepare = 0.75f;
+    public float timeLerpRateToAttack = 0.25f;
 
     [Space()]
     [SerializeField]
@@ -79,6 +80,8 @@ public class WeaponController : MonoBehaviour
         StopAllCoroutines();
         isActive = false;
         isShootPreparation = false;
+
+        effects.HideVFX();
     }
     #endregion
 
@@ -128,7 +131,7 @@ public class WeaponController : MonoBehaviour
         }
         else
         {
-            yield return effects.PrepareVFX(rate * 0.75f);
+            yield return effects.PrepareVFX(rate * timeLerpRateToPrepare);
         }
 
         isShootPreparation = false;
@@ -144,22 +147,22 @@ public class WeaponController : MonoBehaviour
         if (target == null)
             yield break;
 
+        var destructible = target.destructible;
+        if (destructible == null)
+            yield break;
+
         var damage = new Damage(armorDamage, shieldDamage, critical, accuracy);
 
         //Попадание
         if (DamageUtility.CheckHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
         {
-            var destructible = target.GetComponent<IDestructible>();
-            if (destructible != null)
-            {
-                yield return effects.AttackVFX(startPos, destructible, rate * 0.25f);
-
-                destructible.ApplyDamage(damage, transform.position);
-            }
+            yield return effects.AttackVFX(startPos, destructible, rate * timeLerpRateToAttack);
+            destructible.ApplyDamage(damage, startPos.position);
         }
         else
         {
-            //TODO: выстрел мимо
+            yield return effects.AttackVFX(startPos, destructible, rate * timeLerpRateToAttack, true);
+            destructible.ApplyMiss(startPos.position);
         }        
     }
     #endregion
