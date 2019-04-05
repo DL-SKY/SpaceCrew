@@ -10,7 +10,6 @@ public class EnergyShieldRendererController : MonoBehaviour
     #endregion
 
     #region Variables
-    //public Gradient ColorLifetime;
     public Color color;
     public Vector2 speedWaveAnimationRange = new Vector2(1.0f, 10.0f);
     public Vector2 alphaModRange = new Vector2(0.3f, 1.0f);
@@ -49,7 +48,7 @@ public class EnergyShieldRendererController : MonoBehaviour
 
         eParams.ResetPosition();        
         eParams.applyShapeToPosition = true;
-        //eParams.position = _position;  
+ 
         eParams.position = transform.InverseTransformPoint(_position);
 
         particlesDamage.Emit(eParams, _count);

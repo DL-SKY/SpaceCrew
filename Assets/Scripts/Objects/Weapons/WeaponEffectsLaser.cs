@@ -5,7 +5,10 @@ using Utility;
 public class WeaponEffectsLaser : MonoBehaviour, IWeaponEffects
 {
     #region Variables
-    public float speed = 100.0f;
+    [Header("Settings")]
+    public float speed = 100.0f;            //Скорость луча
+    public Gradient colorLine;              //Цвет луча
+    public Color colorParticles;            //Цвет частиц
 
     [Space()]
     public LineRenderer line;
@@ -15,6 +18,10 @@ public class WeaponEffectsLaser : MonoBehaviour, IWeaponEffects
     #region Unity methods
     private void Awake()
     {
+        var pSystemMain = particles.GetComponent<ParticleSystem>().main;
+        pSystemMain.startColor = colorParticles;
+        line.colorGradient = colorLine;
+
         HideLaser();
     }
     #endregion

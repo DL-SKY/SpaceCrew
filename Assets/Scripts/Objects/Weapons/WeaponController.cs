@@ -149,19 +149,20 @@ public class WeaponController : MonoBehaviour
 
         var destructible = target.destructible;
         if (destructible == null)
-            yield break;
-
-        var damage = new Damage(armorDamage, shieldDamage, critical, accuracy);
+            yield break;        
 
         //Попадание
         if (DamageUtility.CheckHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
         {
             yield return effects.AttackVFX(startPos, destructible, rate * timeLerpRateToAttack);
+
+            var damage = new Damage(armorDamage, shieldDamage, critical, accuracy);
             destructible.ApplyDamage(damage, startPos.position);
         }
         else
         {
             yield return effects.AttackVFX(startPos, destructible, rate * timeLerpRateToAttack, true);
+
             destructible.ApplyMiss(startPos.position);
         }        
     }

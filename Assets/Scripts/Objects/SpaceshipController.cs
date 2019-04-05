@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Utility;
+using static UnityEngine.ParticleSystem;
 
 public class SpaceshipController : MonoBehaviour, IDestructible
 {
@@ -37,6 +38,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     public List<PointController> targets;           //Сопровождаемые цели для атаки
 
     [Header("Main Renderer")]
+    public ParticleSystem particlesArmorDamage;
     public MeshFilter mainFilter;
     public MeshRenderer mainRenderer;
     public MainEnginesRendererController mainEnginesRenderer;
@@ -578,9 +580,22 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         }
     }
 
-    private void ShowShieldDamage(Vector3 _position)
+    private void ShowShieldDamage(Vector3 _position, int _count = 30)
     {
-        shieldController.ShowDamageParticles(_position);
+        shieldController.ShowDamageParticles(_position, _count);
+        shieldController.UpdateMaterialSettings(meta.GetCurrentParameterNormalize(EnumParameters.shield));
+    }
+
+    private void ShowArmorDamage(Vector3 _position, int _count = 30)
+    {
+        EmitParams eParams = new EmitParams();
+
+        eParams.ResetPosition();
+        eParams.applyShapeToPosition = true;
+ 
+        eParams.position = transform.InverseTransformPoint(_position);
+
+        particlesArmorDamage.Emit(eParams, _count);
     }
 
     private void UpdateMainEnginesRenderer()
