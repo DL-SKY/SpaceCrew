@@ -8,7 +8,9 @@ public interface IUpdateRenderer
 public interface IDestructible
 {
     EnumSizeType SizeType { get; set; }
-    
+
+    Transform GetTransform();
+    Vector3 GetPointToAttack(Vector3 _weaponPos);
     void ApplyDamage(Damage _damage, Vector3 _weaponPos);
     float GetLerpManeuver();
     float GetShieldNormalize();

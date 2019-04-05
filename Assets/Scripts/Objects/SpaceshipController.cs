@@ -292,6 +292,16 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         }
     }
 
+    public Transform GetTransform()
+    {
+        return transform;
+    }
+
+    public Vector3 GetPointToAttack(Vector3 _weaponPos)
+    {
+        return shieldCollider.ClosestPoint(_weaponPos);
+    }
+
     public void ApplyDamage(Damage _damage, Vector3 _weaponPos)
     {
         var shieldDmg = CalculateDamageShield(_damage);     //отрицательное значение - урон, положительное - ремонт

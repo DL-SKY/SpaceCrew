@@ -149,11 +149,13 @@ public class WeaponController : MonoBehaviour
         //Попадание
         if (DamageUtility.CheckHit(data, target, Vector3.Distance(transform.position, target.transform.position)))
         {
-            yield return effects.AttackVFX(startPos, target.transform, rate * 0.25f);
-
             var destructible = target.GetComponent<IDestructible>();
             if (destructible != null)
+            {
+                yield return effects.AttackVFX(startPos, destructible, rate * 0.25f);
+
                 destructible.ApplyDamage(damage, transform.position);
+            }
         }
         else
         {
