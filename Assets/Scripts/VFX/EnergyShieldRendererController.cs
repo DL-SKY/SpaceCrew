@@ -16,6 +16,7 @@ public class EnergyShieldRendererController : MonoBehaviour
 
     [Header("VFX")]
     public ParticleSystem particlesDamage;
+    public GameObject particlesDestroyShields;
 
     private new MeshRenderer renderer;
     private Material material;
@@ -40,6 +41,9 @@ public class EnergyShieldRendererController : MonoBehaviour
 
         var speed = Mathf.Lerp(speedWaveAnimationRange.x, speedWaveAnimationRange.y, _shieldNormalize);
         material.SetFloat(SPEED, speed);
+
+        if (_shieldNormalize <= 0.0f)
+            ShowShieldDestroy();
     }
 
     public void ShowDamageParticles(Vector3 _position, int _count = 30)
@@ -52,6 +56,12 @@ public class EnergyShieldRendererController : MonoBehaviour
         eParams.position = transform.InverseTransformPoint(_position);
 
         particlesDamage.Emit(eParams, _count);
+    }
+
+    public void ShowShieldDestroy()
+    {
+        particlesDestroyShields.SetActive(true);
+        material.SetFloat(ALPHA_MOD, 0.0f);
     }
     #endregion
 

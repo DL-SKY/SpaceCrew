@@ -38,13 +38,16 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     public List<PointController> targets;           //Сопровождаемые цели для атаки
 
     [Header("Main Renderer")]
-    public ParticleSystem particlesArmorDamage;
+    public ArmorRendererController armorController;    
     public MeshFilter mainFilter;
     public MeshRenderer mainRenderer;
     public MainEnginesRendererController mainEnginesRenderer;
     public Transform weaponsParent;
     public List<Transform> weaponSlots = new List<Transform>();
     private List<WeaponController> weapons = new List<WeaponController>();
+
+    [Space()]
+    public ParticleSystem particlesSelfDestroy;
 
     [Header("Energy shield Renderer")]
     public EnergyShieldRendererController shieldController;
@@ -329,6 +332,8 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         //УРОН Корпусу
         if (needCheckDamageArmor && armorDmg != 0.0f)
         {
+            ShowArmorDamage(mainCollider.ClosestPoint(_weaponPos));
+
             meta.SetDeltaParameter(EnumParameters.armor, armorDmg);
 
             //Не позволяем уйти в минус
@@ -576,7 +581,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         if (armor <= 0.0f)
         {
             if (!isPlayer)
-                Destroy(gameObject);
+                StartCoroutine(SelfDestroy());
         }
     }
 
@@ -588,14 +593,8 @@ public class SpaceshipController : MonoBehaviour, IDestructible
 
     private void ShowArmorDamage(Vector3 _position, int _count = 30)
     {
-        EmitParams eParams = new EmitParams();
-
-        eParams.ResetPosition();
-        eParams.applyShapeToPosition = true;
- 
-        eParams.position = transform.InverseTransformPoint(_position);
-
-        particlesArmorDamage.Emit(eParams, _count);
+        armorController.ShowDamageParticles(_position, _count);
+        armorController.UpdateAdditionalFX(meta.GetCurrentParameterNormalize(EnumParameters.armor));
     }
 
     private void UpdateMainEnginesRenderer()
@@ -662,7 +661,20 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     }
     #endregion
 
-    #region Coroutines    
+    #region Coroutines
+    private IEnumerator SelfDestroy()
+    {
+        particlesSelfDestroy.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        mainRenderer.gameObject.SetActive(false);
+        shieldController.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1.5f);
+
+        Destroy(gameObject);
+    }
     #endregion
 
     #region Menu
