@@ -76,6 +76,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     private Coroutine speedCoroutine;
     private float minDistance;              //Расстояние до цели, на котором корабль останавливается
     private float brakingDistance;          //Расстояние, на котором корабль начинает снижать скорость
+    private float brakingDistanceSpeedType;
     #endregion
 
     #region Gizmo
@@ -214,6 +215,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         speedCoroutine = StartCoroutine(meta.StartChangeSpeed(_normalizeValue));
 
         brakingDistance = GetDistanceBraking(minDistance, _normalizeValue);
+        brakingDistanceSpeedType = GetDistanceBraking(minDistance, GetMaxSpeedForCurrentSpeedType());
     }
 
     public void AddSpeedNormalize(float _additionalNormalizeValue)
@@ -226,6 +228,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
         speedCoroutine = StartCoroutine(meta.StartChangeSpeed(normalizeValue));
 
         brakingDistance = GetDistanceBraking(minDistance, normalizeValue);
+        brakingDistanceSpeedType = GetDistanceBraking(minDistance, GetMaxSpeedForCurrentSpeedType());
     }
 
     public float GetSpeed()
@@ -259,9 +262,24 @@ public class SpaceshipController : MonoBehaviour, IDestructible
                 EventManager.CallOnSetActiveTarget(oldPoint.GetComponent<PointController>(), false);
             }
 
-            pointType = EnumTargetType.ToPoint;
+            switch (_controller.type)
+            {
+                case EnumPointType.Enemy:
+                    pointType = EnumTargetType.ToEnemy;
+                    break;
+
+                case EnumPointType.Point:
+                    pointType = EnumTargetType.ToPoint;
+                    break;
+
+                default:
+                    pointType = EnumTargetType.ToPoint;
+                    break;
+            }
+
             minDistance = GetDistanceMinimum(pointType);
             brakingDistance = GetDistanceBraking(minDistance, meta.GetSpeedResultNormalize());
+            brakingDistanceSpeedType = GetDistanceBraking(minDistance, GetMaxSpeedForCurrentSpeedType());
             point = _controller.transform;
 
             EventManager.CallOnSetActiveTarget(_controller, true);
@@ -445,21 +463,10 @@ public class SpaceshipController : MonoBehaviour, IDestructible
             //Проверка на дистанцию. В случае необходимости останавливаем корабль
             var distance = Vector3.Distance(transform.position, point.position);
 
-            //Если не достигли конечной точки
-            if (distance > minDistance)
-            {
-                if (speed > 0.0f)
-                {
-                    //Пора включать торможение
-                    if (distance <= brakingDistance && meta.GetSpeedResultNormalize() > 0.0f)
-                        SetSpeedNormalize(0.0f);
-                }
-                else
-                {
-                    //Добавляем скорость
-                    SetSpeedNormalize(GetMaxSpeedForCurrentSpeedType());
-                }
-            }
+            if (distance > brakingDistance && distance > brakingDistanceSpeedType)
+                SetSpeedNormalize(GetMaxSpeedForCurrentSpeedType());
+            else if (meta.GetSpeedResultNormalize() > 0.0f)
+                SetSpeedNormalize(0.0f);
         }
 
         rb.MovePosition(transform.position + transform.forward * speed * Time.fixedDeltaTime);
@@ -486,7 +493,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
                 break;
 
             case EnumTargetType.ToPoint:
-                result = length / 0.5f;
+                result = length * 1.5f;
                 break;
 
             case EnumTargetType.ToFollow:
@@ -501,6 +508,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
                 break;
 
             case EnumTargetType.ToEnemy:
+                result = meta.GetAverageWeaponOptimalDistance();
                 break;
         }
 
@@ -511,7 +519,7 @@ public class SpaceshipController : MonoBehaviour, IDestructible
     {
         var resultSpeed = meta.GetSpeedValue(_speedNormalize);
         var brakingTime = resultSpeed / (meta.GetParameter(EnumParameters.maneuver) * ConstantsGameSettings.MANEUVER_MOD_SPEED);
-        var result = _min + ((resultSpeed * brakingTime) / 2.0f);             //Производная формулы свободного падения, в данном случае подходит
+        var result = _min + ((resultSpeed * brakingTime) / 2.0f);             //Производная формулы свободного падения, в данном случае подходит   
 
         return result;
     }

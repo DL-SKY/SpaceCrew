@@ -130,6 +130,16 @@ public class SpaceshipMetadata
     {
         return speedResultNormalize;
     }
+
+    public float GetAverageWeaponOptimalDistance()
+    {
+        var sumDistance = 0.0f;
+
+        for (int i = 0; i < weapons.Count; i++)
+            sumDistance += weapons[i].GetSelfParameter(EnumParameters.optimalDistance);
+
+        return sumDistance / weapons.Count;
+    }
     #endregion
 
     #region Private methods

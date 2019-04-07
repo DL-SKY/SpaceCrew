@@ -29,6 +29,7 @@ namespace Utility
             var random = Random.Range(0.0f, 100.0f);
             result = random <= chance;
 
+            //Debug.Log(string.Format("{0} + {1} - {2}/2.0", accuracy, typesizeMod, lerpManeuver));
             Debug.Log(string.Format("[DamageUtility] Chance: {0} (distMod:{1})/ Result: {2}", chance, distanceMod, result));
 
             return result;
