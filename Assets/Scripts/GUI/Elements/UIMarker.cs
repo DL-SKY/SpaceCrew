@@ -36,6 +36,10 @@ public class UIMarker : MonoBehaviour
     [Header("Title")]
     public Text Title;
 
+    [Header("Status")]
+    public bool isCurrentPoint;
+    public bool isCurrentTarget;
+
     [Header("ProgressBars")]
     public ProgressBar shieldProgress;
     public ProgressBar armorProgress;
@@ -140,6 +144,9 @@ public class UIMarker : MonoBehaviour
 
         IsSelected = false;
         IsActive = false;
+
+        isCurrentPoint = false;
+        isCurrentTarget = false;
 
         foreach (var item in subitems)
             item.HideImediatly();
@@ -356,13 +363,14 @@ public class UIMarker : MonoBehaviour
     {
         if (_controller == pointController)
         {
+            var player = PlayerController.Instance.player;
+
             //Проверка на нахождение в списке активных целей Игрока
             if (pointController.type == EnumPointType.Enemy)
             {
                 //Запрет снятия выделения, если в активных целях (н-р, если цель была точкой маршрута)
                 if (!_selected)
-                {
-                    var player = PlayerController.Instance.player;
+                {                    
                     if (!player.targets.Contains(pointController) && player.point != pointController.transform)
                         IsActive = _selected;
                 }
@@ -375,6 +383,9 @@ public class UIMarker : MonoBehaviour
             {
                 IsActive = _selected;
             }
+
+            isCurrentTarget = player.targets.Contains(pointController);
+            isCurrentPoint = player.point == pointController.transform;
         }
     }
 
@@ -435,9 +446,13 @@ public class UIMarker : MonoBehaviour
     private void ApplyActive()
     {
         if (activeTarget)
+        {
             activeTarget.gameObject.SetActive(IsActive);
+        }
         if (disableTarget)
+        {
             disableTarget.gameObject.SetActive(!IsActive);
+        }
     }
 
     private void HandlerDialogCallback(bool _result)

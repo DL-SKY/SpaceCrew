@@ -468,6 +468,11 @@ public class SpaceshipController : MonoBehaviour, IDestructible
             else if (meta.GetSpeedResultNormalize() > 0.0f)
                 SetSpeedNormalize(0.0f);
         }
+        else
+        {
+            if (meta.GetSpeedResultNormalize() > 0.0f)
+                SetSpeedNormalize(0.0f);
+        }
 
         rb.MovePosition(transform.position + transform.forward * speed * Time.fixedDeltaTime);
     }
