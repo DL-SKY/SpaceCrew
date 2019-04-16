@@ -402,6 +402,11 @@ public class SpaceshipController : MonoBehaviour, IDestructible
             ActivateAllWeapons();
         }
     }
+
+    public PointController GetSelfPointController()
+    {
+        return selfPointController;
+    }
     #endregion
 
     #region Private methods

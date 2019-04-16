@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using DllSky.Components;
+using DllSky.Managers;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MarkerSubsystemDialogPanelNavigation : MarkerSubsystemDialogPanel
 {
     #region Variables
+    public ProgressBar speedProgress;
     #endregion
 
     #region Unity methods
@@ -12,12 +15,24 @@ public class MarkerSubsystemDialogPanelNavigation : MarkerSubsystemDialogPanel
     {
         Initialize();
     }
+
+    private void OnEnable()
+    {
+        EventManager.eventOnPlayerChangeSpeed += HandlerOnPlayerChangeSpeed;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.eventOnPlayerChangeSpeed -= HandlerOnPlayerChangeSpeed;
+    }
     #endregion
 
     #region Public methods
     public override void Initialize()
     {
         base.Initialize();
+
+        UpdateSpeed();
     }
 
     public void OnClickSpeedStop()
@@ -42,6 +57,15 @@ public class MarkerSubsystemDialogPanelNavigation : MarkerSubsystemDialogPanel
     #endregion
 
     #region Private methods
+    private void HandlerOnPlayerChangeSpeed()
+    {
+        UpdateSpeed();
+    }
+
+    private void UpdateSpeed()
+    {
+        speedProgress.FillAmount = player.GetSpeedNormalize();
+    }
     #endregion
 
     #region Coroutines
