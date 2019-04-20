@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.0.33
+  bundleVersion: 0.0.34
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -156,8 +156,8 @@ PlayerSettings:
     Android: ru.dllsky.spaceship.space.crew
     Standalone: ru.dllsky.nst
   buildNumber: {}
-  AndroidBundleVersionCode: 33
-  AndroidMinSdkVersion: 21
+  AndroidBundleVersionCode: 34
+  AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
